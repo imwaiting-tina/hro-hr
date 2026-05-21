@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开弈集团 - 人事手续流程与文件清单</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #4F46E5; --primary-light: #EEF2FF; --primary-dark: #3730A3;
+    --teal: #0D9488; --teal-light: #F0FDFA;
+    --coral: #DC2626; --coral-light: #FEF2F2;
+    --amber: #D97706; --amber-light: #FFFBEB;
+    --emerald: #059669; --emerald-light: #ECFDF5;
+    --purple: #7C3AED; --purple-light: #F5F3FF;
+    --sidebar-bg: #1E293B; --sidebar-hover: #334155; --sidebar-active: #4F46E5;
+    --text: #1E293B; --text-secondary: #64748B; --text-muted: #94A3B8;
+    --bg: #F1F5F9; --card-bg: #FFFFFF;
+    --border: #E2E8F0; --border-light: #F1F5F9;
+    --radius: 8px; --radius-lg: 12px;
+  }
+  body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; font-size: 14px; display: flex; height: 100vh; overflow: hidden; }
+
+  /* ===== Login Overlay ===== */
+  .login-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 50%, #1E293B 100%);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+  }
+  .login-overlay.hidden { display: none; }
+  .login-card {
+    background: var(--card-bg); border-radius: 16px; padding: 40px 36px;
+    width: 380px; box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+  }
+  .login-logo { font-size: 20px; font-weight: 700; color: var(--text); text-align: center; letter-spacing: -0.5px; }
+  .login-subtitle { font-size: 11.5px; color: var(--text-muted); text-align: center; margin-top: 6px; margin-bottom: 32px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 7px; }
+  .form-group input, .form-group select {
+    width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius);
+    font-size: 14px; outline: none; transition: border-color 0.15s; background: var(--card-bg); color: var(--text);
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+  .form-group input::placeholder { color: var(--text-muted); }
+  .login-error { color: var(--coral); font-size: 13px; margin-bottom: 14px; text-align: center; display: none; }
+  .login-error.show { display: block; }
+  .login-btn {
+    width: 100%; padding: 11px; border-radius: var(--radius); font-size: 14px; font-weight: 600;
+    background: var(--primary); color: white; border: none; cursor: pointer; transition: background 0.15s;
+  }
+  .login-btn:hover { background: var(--primary-dark); }
+  .login-footer { text-align: center; margin-top: 20px; font-size: 11px; color: var(--text-muted); }
+
+  /* ===== Sidebar ===== */
+  .sidebar {
+    width: 240px; min-width: 240px; background: var(--sidebar-bg);
+    display: flex; flex-direction: column; color: white;
+  }
+  .sidebar-logo { padding: 22px 20px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .sidebar-logo h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; }
+  .sidebar-logo p { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+  .sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+  .nav-group { margin-bottom: 6px; }
+  .nav-group[hidden] { display: none; }
+  .nav-group-title { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px 6px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: var(--radius); cursor: pointer;
+    font-size: 13.5px; color: rgba(255,255,255,0.65);
+    transition: all 0.15s; margin-bottom: 2px; user-select: none;
+  }
+  .nav-item:hover { background: var(--sidebar-hover); color: rgba(255,255,255,0.9); }
+  .nav-item.active { background: var(--sidebar-active); color: white; font-weight: 500; }
+  .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+  .nav-item.active svg { opacity: 1; }
+  .sidebar-footer { padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 11px; color: rgba(255,255,255,0.3); }
+
+  /* ===== Main ===== */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar {
+    height: 56px; background: var(--card-bg); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; flex-shrink: 0;
+  }
+  .topbar-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .topbar-breadcrumb { font-size: 12px; color: var(--text-muted); }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .topbar-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; cursor: pointer; position: relative;
+  }
+  .user-dropdown {
+    position: absolute; top: 100%; right: 0; margin-top: 8px;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 180px; z-index: 100;
+    display: none; overflow: hidden;
+  }
+  .user-dropdown.show { display: block; }
+  .user-dropdown-item {
+    padding: 10px 16px; font-size: 13px; color: var(--text); cursor: pointer;
+    display: flex; align-items: center; gap: 8px; transition: background 0.1s;
+  }
+  .user-dropdown-item:hover { background: var(--primary-light); color: var(--primary-dark); }
+  .user-dropdown-item.danger { color: var(--coral); }
+  .user-dropdown-item.danger:hover { background: var(--coral-light); }
+  .user-dropdown-divider { height: 1px; background: var(--border-light); margin: 4px 0; }
+  .content { flex: 1; overflow-y: auto; padding: 28px; }
+
+  /* ===== Page sections ===== */
+  .page-section { display: none; }
+  .page-section.active { display: block; }
+
+  /* ===== Stats ===== */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 18px 20px; border: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+  .stat-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .stat-icon svg { width: 20px; height: 20px; }
+  .stat-icon.blue { background: var(--primary-light); color: var(--primary); }
+  .stat-icon.teal { background: var(--teal-light); color: var(--teal); }
+  .stat-icon.amber { background: var(--amber-light); color: var(--amber); }
+  .stat-icon.coral { background: var(--coral-light); color: var(--coral); }
+  .stat-val { font-size: 24px; font-weight: 700; color: var(--text); }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+
+  /* ===== Card ===== */
+  .card { background: var(--card-bg); border-radius: var(--radius-lg); border: 1px solid var(--border); margin-bottom: 20px; }
+  .card-header { padding: 18px 22px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .card-body { padding: 20px 22px; }
+
+  /* ===== Sub-nav tabs ===== */
+  .sub-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+  .sub-tab {
+    padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 500;
+    color: var(--text-secondary); cursor: pointer; background: var(--card-bg);
+    border: 1px solid var(--border); transition: all 0.15s; user-select: none;
+  }
+  .sub-tab:hover { color: var(--text); border-color: var(--text-muted); }
+  .sub-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  /* ===== Sub content ===== */
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+
+  /* ===== Flow diagram ===== */
+  .flow-chain { display: flex; align-items: center; gap: 0; flex-wrap: nowrap; overflow-x: auto; padding: 8px 0; }
+  .fc-node { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 100px; flex-shrink: 0; }
+  .fc-box { padding: 10px 14px; border-radius: var(--radius); font-size: 12.5px; font-weight: 500; border: 1.5px solid; white-space: nowrap; }
+  .fc-box.blue { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
+  .fc-box.teal { background: var(--teal-light); border-color: var(--teal); color: #065F56; }
+  .fc-box.coral { background: var(--coral-light); border-color: var(--coral); color: #991B1B; }
+  .fc-box.amber { background: var(--amber-light); border-color: var(--amber); color: #92400E; }
+  .fc-box.slate { background: #F8FAFC; border-color: #CBD5E1; color: #475569; }
+  .fc-box.purple { background: var(--purple-light); border-color: var(--purple); color: #5B21B6; }
+  .fc-box.emerald { background: var(--emerald-light); border-color: var(--emerald); color: #065F46; }
+  .fc-label { font-size: 10.5px; color: var(--text-muted); margin-top: 5px; max-width: 110px; }
+  .fc-arrow { font-size: 16px; color: var(--text-muted); margin: 0 3px; flex-shrink: 0; padding-bottom: 18px; }
+
+  /* ===== Type cards ===== */
+  .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 20px; }
+  .type-card { background: var(--card-bg); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
+  .type-card-hd { padding: 14px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-light); }
+  .type-tag { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .tag-labor { background: var(--primary-light); color: var(--primary-dark); }
+  .tag-intern { background: var(--teal-light); color: #065F56; }
+  .tag-service { background: var(--amber-light); color: #92400E; }
+  .type-card-name { font-size: 14px; font-weight: 600; }
+  .type-card-bd { padding: 16px 18px; }
+
+  /* ===== File list ===== */
+  .fl { list-style: none; }
+  .fl li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border-light); font-size: 13px; }
+  .fl li:last-child { border-bottom: none; }
+  .fl-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .fl-name { color: var(--text); font-weight: 500; }
+  .fl-name.clickable { cursor: pointer; }
+  .fl-name.clickable:hover { color: var(--primary); }
+  .wf-btn {
+    padding: 2px 10px; border-radius: 4px; font-size: 11px; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border); background: var(--card-bg);
+    color: var(--text-secondary); transition: all 0.15s; white-space: nowrap; margin-left: auto;
+  }
+  .wf-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .wf-btn.danger:hover { border-color: var(--coral); color: var(--coral); }
+  .wf-btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
+  .wf-btn.primary:hover { background: var(--primary-dark); }
+
+  /* ===== Workflow slot ===== */
+  .wf-slot { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-light); font-size: 13px; }
+  .wf-slot:last-child { border-bottom: none; }
+  .wf-slot-name { flex: 1; font-weight: 500; color: var(--text); }
+  .wf-slot-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .wf-slot-empty { color: var(--text-muted); font-size: 12px; }
+
+  /* ===== Doc file list (with actions) ===== */
+  .doc-list { list-style: none; }
+  .doc-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+    border-bottom: 1px solid var(--border-light); font-size: 13px;
+    transition: background 0.1s; cursor: pointer; border-radius: 4px;
+  }
+  .doc-item:hover { background: var(--primary-light); }
+  .doc-item:last-child { border-bottom: none; }
+  .doc-icon { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; font-weight: 700; }
+  .doc-icon.pdf { background: #FEE2E2; color: #DC2626; }
+  .doc-icon.word { background: #DBEAFE; color: #2563EB; }
+  .doc-icon.excel { background: #D1FAE5; color: #059669; }
+  .doc-icon.ppt { background: #FEF3C7; color: #D97706; }
+  .doc-icon.image { background: #EDE9FE; color: #7C3AED; }
+  .doc-icon.file { background: #F1F5F9; color: #64748B; }
+  .doc-info { flex: 1; min-width: 0; }
+  .doc-filename { color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-meta { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .doc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .doc-btn {
+    padding: 4px 12px; border-radius: 5px; font-size: 12px; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border); background: var(--card-bg);
+    color: var(--text-secondary); transition: all 0.15s; white-space: nowrap;
+  }
+  .doc-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .doc-btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
+  .doc-btn.primary:hover { background: var(--primary-dark); }
+  .doc-btn.danger:hover { border-color: var(--coral); color: var(--coral); }
+  .doc-empty { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; }
+  .doc-empty svg { width: 40px; height: 40px; margin-bottom: 8px; opacity: 0.4; }
+
+  /* ===== Note ===== */
+  .note { background: #F8FAFC; border-left: 3px solid var(--border); border-radius: 0 6px 6px 0; padding: 10px 14px; margin-top: 12px; font-size: 12.5px; color: var(--text-secondary); }
+  .note strong { color: var(--text); }
+
+  /* ===== Table ===== */
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th { background: #F8FAFC; padding: 11px 14px; font-size: 12.5px; font-weight: 600; color: var(--text-secondary); text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .data-table td { padding: 10px 14px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid var(--border-light); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .td-label { font-weight: 600; color: var(--text); white-space: nowrap; }
+  .data-table .td-dash { color: var(--text-muted); }
+
+  /* ===== Dual grid ===== */
+  .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .dual-box { background: #F8FAFC; border-radius: var(--radius); padding: 16px 18px; }
+  .dual-box h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+  /* ===== Code system ===== */
+  .code-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .code-card { background: var(--card-bg); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 18px 18px; border-top: 3px solid transparent; transition: outline 0.15s, box-shadow 0.15s; }
+  .code-card.blue { border-top-color: var(--primary); }
+  .code-card.teal { border-top-color: var(--teal); }
+  .code-card.amber { border-top-color: var(--amber); }
+  .code-card.purple { border-top-color: var(--purple); }
+  .code-prefix { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .code-prefix.blue { color: var(--primary); }
+  .code-prefix.teal { color: var(--teal); }
+  .code-prefix.amber { color: var(--amber); }
+  .code-prefix.purple { color: var(--purple); }
+  .code-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .code-desc { font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+
+  /* ===== Tags ===== */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .file-tag { font-size: 12px; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border); color: var(--text-secondary); background: #F8FAFC; }
+  .file-tag.blue { background: var(--primary-light); border-color: #C7D2FE; color: var(--primary-dark); }
+  .file-tag.teal { background: var(--teal-light); border-color: #99F6E4; color: #065F56; }
+  .file-tag.amber { background: var(--amber-light); border-color: #FDE68A; color: #92400E; }
+  .role-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .role-tag.admin { background: var(--primary-light); color: var(--primary-dark); }
+  .role-tag.employee { background: var(--teal-light); color: #065F56; }
+
+  /* ===== Step list ===== */
+  .step-list { list-style: none; }
+  .step-list li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 13px; color: var(--text-secondary); }
+  .step-list .sn { width: 20px; height: 20px; border-radius: 50%; background: var(--border); color: var(--text-secondary); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-list strong { color: var(--text); }
+
+  /* ===== Alert ===== */
+  .alert { padding: 12px 16px; border-radius: var(--radius); font-size: 13px; margin-top: 12px; display: flex; align-items: flex-start; gap: 8px; }
+  .alert.warn { background: var(--amber-light); border: 1px solid #FDE68A; color: #92400E; }
+  .alert.info { background: var(--primary-light); border: 1px solid #C7D2FE; color: var(--primary-dark); }
+  .alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ===== Section title ===== */
+  .sec-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .sec-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+
+  /* ===== Modal ===== */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--card-bg); border-radius: var(--radius-lg);
+    width: 90%; max-width: 900px; max-height: 90vh;
+    display: flex; flex-direction: column; box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+  }
+  .modal-sm { max-width: 460px; }
+  .modal-lg { max-width: 1100px; }
+  .modal-header {
+    padding: 18px 22px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .modal-title { font-size: 15px; font-weight: 600; }
+  .modal-close {
+    width: 32px; height: 32px; border-radius: 6px; border: none;
+    background: transparent; cursor: pointer; font-size: 18px;
+    color: var(--text-secondary); display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: #F1F5F9; }
+  .modal-body { flex: 1; overflow-y: auto; padding: 22px; }
+  .modal-footer { padding: 14px 22px; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 10px; flex-shrink: 0; }
+
+  /* ===== Upload area ===== */
+  .upload-zone {
+    border: 2px dashed var(--border); border-radius: var(--radius-lg);
+    padding: 40px; text-align: center; cursor: pointer;
+    transition: all 0.2s; background: #FAFBFC;
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--primary); background: var(--primary-light);
+  }
+  .upload-zone svg { width: 48px; height: 48px; color: var(--text-muted); margin-bottom: 12px; }
+  .upload-zone h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .upload-zone p { font-size: 12px; color: var(--text-muted); }
+  .upload-zone input { display: none; }
+
+  /* ===== Btn ===== */
+  .btn {
+    padding: 8px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border); background: var(--card-bg);
+    color: var(--text); transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { border-color: var(--text-muted); }
+  .btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn.primary:hover { background: var(--primary-dark); }
+  .btn.sm { padding: 5px 12px; font-size: 12px; }
+  .btn.danger { color: var(--coral); border-color: #FECACA; }
+  .btn.danger:hover { background: var(--coral); color: white; border-color: var(--coral); }
+
+  /* ===== Toast ===== */
+  .toast-container { position: fixed; top: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
+  .toast {
+    padding: 12px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 500;
+    background: var(--card-bg); border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    display: flex; align-items: center; gap: 8px; animation: toastIn 0.3s ease;
+    max-width: 360px;
+  }
+  .toast.success { border-left: 3px solid var(--emerald); color: #065F46; }
+  .toast.error { border-left: 3px solid var(--coral); color: #991B1B; }
+  .toast.info { border-left: 3px solid var(--primary); color: var(--primary-dark); }
+  @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* ===== PDF Preview ===== */
+  .pdf-preview { width: 100%; height: 70vh; border: none; border-radius: var(--radius); }
+  .preview-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 20px; color: var(--text-secondary); text-align: center;
+  }
+  .preview-placeholder svg { width: 56px; height: 56px; color: var(--text-muted); margin-bottom: 16px; }
+  .preview-placeholder h3 { font-size: 15px; margin-bottom: 6px; }
+  .preview-placeholder p { font-size: 13px; color: var(--text-muted); }
+
+  /* ===== File search ===== */
+  .search-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  }
+  .search-input {
+    flex: 1; padding: 8px 14px; border: 1px solid var(--border); border-radius: var(--radius);
+    font-size: 13px; background: var(--card-bg); color: var(--text);
+    outline: none; transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--primary); }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  /* ===== Doc count badge ===== */
+  .badge {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    background: var(--border-light); color: var(--text-secondary); margin-left: 8px;
+  }
+
+  /* ===== User table ===== */
+  .user-table { width: 100%; border-collapse: collapse; }
+  .user-table th { background: #F8FAFC; padding: 11px 14px; font-size: 12.5px; font-weight: 600; color: var(--text-secondary); text-align: left; border-bottom: 1px solid var(--border); }
+  .user-table td { padding: 10px 14px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border-light); }
+  .user-table tr:last-child td { border-bottom: none; }
+  .user-table .actions { display: flex; gap: 6px; }
+
+  /* ===== Batch mode ===== */
+  .batch-bar {
+    display: none; align-items: center; gap: 12px; padding: 10px 16px;
+    background: var(--primary); color: white; font-size: 13px; font-weight: 500;
+    border-radius: 8px 8px 0 0; margin-bottom: -1px;
+  }
+  .batch-bar.show { display: flex; }
+  .batch-bar .batch-count { font-weight: 700; }
+  .batch-bar .batch-actions { display: flex; gap: 6px; margin-left: auto; }
+  .batch-bar .batch-actions .btn {
+    padding: 5px 14px; font-size: 12px; border-radius: 5px;
+    background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px;
+  }
+  .batch-bar .batch-actions .btn:hover { background: rgba(255,255,255,0.35); }
+  .batch-bar .batch-actions .btn.danger-btn { border-color: rgba(255,200,200,0.5); }
+  .batch-bar .batch-actions .btn.danger-btn:hover { background: rgba(239,68,68,0.7); border-color: transparent; }
+
+  .doc-item.batch-selected { background: #EFF6FF !important; }
+  .doc-checkbox {
+    width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s; background: var(--card-bg);
+  }
+  .doc-checkbox:hover { border-color: var(--primary); }
+  .doc-checkbox.checked { background: var(--primary); border-color: var(--primary); }
+  .doc-checkbox.checked::after { content: ''; display: block; width: 5px; height: 9px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); }
+
+  .batch-edit-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    padding: 12px 16px; background: #F8FAFC; border-radius: 8px;
+    border: 1px dashed var(--border); font-size: 13px; color: var(--text-secondary);
+  }
+  .batch-edit-row select { flex: none; width: 140px; }
+  .batch-select-all-row {
+    display: none; align-items: center; gap: 10px; padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light); cursor: pointer;
+  }
+  .batch-select-all-row.show { display: flex; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1100px) { .type-grid { grid-template-columns: 1fr; } .code-grid { grid-template-columns: repeat(3, 1fr); } .stats-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .sidebar { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- ===== Toast Container ===== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ===== Login Overlay ===== -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">HR 管理系统</div>
+    <div class="login-subtitle">开弈信息科技（中国）有限公司</div>
+    <form id="loginForm" onsubmit="doLogin(event)">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" id="loginUsername" placeholder="请输入用户名" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="loginPassword" placeholder="请输入密码" required autocomplete="current-password">
+      </div>
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="login-btn">登 录</button>
+    </form>
+    <div class="login-footer">HR Document Management System v2.0</div>
+  </div>
+</div>
+
+<!-- ===== Sidebar ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h2>HR 管理系统</h2>
+    <p>开弈信息科技（中国）有限公司</p>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group" data-role="admin">
+      <div class="nav-group-title">概览</div>
+      <div class="nav-item active" data-page="overview" onclick="showPage('overview', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        工作台
+      </div>
+    </div>
+    <div class="nav-group" data-role="all">
+      <div class="nav-group-title">人事流程</div>
+      <div class="nav-item" data-page="onboard" onclick="showPage('onboard', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        入职管理
+      </div>
+      <div class="nav-item" data-page="renew" onclick="showPage('renew', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        续签管理
+      </div>
+      <div class="nav-item" data-page="resign" onclick="showPage('resign', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        离职管理
+      </div>
+    </div>
+    <div class="nav-group" data-role="all">
+      <div class="nav-group-title">文件管理</div>
+      <div class="nav-item" data-page="docman" onclick="showPage('docman', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        文档库
+      </div>
+    </div>
+    <div class="nav-group" data-role="admin">
+      <div class="nav-group-title">系统</div>
+      <div class="nav-item" data-page="users" onclick="showPage('users', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        账号管理
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">HR System v2.0 · 2026</div>
+</aside>
+
+<!-- ===== Main ===== -->
+<div class="main" id="mainArea">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbarTitle">工作台</div>
+      <div class="topbar-breadcrumb" id="topbarBreadcrumb">概览 / 工作台</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn primary sm" id="topbarUploadBtn" onclick="openUploadModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        上传文件
+      </button>
+      <button class="btn sm" id="topbarAutoMatchBtn" onclick="autoMatchSlots()" style="display:none;background:var(--primary-light);color:var(--primary);border:1px solid var(--primary);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        智能匹配
+      </button>
+      <div class="topbar-avatar" id="topbarAvatar" onclick="toggleUserMenu()">
+        HR
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-item" id="dropdownUserInfo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span id="dropdownUserName">用户</span>
+          </div>
+          <div class="user-dropdown-divider"></div>
+          <div class="user-dropdown-item danger" onclick="doLogout()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            退出登录
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ==================== 工作台 ==================== -->
+    <div class="page-section active" id="page-overview">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div><div class="stat-val">3</div><div class="stat-label">入职类型</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div><div class="stat-val" id="statTotalDocs">--</div><div class="stat-label">已归档文件</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div><div class="stat-val">3</div><div class="stat-label">核心业务流程</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="stat-val">5</div><div class="stat-label">审批环节</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">员工全生命周期流程概览</span></div>
+        <div class="card-body">
+          <div class="flow-chain">
+            <div class="fc-node"><div class="fc-box slate">入职办理</div><div class="fc-label">纸质文件签署</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box blue">钉钉录入</div><div class="fc-label">添加员工/考勤组</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box purple">试用期考核</div><div class="fc-label">评估表/定岗定薪</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box teal">正式员工</div><div class="fc-label">转正完成</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box amber">合同续签</div><div class="fc-label">到期前一个月</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box coral">离职交接</div><div class="fc-label">提前一个月申请</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="card" style="cursor:pointer;" onclick="showPage('onboard', findNavEl('onboard'))">
+          <div class="card-body" style="display:flex;align-items:center;gap:14px;">
+            <div class="stat-icon blue" style="width:48px;height:48px;border-radius:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
+            <div><div style="font-size:15px;font-weight:600;">入职管理</div><div style="font-size:12px;color:var(--text-secondary);">3 种入职类型 · 核心文件</div></div>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="showPage('renew', findNavEl('renew'))">
+          <div class="card-body" style="display:flex;align-items:center;gap:14px;">
+            <div class="stat-icon teal" style="width:48px;height:48px;border-radius:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <div><div style="font-size:15px;font-weight:600;">续签管理</div><div style="font-size:12px;color:var(--text-secondary);">三级审批流程 · 劳动/劳务</div></div>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="showPage('resign', findNavEl('resign'))">
+          <div class="card-body" style="display:flex;align-items:center;gap:14px;">
+            <div class="stat-icon coral" style="width:48px;height:48px;border-radius:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+            <div><div style="font-size:15px;font-weight:600;">离职管理</div><div style="font-size:12px;color:var(--text-secondary);">交接清单 · 签字确认</div></div>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="showPage('docman', findNavEl('docman'))">
+          <div class="card-body" style="display:flex;align-items:center;gap:14px;">
+            <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:var(--emerald-light);color:var(--emerald);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+            <div><div style="font-size:15px;font-weight:600;">文档库</div><div style="font-size:12px;color:var(--text-secondary);">在线预览 · 文件下载</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 入职管理 ==================== -->
+    <div class="page-section" id="page-onboard">
+      <div class="sec-title">入职管理</div>
+      <div class="sec-desc">根据用工性质分为三类，纸质文件签署后进行钉钉系统操作</div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">入职总体流程</span></div>
+        <div class="card-body">
+          <div class="flow-chain">
+            <div class="fc-node"><div class="fc-box slate">填写纸质文件</div><div class="fc-label">各类型入职材料</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box blue">钉钉添加员工</div><div class="fc-label">录入系统</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box blue">办理入职</div><div class="fc-label">入职手续完成</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box purple">拉入考勤组</div><div class="fc-label">纳入考勤管理</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box emerald">首次打卡</div><div class="fc-label">考勤开始</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-tabs">
+        <div class="sub-tab active" onclick="showSub('labor', this)">全日制员工</div>
+        <div class="sub-tab" onclick="showSub('intern', this)">实习生</div>
+        <div class="sub-tab" onclick="showSub('service', this)">劳务人员</div>
+      </div>
+
+      <!-- 全日制员工 -->
+      <div class="sub-panel active" id="sub-labor">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">全日制员工入职</span>
+            <span class="type-tag tag-labor">劳动合同</span>
+          </div>
+          <div class="card-body">
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">入职所需文件（6 份）</div>
+            <ul class="fl" id="wf-onboard-labor">
+              <li style="color:var(--text-muted);">加载中...</li>
+            </ul>
+            <div class="note"><strong>试用期考核：</strong>试用期结束当月填写「新员工试用期评估表」，根据评估内容决定转正后的工资和部门。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 实习生 -->
+      <div class="sub-panel" id="sub-intern">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">实习生入职</span>
+            <span class="type-tag tag-intern">实习协议</span>
+          </div>
+          <div class="card-body">
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">入职所需文件（6 份）</div>
+            <ul class="fl" id="wf-onboard-intern">
+              <li style="color:var(--text-muted);">加载中...</li>
+            </ul>
+            <div class="alert info"><span class="alert-icon">&#9432;</span><span><strong>三方协议：</strong>若签三方协议，需实习生向学校申请纸质三方协议。拿到毕业证后 <strong>一个月内</strong>签署劳动合同。</span></div>
+            <div class="alert warn"><span class="alert-icon">&#9888;</span><span><strong>实习期满：</strong>填写「实习生评估表」，根据评估决定是否留用；若留用则定岗并确定转正日期。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 劳务人员 -->
+      <div class="sub-panel" id="sub-service">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">劳务人员入职</span>
+            <span class="type-tag tag-service">劳务合同</span>
+          </div>
+          <div class="card-body">
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">入职所需文件（4 份）</div>
+            <ul class="fl" id="wf-onboard-service">
+              <li style="color:var(--text-muted);">加载中...</li>
+            </ul>
+            <div class="note"><strong>区别：</strong>劳务人员无需录用通知书和入职引导表，审批流程相对简化。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 对比表 -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-header"><span class="card-title">入职文件对比</span></div>
+        <div class="card-body" style="padding:0;">
+          <table class="data-table">
+            <thead><tr><th style="width:130px;">流程环节</th><th>全日制员工</th><th>实习生</th><th>劳务人员</th></tr></thead>
+            <tbody>
+              <tr><td class="td-label">录用审批</td><td>录用审批单</td><td>应届生实习录用表</td><td>劳务录用审批单</td></tr>
+              <tr><td class="td-label">录用通知</td><td>录用通知书</td><td>录用通知书</td><td class="td-dash">—</td></tr>
+              <tr><td class="td-label">入职引导</td><td>新员工入职引导表</td><td>新员工入职引导表</td><td class="td-dash">—</td></tr>
+              <tr><td class="td-label">员工登记</td><td>员工信息登记表</td><td>员工信息登记表</td><td>员工信息登记表</td></tr>
+              <tr><td class="td-label">签署合同</td><td>劳动合同</td><td>实习协议</td><td>劳务协议</td></tr>
+              <tr><td class="td-label">员工手册</td><td>员工手册</td><td>员工手册</td><td>员工手册</td></tr>
+              <tr><td class="td-label">试用期考核</td><td>新员工试用期评估表</td><td>实习生评估表</td><td class="td-dash">—</td></tr>
+              <tr><td class="td-label">毕业转换</td><td class="td-dash">—</td><td>毕业证后1个月内签劳动合同</td><td class="td-dash">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 续签管理 ==================== -->
+    <div class="page-section" id="page-renew">
+      <div class="sec-title">续签管理</div>
+      <div class="sec-desc">合同到期前一个月启动，需经三级审批后签署续签文件</div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">续签审批流程</span></div>
+        <div class="card-body">
+          <div class="flow-chain">
+            <div class="fc-node"><div class="fc-box coral" style="min-width:130px;">合同到期前一个月</div><div class="fc-label">时间节点</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box amber" style="min-width:130px;">员工提交申请表</div><div class="fc-label">续签劳动合同申请表<br>或续签劳务协议申请表</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box blue" style="min-width:110px;">部门主管审批</div><div class="fc-label">第一级</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box blue" style="min-width:110px;">人力资源部审批</div><div class="fc-label">第二级</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box purple" style="min-width:90px;">总裁审批</div><div class="fc-label">第三级</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box teal" style="min-width:140px;">签署续签书</div><div class="fc-label">劳动合同续签书<br>或劳务协议续签书</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dual-grid">
+        <div class="card">
+          <div class="card-header"><span class="card-title" style="color:var(--primary);">劳动合同续签</span></div>
+          <div class="card-body">
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">关联文件</div>
+            <ul class="fl" id="wf-renew-labor">
+              <li style="color:var(--text-muted);">加载中...</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title" style="color:var(--amber);">劳务协议续签</span></div>
+          <div class="card-body">
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">关联文件</div>
+            <ul class="fl" id="wf-renew-service">
+              <li style="color:var(--text-muted);">加载中...</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 离职管理 ==================== -->
+    <div class="page-section" id="page-resign">
+      <div class="sec-title">离职管理</div>
+      <div class="sec-desc">全日制员工需提前一个月提出申请，按交接清单完成全部交接</div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">离职流程</span></div>
+        <div class="card-body">
+          <div class="flow-chain">
+            <div class="fc-node"><div class="fc-box coral" style="min-width:130px;">员工提前一个月<br>提出离职申请</div><div class="fc-label">全日制员工</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box slate" style="min-width:130px;">按交接清单<br>逐项完成交接</div><div class="fc-label">职工离职交接清单</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box blue" style="min-width:130px;">相关交接人员<br>完成签字确认</div><div class="fc-label">各环节负责人</div></div>
+            <div class="fc-arrow">&#x25B6;</div>
+            <div class="fc-node"><div class="fc-box emerald" style="min-width:110px;">办理离职手续</div><div class="fc-label">HR完结流程</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dual-grid">
+        <div class="card">
+          <div class="card-header"><span class="card-title">核心文件</span></div>
+          <div class="card-body">
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">关联文件</div>
+            <ul class="fl" id="wf-resign">
+              <li style="color:var(--text-muted);">加载中...</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">注意事项</span></div>
+          <div class="card-body">
+            <ul class="step-list">
+              <li><span class="sn">!</span><span>全日制员工须提前 <strong>1 个月</strong> 提出申请</span></li>
+              <li><span class="sn">!</span><span>交接清单所有项目须逐项完成并 <strong>签字确认</strong></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 文档库 ==================== -->
+    <div class="page-section" id="page-docman">
+      <div class="sec-title">文档库</div>
+      <div class="sec-desc">按文件编号体系分类管理所有人事文件</div>
+
+      <!-- 四类编号卡片 -->
+      <div class="code-grid" style="margin-bottom:20px;" id="codeGrid">
+        <div class="code-card blue doclib-cat" data-prefix="" onclick="selectCodePrefix('', this)" style="cursor:pointer;border-top-color:var(--text-muted);">
+          <div class="code-prefix" style="color:var(--text-muted);">ALL</div>
+          <div class="code-name">全部文件</div>
+          <div class="code-desc" id="catCountAll">-- 份文件</div>
+        </div>
+        <div class="code-card blue doclib-cat" data-prefix="HRC" onclick="selectCodePrefix('HRC', this)" style="cursor:pointer;">
+          <div class="code-prefix blue">HRC</div>
+          <div class="code-name">合同协议</div>
+          <div class="code-desc" id="catCountHRC">-- 份文件</div>
+        </div>
+        <div class="code-card teal doclib-cat" data-prefix="HRP" onclick="selectCodePrefix('HRP', this)" style="cursor:pointer;">
+          <div class="code-prefix teal">HRP</div>
+          <div class="code-name">流程表单</div>
+          <div class="code-desc" id="catCountHRP">-- 份文件</div>
+        </div>
+        <div class="code-card amber doclib-cat" data-prefix="HRT" onclick="selectCodePrefix('HRT', this)" style="cursor:pointer;">
+          <div class="code-prefix amber">HRT</div>
+          <div class="code-name">作业模板</div>
+          <div class="code-desc" id="catCountHRT">-- 份文件</div>
+        </div>
+        <div class="code-card purple doclib-cat" data-prefix="HRS" onclick="selectCodePrefix('HRS', this)" style="cursor:pointer;">
+          <div class="code-prefix purple">HRS</div>
+          <div class="code-name">制度文件</div>
+          <div class="code-desc" id="catCountHRS">-- 份文件</div>
+        </div>
+      </div>
+
+      <!-- 搜索 + 操作 -->
+      <div class="search-bar">
+        <input type="text" class="search-input" id="docSearch" placeholder="搜索文件名..." oninput="loadDocList()">
+        <button class="btn" id="scanImportBtn" onclick="scanImport()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          扫描导入
+        </button>
+        <button class="btn primary" id="docmanUploadBtn" onclick="openUploadModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          上传文件
+        </button>
+      </div>
+
+      <!-- 批量操作栏 -->
+      <div class="batch-bar" id="batchBar">
+        <span>已选择 <span class="batch-count" id="batchCount">0</span> 个文件</span>
+        <div class="batch-actions">
+          <button class="btn" onclick="batchToggleAll()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            全选当前
+          </button>
+          <button class="btn" onclick="openBatchEditModal()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            批量编辑
+          </button>
+          <button class="btn danger-btn" onclick="batchDelete()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            批量删除
+          </button>
+          <button class="btn" onclick="clearBatch()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            取消
+          </button>
+        </div>
+      </div>
+
+      <!-- 文件列表 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">文件列表 <span class="badge" id="docCount">0</span></span>
+          <button class="btn" id="batchModeBtn" onclick="toggleBatchMode()" style="padding:4px 12px;font-size:12px;border-radius:5px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:5px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            批量操作
+          </button>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="batch-select-all-row" id="batchSelectAllRow">
+            <div class="doc-checkbox" id="batchSelectAllCb" onclick="batchToggleAll()"></div>
+            <span style="font-size:12px;color:var(--text-secondary);cursor:pointer;user-select:none;" onclick="batchToggleAll()">全选当前列表</span>
+          </div>
+          <ul class="doc-list" id="docList">
+            <li class="doc-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div>点击「扫描导入」从文件目录导入，或点击「上传文件」手动上传</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 账号管理 ==================== -->
+    <div class="page-section" id="page-users">
+      <div class="sec-title">账号管理</div>
+      <div class="sec-desc">管理系统用户账号，设置访问权限</div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div></div>
+        <button class="btn primary" onclick="openUserModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          新增用户
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-body" style="padding:0;">
+          <table class="user-table">
+            <thead>
+              <tr><th>用户名</th><th>显示名称</th><th>角色</th><th>创建时间</th><th style="width:140px;">操作</th></tr>
+            </thead>
+            <tbody id="userTableBody">
+              <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">加载中...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== Auto Match Modal ===== -->
+<div class="modal-overlay" id="autoMatchModal">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-header">
+      <span class="modal-title">智能匹配流程文件</span>
+      <button class="modal-close" onclick="closeAutoMatchModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="autoMatchBody">
+      <div style="text-align:center;padding:40px 0;color:var(--text-muted);">正在分析文件...</div>
+    </div>
+    <div class="modal-footer" id="autoMatchFooter" style="display:none;">
+      <button class="btn" onclick="closeAutoMatchModal()">取消</button>
+      <button class="btn primary" id="autoMatchApplyBtn" onclick="applyAutoMatch()">确认匹配</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Upload Modal ===== -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <span class="modal-title">上传文件</span>
+      <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="uploadSlot" value="">
+      <input type="hidden" id="uploadSlotCategory" value="">
+      <input type="hidden" id="uploadSlotSubType" value="">
+      <div id="uploadSlotTitle" style="font-size:13px;font-weight:600;color:var(--primary);margin-bottom:12px;display:none;"></div>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('uploadFile').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <h3>点击或拖拽文件到此处</h3>
+        <p>支持 PDF、Word、Excel、PPT 格式</p>
+        <input type="file" id="uploadFile" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.png,.jpeg" onchange="handleFileSelect(event)">
+      </div>
+      <div id="uploadPreview" style="margin-top:16px;display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-size:12.5px;font-weight:600;color:var(--text);">待上传文件 (<span id="uploadCount">0</span>)</div>
+          <button type="button" class="btn sm" onclick="document.getElementById('uploadFile').click()" style="padding:3px 10px;font-size:11.5px;color:var(--primary);background:var(--primary-light);border:none;cursor:pointer;border-radius:var(--radius);">+ 追加文件</button>
+        </div>
+        <div id="uploadFileList" style="max-height:220px;overflow-y:auto;"></div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;align-items:center;">
+        <label style="font-size:12.5px;color:var(--text-secondary);white-space:nowrap;">分类：</label>
+        <select class="search-input" id="uploadCategory" style="flex:1;">
+          <option value="">自动识别</option>
+          <option value="onboard,labor">入职 - 全日制员工</option>
+          <option value="onboard,intern">入职 - 实习生</option>
+          <option value="onboard,service">入职 - 劳务人员</option>
+          <option value="renew,labor">续签 - 劳动合同</option>
+          <option value="renew,service">续签 - 劳务协议</option>
+          <option value="resign,labor">离职</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeUploadModal()">取消</button>
+      <button class="btn primary" id="uploadBtn" onclick="doUpload()" disabled>上传</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Preview Modal ===== -->
+<div class="modal-overlay" id="previewModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <span class="modal-title" id="previewTitle">文件预览</span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn sm" id="previewDownloadBtn" onclick="downloadPreviewFile()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载
+        </button>
+        <button class="modal-close" onclick="closePreviewModal()">&times;</button>
+      </div>
+    </div>
+    <div class="modal-body" id="previewBody"></div>
+  </div>
+</div>
+
+<!-- ===== Edit Document Modal ===== -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title">编辑文件信息</span>
+      <button class="modal-close" onclick="closeEditModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editDocId">
+      <div class="form-group">
+        <label>文件编号</label>
+        <input type="text" id="editCode" class="search-input" placeholder="如 HRC-2021-001">
+      </div>
+      <div class="form-group">
+        <label>文件名称</label>
+        <input type="text" id="editName" class="search-input">
+      </div>
+      <div class="form-group">
+        <label>分类</label>
+        <select id="editCategory" class="search-input">
+          <option value="">未分类</option>
+          <option value="onboard">入职</option>
+          <option value="renew">续签</option>
+          <option value="resign">离职</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>子类型</label>
+        <select id="editSubType" class="search-input">
+          <option value="">无</option>
+          <option value="labor">全日制</option>
+          <option value="intern">实习</option>
+          <option value="service">劳务</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeEditModal()">取消</button>
+      <button class="btn primary" onclick="doEditDoc()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Batch Edit Modal ===== -->
+<div class="modal-overlay" id="batchEditModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title">批量编辑</span>
+      <button class="modal-close" onclick="closeBatchEditModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">将修改 <strong id="batchEditCount">0</strong> 个文件的以下信息（留空则不修改）</div>
+      <div class="form-group">
+        <label>统一分类</label>
+        <select id="batchCategory" class="search-input">
+          <option value="">不修改</option>
+          <option value="onboard">入职</option>
+          <option value="renew">续签</option>
+          <option value="resign">离职</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>统一子类型</label>
+        <select id="batchSubType" class="search-input">
+          <option value="">不修改</option>
+          <option value="labor">全日制</option>
+          <option value="intern">实习</option>
+          <option value="service">劳务</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>统一文件编号（可选）</label>
+        <input type="text" id="batchCode" class="search-input" placeholder="留空则不修改">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeBatchEditModal()">取消</button>
+      <button class="btn primary" onclick="doBatchEdit()">保存修改</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Replace File Modal ===== -->
+<div class="modal-overlay" id="replaceModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title">替换文件</span>
+      <button class="modal-close" onclick="closeReplaceModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="replaceDocId">
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">当前文件</div>
+        <div style="font-size:13px;font-weight:500;" id="replaceCurrentName">-</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">当前版本：<span id="replaceCurrentVer">v1</span></div>
+      </div>
+      <div class="upload-zone" id="replaceZone" onclick="document.getElementById('replaceFile').click()" style="padding:24px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <h3>选择替换文件</h3>
+        <p>新文件将替换当前版本</p>
+        <input type="file" id="replaceFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.png,.jpeg" onchange="document.getElementById('replaceFileName').textContent = this.files[0] ? this.files[0].name : ''">
+      </div>
+      <div id="replaceFileName" style="font-size:12px;color:var(--text-muted);margin-top:8px;text-align:center;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeReplaceModal()">取消</button>
+      <button class="btn primary" id="replaceBtn" onclick="doReplace()" disabled>确认替换</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== User Modal (Create / Edit) ===== -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title" id="userModalTitle">新增用户</span>
+      <button class="modal-close" onclick="closeUserModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="userModalId">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" id="userModalUsername" class="search-input" placeholder="登录用户名">
+      </div>
+      <div class="form-group">
+        <label>显示名称</label>
+        <input type="text" id="userModalDisplayName" class="search-input" placeholder="如：张三">
+      </div>
+      <div class="form-group">
+        <label><span id="pwdLabel">密码</span></label>
+        <input type="password" id="userModalPassword" class="search-input" placeholder="密码">
+      </div>
+      <div class="form-group">
+        <label>角色</label>
+        <select id="userModalRole" class="search-input">
+          <option value="employee">员工</option>
+          <option value="admin">管理员</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeUserModal()">取消</button>
+      <button class="btn primary" onclick="doSaveUser()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== Auth state =====
+var currentUser = null;
+
+// ===== Global state =====
+var currentPreviewId = null;
+var uploadFiles = [];
+var currentSlotCallback = null;  // 流程页上传/替换后的回调
+
+// ===== Workflow template definitions =====
+var WORKFLOW_TEMPLATES = {
+  onboard: {
+    labor: {
+      title: '全日制员工入职',
+      tag: '劳动合同',
+      tagClass: 'tag-labor',
+      items: [
+        { name: '新员工入职引导表', slot: 'onboard-labor-入职引导表' },
+        { name: '录用通知书', slot: 'onboard-labor-录用通知书' },
+        { name: '录用审批单', slot: 'onboard-labor-录用审批单' },
+        { name: '员工信息登记表', slot: 'onboard-labor-信息登记表' },
+        { name: '劳动合同', slot: 'onboard-labor-劳动合同' },
+        { name: '员工手册', slot: 'onboard-labor-员工手册' }
+      ]
+    },
+    intern: {
+      title: '实习生入职',
+      tag: '实习协议',
+      tagClass: 'tag-intern',
+      items: [
+        { name: '新员工入职引导表', slot: 'onboard-intern-入职引导表' },
+        { name: '录用通知书', slot: 'onboard-intern-录用通知书' },
+        { name: '应届生实习录用表', slot: 'onboard-intern-实习录用表' },
+        { name: '员工信息登记表', slot: 'onboard-intern-信息登记表' },
+        { name: '实习协议', slot: 'onboard-intern-实习协议' },
+        { name: '员工手册', slot: 'onboard-intern-员工手册' }
+      ]
+    },
+    service: {
+      title: '劳务人员入职',
+      tag: '劳务合同',
+      tagClass: 'tag-service',
+      items: [
+        { name: '劳务录用审批单', slot: 'onboard-service-录用审批单' },
+        { name: '员工信息登记表', slot: 'onboard-service-信息登记表' },
+        { name: '劳务协议', slot: 'onboard-service-劳务协议' },
+        { name: '员工手册', slot: 'onboard-service-员工手册' }
+      ]
+    }
+  },
+  renew: {
+    labor: {
+      title: '劳动合同续签',
+      items: [
+        { name: '续签劳动合同申请表', slot: 'renew-labor-续签申请表' },
+        { name: '劳动合同续签书', slot: 'renew-labor-续签书' }
+      ]
+    },
+    service: {
+      title: '劳务协议续签',
+      items: [
+        { name: '续签劳务协议申请表', slot: 'renew-service-续签申请表' },
+        { name: '劳务协议续签书', slot: 'renew-service-续签书' }
+      ]
+    }
+  },
+  resign: {
+    '': {
+      title: '离职管理',
+      items: [
+        { name: '职工离职交接清单', slot: 'resign-离职交接清单' },
+        { name: '离职申请表', slot: 'resign-离职申请表' }
+      ]
+    }
+  }
+};
+
+// ===== API helper with 401 intercept =====
+function apiFetch(url, opts) {
+  opts = opts || {};
+  return fetch(url, opts).then(function(r) {
+    if (r.status === 401) {
+      showLogin();
+      throw new Error('Unauthorized');
+    }
+    if (r.status === 403) {
+      showToast('权限不足', 'error');
+      throw new Error('Forbidden');
+    }
+    return r;
+  });
+}
+
+// ===== Auth functions =====
+function checkAuth() {
+  fetch('/api/auth/me').then(function(r) {
+    if (r.ok) return r.json();
+    return null;
+  }).then(function(data) {
+    if (data && data.ok) {
+      currentUser = data.user;
+      onLoginSuccess();
+    } else {
+      showLogin();
+    }
+  }).catch(function() {
+    showLogin();
+  });
+}
+
+// ===== 服务器连通性检测 =====
+(function() {
+  var dot = document.createElement('div');
+  dot.id = 'connDot';
+  dot.style.cssText = 'position:fixed;top:8px;right:8px;width:10px;height:10px;border-radius:50%;z-index:99999;transition:background .3s;background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,.6);';
+  document.body.appendChild(dot);
+  function check() {
+    fetch('/api/auth/me', { cache: 'no-store' }).then(function(r) {
+      dot.style.background = '#22c55e';
+      dot.style.boxShadow = '0 0 6px rgba(34,197,94,.6)';
+    }).catch(function() {
+      dot.style.background = '#ef4444';
+      dot.style.boxShadow = '0 0 6px rgba(239,68,68,.6)';
+    });
+  }
+  check();
+  setInterval(check, 5000);
+})();
+
+function doLogin(e) {
+  e.preventDefault();
+  var username = document.getElementById('loginUsername').value.trim();
+  var password = document.getElementById('loginPassword').value;
+  var errEl = document.getElementById('loginError');
+  errEl.classList.remove('show');
+
+  fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: username, password: password })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      currentUser = data.user;
+      onLoginSuccess();
+    } else {
+      errEl.textContent = data.msg || '登录失败';
+      errEl.classList.add('show');
+    }
+  }).catch(function() {
+    errEl.textContent = '网络错误，请重试';
+    errEl.classList.add('show');
+  });
+}
+
+function doLogout() {
+  fetch('/api/auth/logout', { method: 'POST' }).then(function() {
+    currentUser = null;
+    showLogin();
+    closeUserDropdown();
+  });
+}
+
+function onLoginSuccess() {
+  document.getElementById('loginOverlay').classList.add('hidden');
+  document.getElementById('sidebar').style.display = '';
+  document.getElementById('mainArea').style.display = '';
+
+  // Update avatar
+  var name = currentUser.display_name || currentUser.username;
+  document.getElementById('topbarAvatar').childNodes[0].textContent = name.charAt(0);
+  document.getElementById('dropdownUserName').textContent = name + '（' + (currentUser.role === 'admin' ? '管理员' : '员工') + '）';
+
+  applyRoleUI();
+  loadStats();
+
+  // Default page based on role
+  if (isAdmin()) {
+    showPage('overview', findNavEl('overview'));
+  } else {
+    showPage('onboard', findNavEl('onboard'));
+  }
+}
+
+function showLogin() {
+  document.getElementById('loginOverlay').classList.remove('hidden');
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('mainArea').style.display = 'none';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginError').classList.remove('show');
+  currentUser = null;
+}
+
+function isAdmin() { return currentUser && currentUser.role === 'admin'; }
+function isEmployee() { return currentUser && currentUser.role === 'employee'; }
+
+// ===== User dropdown =====
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('show');
+}
+function closeUserDropdown() {
+  document.getElementById('userDropdown').classList.remove('show');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.topbar-avatar')) closeUserDropdown();
+});
+
+// ===== Role-based UI =====
+function applyRoleUI() {
+  // Sidebar: hide admin-only groups
+  document.querySelectorAll('.nav-group[data-role="admin"]').forEach(function(el) {
+    el.style.display = isAdmin() ? '' : 'none';
+  });
+  // Sidebar: hide admin-only nav items within all-access groups
+  document.querySelectorAll('.nav-item[data-role="admin"]').forEach(function(el) {
+    el.style.display = isAdmin() ? '' : 'none';
+  });
+
+  // Topbar: hide upload button for employee
+  document.getElementById('topbarUploadBtn').style.display = isAdmin() ? '' : 'none';
+
+  // Docman: hide admin buttons for employee
+  document.getElementById('scanImportBtn').style.display = isAdmin() ? '' : 'none';
+  document.getElementById('docmanUploadBtn').style.display = isAdmin() ? '' : 'none';
+  document.getElementById('batchModeBtn').style.display = isAdmin() ? '' : 'none';
+}
+
+// ===== Helper: find nav element by page name =====
+function findNavEl(page) {
+  return document.querySelector('.nav-item[data-page="' + page + '"]');
+}
+
+// ===== Page navigation =====
+function showPage(id, navEl) {
+  document.querySelectorAll('.page-section').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(el) { el.classList.remove('active'); });
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+
+  var titles = { overview: '工作台', onboard: '入职管理', renew: '续签管理', resign: '离职管理', docman: '文档库', users: '账号管理' };
+  var breadcrumbs = { overview: '概览 / 工作台', onboard: '人事流程 / 入职管理', renew: '人事流程 / 续签管理', resign: '人事流程 / 离职管理', docman: '文件管理 / 文档库', users: '系统 / 账号管理' };
+  document.getElementById('topbarTitle').textContent = titles[id] || '';
+  document.getElementById('topbarBreadcrumb').textContent = breadcrumbs[id] || '';
+
+  // 流程页面显示智能匹配按钮（仅管理员）
+  var wfPages = ['onboard', 'renew', 'resign'];
+  var matchBtn = document.getElementById('topbarAutoMatchBtn');
+  if (wfPages.indexOf(id) !== -1 && isAdmin()) {
+    matchBtn.style.display = '';
+  } else {
+    matchBtn.style.display = 'none';
+  }
+
+  if (id === 'docman') {
+    currentCodePrefix = '';
+    document.querySelectorAll('.doclib-cat').forEach(function(card) {
+      card.style.outline = 'none';
+      card.style.outlineOffset = '0';
+    });
+    var allCard = document.querySelector('.doclib-cat[data-prefix=""]');
+    if (allCard) { allCard.style.outline = '2px solid var(--primary)'; allCard.style.outlineOffset = '2px'; }
+    loadDocCategoryCounts();
+    loadDocList();
+  }
+  if (id === 'overview') loadStats();
+  if (id === 'users') loadUsers();
+  if (id === 'onboard') {
+    renderWorkflowPage('onboard', 'labor', 'wf-onboard-labor', 'var(--primary)');
+    renderWorkflowPage('onboard', 'intern', 'wf-onboard-intern', 'var(--teal)');
+    renderWorkflowPage('onboard', 'service', 'wf-onboard-service', 'var(--amber)');
+  }
+  if (id === 'renew') {
+    renderWorkflowPage('renew', 'labor', 'wf-renew-labor', 'var(--primary)');
+    renderWorkflowPage('renew', 'service', 'wf-renew-service', 'var(--amber)');
+  }
+  if (id === 'resign') {
+    renderWorkflowPage('resign', '', 'wf-resign', 'var(--coral)');
+  }
+}
+
+function showSub(id, tabEl) {
+  var parent = tabEl.parentElement;
+  parent.querySelectorAll('.sub-tab').forEach(function(el) { el.classList.remove('active'); });
+  tabEl.classList.add('active');
+  parent.parentElement.querySelectorAll('.sub-panel').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('sub-' + id).classList.add('active');
+}
+
+// ===== Toast =====
+function showToast(msg, type) {
+  type = type || 'info';
+  var container = document.getElementById('toastContainer');
+  var toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  var icons = { success: '&#10003;', error: '&#10007;', info: '&#9432;' };
+  toast.innerHTML = '<span>' + (icons[type] || '') + '</span><span>' + msg + '</span>';
+  container.appendChild(toast);
+  setTimeout(function() { toast.style.opacity = '0'; toast.style.transform = 'translateX(40px)'; toast.style.transition = 'all 0.3s'; }, 2500);
+  setTimeout(function() { if (toast.parentNode) container.removeChild(toast); }, 2800);
+}
+
+// ===== Stats =====
+function loadStats() {
+  apiFetch('/api/documents/stats').then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) document.getElementById('statTotalDocs').textContent = data.total;
+  }).catch(function() {});
+}
+
+// ===== Workflow docs (template slot rendering) =====
+function renderWorkflowPage(category, subType, containerId, dotColor) {
+  var config = WORKFLOW_TEMPLATES[category] && WORKFLOW_TEMPLATES[category][subType || ''];
+  if (!config) return;
+
+  var el = document.getElementById(containerId);
+  if (!el) return;
+
+  var html = '';
+  config.items.forEach(function(item) {
+    html += '<li class="wf-slot" id="slot-row-' + item.slot + '">';
+    html += '  <span class="fl-dot" style="background:' + dotColor + ';"></span>';
+    html += '  <span class="wf-slot-name">' + escHtml(item.name) + '</span>';
+    html += '  <span class="wf-slot-actions" id="slot-actions-' + item.slot + '">';
+    html += '    <span class="wf-slot-loading" style="color:var(--text-muted);font-size:12px;">加载中…</span>';
+    html += '  </span>';
+    html += '</li>';
+  });
+  el.innerHTML = html;
+
+  // 逐个查询 slot 文件状态
+  config.items.forEach(function(item) {
+    var url = '/api/documents/by-slot?category=' + encodeURIComponent(category)
+      + '&slot=' + encodeURIComponent(item.slot);
+    if (subType) url += '&sub_type=' + encodeURIComponent(subType);
+
+    apiFetch(url).then(function(r) { return r.json(); }).then(function(data) {
+      var actionsEl = document.getElementById('slot-actions-' + item.slot);
+      if (!actionsEl) return;
+
+      if (data.data) {
+        var doc = data.data;
+        var btns = '';
+        btns += '<button class="wf-btn" onclick="event.stopPropagation();previewFile(' + doc.id + ')">预览</button>';
+        btns += '<button class="wf-btn" onclick="event.stopPropagation();downloadFile(' + doc.id + ')">下载</button>';
+        if (isAdmin()) {
+          btns += '<button class="wf-btn" onclick="event.stopPropagation();replaceSlotFile(' + doc.id + ', \'' + escHtml(item.name) + '\')">替换</button>';
+          btns += '<button class="wf-btn danger" onclick="event.stopPropagation();deleteSlotFile(' + doc.id + ', \'' + category + '\', \'' + (subType || '') + '\', \'' + item.slot + '\')">删除</button>';
+        }
+        actionsEl.innerHTML = btns;
+      } else {
+        if (isAdmin()) {
+          actionsEl.innerHTML = '<button class="wf-btn primary" onclick="event.stopPropagation();uploadToSlot(\'' + category + '\', \'' + (subType || '') + '\', \'' + escHtml(item.slot) + '\', \'' + escHtml(item.name) + '\')">上传</button>';
+        } else {
+          actionsEl.innerHTML = '<span class="wf-slot-empty">待上传</span>';
+        }
+      }
+    }).catch(function() {
+      var actionsEl = document.getElementById('slot-actions-' + item.slot);
+      if (actionsEl) actionsEl.innerHTML = '<span class="wf-slot-empty">加载失败</span>';
+    });
+  });
+}
+
+function uploadToSlot(category, subType, slot, templateName) {
+  document.getElementById('uploadSlot').value = slot;
+  document.getElementById('uploadSlotCategory').value = category;
+  document.getElementById('uploadSlotSubType').value = subType || '';
+  document.getElementById('uploadSlotTitle').textContent = '上传：' + templateName;
+  document.getElementById('uploadSlotTitle').style.display = 'block';
+
+  // 预设分类选择器
+  var catSelect = document.getElementById('uploadCategory');
+  var catVal = category + (subType ? ',' + subType : '');
+  for (var i = 0; i < catSelect.options.length; i++) {
+    if (catSelect.options[i].value === catVal) {
+      catSelect.selectedIndex = i;
+      break;
+    }
+  }
+  catSelect.disabled = true;
+
+  currentSlotCallback = function() {
+    renderWorkflowPage(category, subType,
+      category === 'onboard' ? 'wf-onboard-' + subType :
+      category === 'renew' ? 'wf-renew-' + subType :
+      'wf-resign',
+      category === 'onboard' && subType === 'labor' ? 'var(--primary)' :
+      category === 'onboard' && subType === 'intern' ? 'var(--teal)' :
+      category === 'onboard' && subType === 'service' ? 'var(--amber)' :
+      category === 'renew' && subType === 'labor' ? 'var(--primary)' :
+      category === 'renew' && subType === 'service' ? 'var(--amber)' :
+      'var(--coral)'
+    );
+  };
+
+  openUploadModal();
+}
+
+function replaceSlotFile(docId, templateName) {
+  document.getElementById('replaceDocId').value = docId;
+  document.getElementById('replaceCurrentName').textContent = templateName;
+  document.getElementById('replaceCurrentVer').textContent = '-';
+  document.getElementById('replaceFile').value = '';
+  document.getElementById('replaceFileName').textContent = '';
+  document.getElementById('replaceBtn').disabled = true;
+  document.getElementById('replaceModal').classList.add('show');
+  // 设置回调：从当前页面状态推断 category/subType
+  var activePage = document.querySelector('.page-section.active');
+  if (activePage) {
+    var pageId = activePage.id;
+    if (pageId === 'page-onboard') {
+      var activeTab = document.querySelector('#page-onboard .sub-tab.active');
+      var subType = activeTab ? (activeTab.textContent.indexOf('全日制') >= 0 ? 'labor' : activeTab.textContent.indexOf('实习') >= 0 ? 'intern' : 'service') : '';
+      currentSlotCallback = function() { renderWorkflowPage('onboard', subType, 'wf-onboard-' + subType, subType === 'labor' ? 'var(--primary)' : subType === 'intern' ? 'var(--teal)' : 'var(--amber)'); };
+    } else if (pageId === 'page-renew') {
+      // 从模板名推断
+      currentSlotCallback = function() {
+        renderWorkflowPage('renew', 'labor', 'wf-renew-labor', 'var(--primary)');
+        renderWorkflowPage('renew', 'service', 'wf-renew-service', 'var(--amber)');
+      };
+    } else if (pageId === 'page-resign') {
+      currentSlotCallback = function() { renderWorkflowPage('resign', '', 'wf-resign', 'var(--coral)'); };
+    }
+  }
+}
+
+function deleteSlotFile(docId, category, subType, slot) {
+  if (!confirm('确定要删除「' + slot + '」对应的文件吗？此操作不可恢复。')) return;
+  apiFetch('/api/documents/' + docId, { method: 'DELETE' }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast('文件已删除', 'success');
+      renderWorkflowPage(category, subType,
+        category === 'onboard' ? 'wf-onboard-' + subType :
+        category === 'renew' ? 'wf-renew-' + subType :
+        'wf-resign',
+        category === 'onboard' && subType === 'labor' ? 'var(--primary)' :
+        category === 'onboard' && subType === 'intern' ? 'var(--teal)' :
+        category === 'onboard' && subType === 'service' ? 'var(--amber)' :
+        category === 'renew' && subType === 'labor' ? 'var(--primary)' :
+        category === 'renew' && subType === 'service' ? 'var(--amber)' :
+        'var(--coral)'
+      );
+    } else {
+      showToast(data.msg || '删除失败', 'error');
+    }
+  }).catch(function() {});
+}
+
+// ===== Document list =====
+var currentCodePrefix = '';
+
+function selectCodePrefix(prefix, el) {
+  currentCodePrefix = prefix;
+  // 高亮选中卡片
+  document.querySelectorAll('.doclib-cat').forEach(function(card) {
+    card.style.outline = 'none';
+    card.style.outlineOffset = '0';
+  });
+  if (el) {
+    el.style.outline = '2px solid var(--primary)';
+    el.style.outlineOffset = '2px';
+  }
+  loadDocList();
+}
+
+function loadDocCategoryCounts() {
+  apiFetch('/api/documents?search=').then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.data) return;
+    var all = data.data.length;
+    var counts = { HRC: 0, HRP: 0, HRT: 0, HRS: 0 };
+    data.data.forEach(function(doc) {
+      var code = (doc.code || '').toUpperCase();
+      var name = (doc.name || '').toUpperCase();
+      var src = code || name;
+      if (src.startsWith('HRC')) counts.HRC++;
+      else if (src.startsWith('HRP')) counts.HRP++;
+      else if (src.startsWith('HRT')) counts.HRT++;
+      else if (src.startsWith('HRS')) counts.HRS++;
+    });
+    document.getElementById('catCountAll').textContent = all + ' 份文件';
+    document.getElementById('catCountHRC').textContent = counts.HRC + ' 份文件';
+    document.getElementById('catCountHRP').textContent = counts.HRP + ' 份文件';
+    document.getElementById('catCountHRT').textContent = counts.HRT + ' 份文件';
+    document.getElementById('catCountHRS').textContent = counts.HRS + ' 份文件';
+  }).catch(function() {});
+}
+
+function loadDocList() {
+  var search = document.getElementById('docSearch').value;
+  var url = '/api/documents?search=' + encodeURIComponent(search);
+  if (currentCodePrefix) url += '&code_prefix=' + encodeURIComponent(currentCodePrefix);
+
+  apiFetch(url).then(function(r) { return r.json(); }).then(function(data) {
+    var list = document.getElementById('docList');
+    document.getElementById('docCount').textContent = data.total;
+
+    if (!data.data || data.data.length === 0) {
+      var emptyMsg = isAdmin() ? '暂无文件，点击「扫描导入」或「上传文件」' : '暂无文件';
+      list.innerHTML = '<li class="doc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div>' + emptyMsg + '</div></li>';
+      return;
+    }
+
+    var html = '';
+    data.data.forEach(function(doc) {
+      var catLabel = { onboard: '入职', renew: '续签', resign: '离职' }[doc.category] || '';
+      var subLabel = { labor: '全日制', intern: '实习', service: '劳务' }[doc.sub_type] || '';
+      var code = (doc.code || '').toUpperCase();
+      var name = (doc.name || '').toUpperCase();
+      var src = code || name;
+      var prefixLabel = '';
+      if (src.startsWith('HRC')) prefixLabel = 'HRC 合同协议';
+      else if (src.startsWith('HRP')) prefixLabel = 'HRP 流程表单';
+      else if (src.startsWith('HRT')) prefixLabel = 'HRT 作业模板';
+      else if (src.startsWith('HRS')) prefixLabel = 'HRS 制度文件';
+      var ext = doc.ext.replace('.', '').toUpperCase() || 'FILE';
+      var sel = batchSelectedIds.indexOf(doc.id) >= 0;
+      html += '<li class="doc-item' + (sel ? ' batch-selected' : '') + '" ondblclick="previewFile(' + doc.id + ')" data-id="' + doc.id + '">';
+      if (batchMode) {
+        html += '  <div class="doc-checkbox' + (sel ? ' checked' : '') + '" onclick="event.stopPropagation();toggleBatchItem(' + doc.id + ')"></div>';
+      }
+      html += '  <div class="doc-icon ' + doc.icon + '">' + ext + '</div>';
+      html += '  <div class="doc-info">';
+      html += '    <div class="doc-filename">' + escHtml(doc.name) + '</div>';
+      html += '    <div class="doc-meta">' + (doc.code ? escHtml(doc.code) + ' · ' : '') + doc.file_size_fmt + (prefixLabel ? ' · ' + prefixLabel : (catLabel ? ' · ' + catLabel : '') + (subLabel ? ' · ' + subLabel : '')) + (doc.version && doc.version !== 'v1' ? ' · ' + doc.version : '') + '</div>';
+      html += '  </div>';
+      html += '  <div class="doc-actions">';
+      html += '    <button class="doc-btn" onclick="event.stopPropagation();previewFile(' + doc.id + ')">预览</button>';
+      html += '    <button class="doc-btn" onclick="event.stopPropagation();downloadFile(' + doc.id + ')">下载</button>';
+      if (isAdmin()) {
+        html += '    <button class="doc-btn" onclick="event.stopPropagation();editDoc(' + doc.id + ')">编辑</button>';
+        html += '    <button class="doc-btn" onclick="event.stopPropagation();replaceFile(' + doc.id + ')">替换</button>';
+        html += '    <button class="doc-btn danger" onclick="event.stopPropagation();deleteFile(' + doc.id + ')">删除</button>';
+      }
+      html += '  </div>';
+      html += '</li>';
+    });
+    list.innerHTML = html;
+  }).catch(function() {});
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ===== File operations =====
+function previewFile(id) {
+  currentPreviewId = id;
+
+  // 先弹出模态框，显示加载中
+  var body = document.getElementById('previewBody');
+  document.getElementById('previewTitle').textContent = '文件预览';
+  body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">正在加载文件信息…</div>';
+  document.getElementById('previewModal').classList.add('show');
+
+  // 直接按 id 获取单个文件信息，不加载全量列表
+  apiFetch('/api/documents/' + id).then(function(r) { return r.json(); }).then(function(resp) {
+    if (!resp || !resp.ok || !resp.data) {
+      body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">文件信息不存在</div>';
+      return;
+    }
+    var doc = resp.data;
+    document.getElementById('previewTitle').textContent = doc.name;
+
+    // 检查物理文件是否存在
+    if (doc.file_exists === false) {
+      body.innerHTML = '<div style="text-align:center;padding:40px;">' +
+        '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" style="margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+        '<p style="color:var(--text-muted);font-size:14px;">源文件已不存在，无法预览</p>' +
+        '<p style="color:var(--text-muted);font-size:12px;margin-top:6px;">文件名：' + escHtml(doc.name) + '</p>' +
+        '</div>';
+      return;
+    }
+
+    var ext = doc.ext || '';
+    var previewUrl = '/api/files/' + id + '/preview';
+
+    if (ext === '.jpg' || ext === '.jpeg' || ext === '.png') {
+      // 图片直接展示
+      body.innerHTML = '<div style="text-align:center;padding:16px;"><img src="' + previewUrl + '" style="max-width:100%;max-height:65vh;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" onerror="this.parentNode.innerHTML=\'<p style=\'color:var(--coral)\'>图片加载失败</p>\'" /></div>';
+    } else if (ext === '.pdf') {
+      // PDF 直接 iframe
+      body.innerHTML = '<iframe class="pdf-preview" src="' + previewUrl + '"></iframe>';
+    } else if (ext === '.doc' || ext === '.docx' || ext === '.xls' || ext === '.xlsx' || ext === '.ppt' || ext === '.pptx') {
+      // Office 文件：先显示转换中，再请求预览 API
+      body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">正在转换文件格式，请稍候…</div>';
+      fetch(previewUrl, { credentials: 'include' }).then(function(r) {
+        if (r.ok) {
+          var ct = r.headers.get('content-type') || '';
+          if (ct.indexOf('application/pdf') >= 0) {
+            body.innerHTML = '<iframe class="pdf-preview" src="' + previewUrl + '"></iframe>';
+          } else if (ct.indexOf('image/') >= 0) {
+            body.innerHTML = '<div style="text-align:center;padding:16px;"><img src="' + previewUrl + '" style="max-width:100%;max-height:65vh;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" /></div>';
+          } else {
+            body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">此格式暂不支持在线预览，请下载后查看</div>';
+          }
+        } else if (r.status === 415) {
+          body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">文件转换失败，请下载后在本地打开查看</div>';
+        } else if (r.status === 404) {
+          body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">源文件已不存在，无法预览</div>';
+        } else {
+          body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">预览失败（' + r.status + '），请下载后查看</div>';
+        }
+      }).catch(function() {
+        body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">网络错误，请重试</div>';
+      });
+    } else {
+      body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">此格式暂不支持在线预览，请下载后查看</div>';
+    }
+  }).catch(function() {
+    body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">网络错误，无法加载文件信息</div>';
+  });
+}
+
+function closePreviewModal() {
+  document.getElementById('previewModal').classList.remove('show');
+  document.getElementById('previewBody').innerHTML = '';
+  currentPreviewId = null;
+}
+
+function downloadPreviewFile() {
+  if (currentPreviewId) downloadFile(currentPreviewId);
+}
+
+function downloadFile(id) {
+  window.open('/api/files/' + id + '/download', '_blank');
+}
+
+function deleteFile(id) {
+  if (!confirm('确定要删除这个文件吗？此操作不可恢复。')) return;
+  apiFetch('/api/documents/' + id, { method: 'DELETE' }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast('文件已删除', 'success');
+      loadDocList();
+    } else {
+      showToast(data.msg || '删除失败', 'error');
+    }
+  }).catch(function() {});
+}
+
+// ===== Edit document =====
+function editDoc(id) {
+  // Find doc info from current list
+  apiFetch('/api/documents?search=').then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.data) return;
+    var doc = data.data.find(function(d) { return d.id === id; });
+    if (!doc) return;
+
+    document.getElementById('editDocId').value = id;
+    document.getElementById('editCode').value = doc.code || '';
+    document.getElementById('editName').value = doc.name || '';
+    document.getElementById('editCategory').value = doc.category || '';
+    document.getElementById('editSubType').value = doc.sub_type || '';
+    document.getElementById('editModal').classList.add('show');
+  });
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('show');
+}
+
+function doEditDoc() {
+  var id = document.getElementById('editDocId').value;
+  var body = {
+    code: document.getElementById('editCode').value.trim(),
+    name: document.getElementById('editName').value.trim(),
+    category: document.getElementById('editCategory').value,
+    sub_type: document.getElementById('editSubType').value
+  };
+
+  apiFetch('/api/documents/' + id, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast('文件信息已更新', 'success');
+      closeEditModal();
+      loadDocList();
+    } else {
+      showToast(data.msg || '更新失败', 'error');
+    }
+  }).catch(function() {});
+}
+
+// ===== Replace file =====
+function replaceFile(id) {
+  apiFetch('/api/documents?search=').then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.data) return;
+    var doc = data.data.find(function(d) { return d.id === id; });
+    if (!doc) return;
+
+    document.getElementById('replaceDocId').value = id;
+    document.getElementById('replaceCurrentName').textContent = doc.name;
+    document.getElementById('replaceCurrentVer').textContent = doc.version || 'v1';
+    document.getElementById('replaceFile').value = '';
+    document.getElementById('replaceFileName').textContent = '';
+    document.getElementById('replaceBtn').disabled = true;
+    document.getElementById('replaceModal').classList.add('show');
+  });
+}
+
+// Enable replace button when file selected
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'replaceFile' && e.target.files.length > 0) {
+    document.getElementById('replaceBtn').disabled = false;
+  }
+});
+
+function closeReplaceModal() {
+  document.getElementById('replaceModal').classList.remove('show');
+}
+
+function doReplace() {
+  var id = document.getElementById('replaceDocId').value;
+  var fileInput = document.getElementById('replaceFile');
+  if (!fileInput.files.length) return;
+
+  var formData = new FormData();
+  formData.append('file', fileInput.files[0]);
+
+  apiFetch('/api/documents/' + id + '/replace', { method: 'POST', body: formData }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast('文件已替换为 ' + data.version, 'success');
+      closeReplaceModal();
+      loadDocList();
+      if (currentSlotCallback) { currentSlotCallback(); currentSlotCallback = null; }
+    } else {
+      showToast(data.msg || '替换失败', 'error');
+    }
+  }).catch(function() {});
+}
+
+// ===== Upload =====
+function openUploadModal() {
+  document.getElementById('uploadModal').classList.add('show');
+  uploadFiles = [];
+  isUploading = false;
+  document.getElementById('uploadPreview').style.display = 'none';
+  document.getElementById('uploadFileList').innerHTML = '';
+  document.getElementById('uploadBtn').disabled = true;
+  document.getElementById('uploadBtn').textContent = '上传';
+  document.getElementById('uploadFile').value = '';
+}
+
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('show');
+  document.getElementById('uploadSlot').value = '';
+  document.getElementById('uploadSlotCategory').value = '';
+  document.getElementById('uploadSlotSubType').value = '';
+  document.getElementById('uploadSlotTitle').style.display = 'none';
+  document.getElementById('uploadCategory').disabled = false;
+  document.getElementById('uploadBtn').textContent = '上传';
+  isUploading = false;
+  currentSlotCallback = null;
+}
+
+function handleFileSelect(e) {
+  var newFiles = Array.from(e.target.files);
+  if (newFiles.length === 0) return;
+  uploadFiles = uploadFiles.concat(newFiles);
+  renderUploadPreview();
+}
+
+function renderUploadPreview() {
+  if (uploadFiles.length === 0) {
+    document.getElementById('uploadPreview').style.display = 'none';
+    document.getElementById('uploadBtn').disabled = true;
+    return;
+  }
+  document.getElementById('uploadPreview').style.display = 'block';
+  document.getElementById('uploadBtn').disabled = false;
+  document.getElementById('uploadCount').textContent = uploadFiles.length;
+
+  var html = '';
+  uploadFiles.forEach(function(f, i) {
+    var size = f.size < 1024 ? f.size + ' B' : f.size < 1048576 ? (f.size / 1024).toFixed(1) + ' KB' : (f.size / 1048576).toFixed(1) + ' MB';
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;border-bottom:1px solid var(--border-light);">';
+    html += '<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-secondary);" title="' + escHtml(f.name) + '">' + escHtml(f.name) + '</span>';
+    html += '<span style="color:var(--text-muted);font-size:11px;white-space:nowrap;">' + size + '</span>';
+    if (!isUploading) {
+      html += '<button type="button" onclick="removeUploadFile(' + i + ')" style="background:none;border:none;cursor:pointer;color:var(--danger);font-size:16px;line-height:1;padding:2px 4px;" title="移除">&times;</button>';
+    }
+    html += '</div>';
+  });
+  document.getElementById('uploadFileList').innerHTML = html;
+}
+
+function removeUploadFile(index) {
+  uploadFiles.splice(index, 1);
+  renderUploadPreview();
+}
+
+var isUploading = false;
+
+function doUpload() {
+  if (uploadFiles.length === 0 || isUploading) return;
+
+  // 先检查同名文件
+  var names = uploadFiles.map(function(f) { return f.name; });
+  var btn = document.getElementById('uploadBtn');
+  btn.disabled = true;
+  btn.textContent = '检查中...';
+
+  apiFetch('/api/documents/check-names', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ names: names })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.duplicates && data.duplicates.length > 0) {
+      btn.disabled = false;
+      btn.textContent = '上传';
+      var dupList = data.duplicates.map(function(n) { return '「' + n + '」'; }).join('、');
+      showToast('以下文件已存在：' + dupList + '，请移除后重试', 'error');
+      // 标记重复文件
+      var items = document.getElementById('uploadFileList').children;
+      for (var i = 0; i < items.length; i++) {
+        if (data.duplicates.indexOf(uploadFiles[i].name) !== -1) {
+          items[i].style.background = '#FFF5F5';
+        }
+      }
+      return;
+    }
+    doUploadFiles();
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = '上传';
+    showToast('检查失败，请重试', 'error');
+  });
+}
+
+function doUploadFiles() {
+  isUploading = true;
+  var catVal = document.getElementById('uploadCategory').value;
+  var category = '', sub_type = '';
+  if (catVal) {
+    var parts = catVal.split(',');
+    category = parts[0];
+    sub_type = parts[1];
+  }
+  var slot = document.getElementById('uploadSlot').value;
+
+  var completed = 0;
+  var total = uploadFiles.length;
+  var failed = 0;
+  var btn = document.getElementById('uploadBtn');
+  btn.disabled = true;
+  btn.textContent = '上传中 0/' + total;
+  renderUploadPreview();
+
+  uploadFiles.forEach(function(file, idx) {
+    var formData = new FormData();
+    formData.append('file', file);
+    if (category) formData.append('category', category);
+    if (sub_type) formData.append('sub_type', sub_type);
+    if (slot) formData.append('slot', slot);
+
+    apiFetch('/api/documents/upload', { method: 'POST', body: formData }).then(function(r) { return r.json(); }).then(function(data) {
+      completed++;
+      btn.textContent = '上传中 ' + completed + '/' + total;
+      if (!data.ok) failed++;
+      if (completed === total) {
+        isUploading = false;
+        var cb = currentSlotCallback;
+        closeUploadModal();
+        if (slot && cb) {
+          showToast(failed > 0 ? '上传完成（' + failed + '个失败）' : '上传成功', failed > 0 ? 'info' : 'success');
+          cb();
+        } else {
+          showToast(failed > 0 ? '上传完成，' + (total - failed) + '个成功，' + failed + '个失败' : '成功上传 ' + total + ' 个文件', failed > 0 ? 'info' : 'success');
+          loadDocList();
+          loadDocCategoryCounts();
+        }
+      }
+    }).catch(function() {
+      completed++;
+      failed++;
+      btn.textContent = '上传中 ' + completed + '/' + total;
+      if (completed === total) {
+        isUploading = false;
+        var cb = currentSlotCallback;
+        closeUploadModal();
+        showToast(failed > 0 ? '上传完成，' + (total - failed) + '个成功，' + failed + '个失败' : '成功上传 ' + total + ' 个文件', failed > 0 ? 'info' : 'success');
+        if (!slot) { loadDocList(); loadDocCategoryCounts(); }
+      }
+    });
+  });
+}
+
+// Drag & drop
+(function() {
+  var zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    if (e.dataTransfer.files.length > 0) {
+      document.getElementById('uploadFile').files = e.dataTransfer.files;
+      handleFileSelect({ target: { files: e.dataTransfer.files } });
+    }
+  });
+})();
+
+// ===== Auto Match Slots =====
+var autoMatchData = [];
+var CATEGORY_LABELS = {'onboard': '入职', 'renew': '续签', 'resign': '离职'};
+var SUBTYPE_LABELS = {'labor': '全日制', 'intern': '实习', 'service': '劳务'};
+
+function autoMatchSlots() {
+  document.getElementById('autoMatchModal').classList.add('show');
+  document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-muted);">正在分析文件名与流程槽位的匹配关系...</div>';
+  document.getElementById('autoMatchFooter').style.display = 'none';
+
+  apiFetch('/api/documents/auto-match', { method: 'POST' }).then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.ok) {
+      document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--danger);">分析失败</div>';
+      return;
+    }
+    autoMatchData = data.matches || [];
+
+    if (autoMatchData.length === 0) {
+      document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div style="margin-top:12px;color:var(--text);font-weight:600;">所有文件均已匹配</div><div style="margin-top:4px;color:var(--text-muted);font-size:13px;">没有需要自动匹配的文件</div></div>';
+      return;
+    }
+
+    var html = '<div style="margin-bottom:16px;font-size:13px;color:var(--text-secondary);">发现 <strong style="color:var(--primary);">' + autoMatchData.length + '</strong> 个文件可匹配到流程槽位：</div>';
+    html += '<div style="border:1px solid var(--border-light);border-radius:var(--radius);overflow:hidden;">';
+    html += '<div style="display:grid;grid-template-columns:1fr 32px 1fr;padding:8px 14px;background:#F7F8FA;font-size:11.5px;font-weight:600;color:var(--text-muted);">';
+    html += '<span>文档名称</span><span></span><span>匹配槽位</span></div>';
+
+    autoMatchData.forEach(function(m) {
+      var catLabel = CATEGORY_LABELS[m.category] || m.category;
+      var subLabel = SUBTYPE_LABELS[m.sub_type] || '';
+      var tagHtml = '<span style="display:inline-block;padding:1px 6px;font-size:10.5px;border-radius:3px;background:var(--primary-light);color:var(--primary);margin-left:6px;">' + catLabel + (subLabel ? ' · ' + subLabel : '') + '</span>';
+
+      html += '<div style="display:grid;grid-template-columns:1fr 32px 1fr;padding:10px 14px;border-top:1px solid var(--border-light);align-items:center;font-size:13px;">';
+      html += '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);" title="' + escHtml(m.doc_name) + '">' + escHtml(m.display_name) + '</span>';
+      html += '<span style="text-align:center;color:var(--primary);font-size:16px;">→</span>';
+      html += '<span style="color:var(--text-secondary);">' + escHtml(m.slot_label) + tagHtml + '</span>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+    document.getElementById('autoMatchBody').innerHTML = html;
+    document.getElementById('autoMatchFooter').style.display = '';
+  }).catch(function() {
+    document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--danger);">请求失败，请重试</div>';
+  });
+}
+
+function closeAutoMatchModal() {
+  document.getElementById('autoMatchModal').classList.remove('show');
+  autoMatchData = [];
+}
+
+function applyAutoMatch() {
+  if (autoMatchData.length === 0) return;
+  var btn = document.getElementById('autoMatchApplyBtn');
+  btn.disabled = true;
+  btn.textContent = '匹配中...';
+
+  var items = autoMatchData.map(function(m) { return { doc_id: m.doc_id, slot: m.slot, category: m.category, sub_type: m.sub_type }; });
+
+  apiFetch('/api/documents/apply-match', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ items: items })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    closeAutoMatchModal();
+    if (data.ok) {
+      showToast(data.msg, 'success');
+    } else {
+      showToast(data.msg || '匹配失败', 'error');
+    }
+    // 刷新当前流程页面
+    var activePage = document.querySelector('.page-section.active');
+    if (activePage) {
+      var pageId = activePage.id.replace('page-', '');
+      showPage(pageId, document.querySelector('.nav-item.active'));
+    }
+    btn.disabled = false;
+    btn.textContent = '确认匹配';
+  }).catch(function() {
+    showToast('请求失败', 'error');
+    btn.disabled = false;
+    btn.textContent = '确认匹配';
+  });
+}
+
+// ===== Scan Import =====
+function scanImport() {
+  if (!confirm('将从 D:\\00hyt\\人事\\人事文件 扫描所有文件并导入数据库，已存在的文件会跳过。是否继续？')) return;
+  showToast('正在扫描文件...', 'info');
+
+  apiFetch('/api/import/scan', { method: 'POST' }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast(data.msg, 'success');
+      loadDocList();
+      loadStats();
+    } else {
+      showToast(data.msg || '扫描失败', 'error');
+    }
+  }).catch(function() {});
+}
+
+// ===== User management =====
+function loadUsers() {
+  apiFetch('/api/users').then(function(r) { return r.json(); }).then(function(data) {
+    var tbody = document.getElementById('userTableBody');
+    if (!data.ok || !data.data || data.data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">暂无用户</td></tr>';
+      return;
+    }
+
+    var html = '';
+    data.data.forEach(function(u) {
+      var roleClass = u.role === 'admin' ? 'admin' : 'employee';
+      var roleText = u.role === 'admin' ? '管理员' : '员工';
+      html += '<tr>';
+      html += '  <td style="font-weight:500;">' + escHtml(u.username) + '</td>';
+      html += '  <td>' + escHtml(u.display_name) + '</td>';
+      html += '  <td><span class="role-tag ' + roleClass + '">' + roleText + '</span></td>';
+      html += '  <td style="color:var(--text-muted);font-size:12px;">' + (u.created_at || '-') + '</td>';
+      html += '  <td class="actions">';
+      html += '    <button class="btn sm" onclick="editUser(' + u.id + ')">编辑</button>';
+      html += '    <button class="btn sm danger" onclick="deleteUser(' + u.id + ', \'' + escHtml(u.username) + '\')">删除</button>';
+      html += '  </td>';
+      html += '</tr>';
+    });
+    tbody.innerHTML = html;
+  }).catch(function() {});
+}
+
+function openUserModal(id) {
+  var isNew = !id;
+  document.getElementById('userModalTitle').textContent = isNew ? '新增用户' : '编辑用户';
+  document.getElementById('userModalId').value = id || '';
+  document.getElementById('userModalUsername').value = '';
+  document.getElementById('userModalDisplayName').value = '';
+  document.getElementById('userModalPassword').value = '';
+  document.getElementById('userModalRole').value = 'employee';
+  document.getElementById('userModalUsername').readOnly = false;
+  document.getElementById('userModalPassword').required = true;
+  document.getElementById('pwdLabel').textContent = '密码';
+
+  if (!isNew) {
+    // Load user data for editing
+    apiFetch('/api/users').then(function(r) { return r.json(); }).then(function(data) {
+      if (!data.data) return;
+      var u = data.data.find(function(x) { return x.id === id; });
+      if (!u) return;
+      document.getElementById('userModalUsername').value = u.username;
+      document.getElementById('userModalUsername').readOnly = true;
+      document.getElementById('userModalDisplayName').value = u.display_name;
+      document.getElementById('userModalRole').value = u.role;
+      document.getElementById('userModalPassword').required = false;
+      document.getElementById('userModalPassword').placeholder = '留空则不修改';
+      document.getElementById('pwdLabel').textContent = '新密码（留空不修改）';
+    });
+  }
+
+  document.getElementById('userModal').classList.add('show');
+}
+
+function closeUserModal() {
+  document.getElementById('userModal').classList.remove('show');
+}
+
+function editUser(id) {
+  openUserModal(id);
+}
+
+function doSaveUser() {
+  var id = document.getElementById('userModalId').value;
+  var username = document.getElementById('userModalUsername').value.trim();
+  var display_name = document.getElementById('userModalDisplayName').value.trim();
+  var password = document.getElementById('userModalPassword').value;
+  var role = document.getElementById('userModalRole').value;
+
+  if (!id) {
+    // Create new user
+    if (!username || !password) {
+      showToast('用户名和密码不能为空', 'error');
+      return;
+    }
+    apiFetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username, password: password, display_name: display_name, role: role })
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      if (data.ok) {
+        showToast('用户创建成功', 'success');
+        closeUserModal();
+        loadUsers();
+      } else {
+        showToast(data.msg || '创建失败', 'error');
+      }
+    }).catch(function() {});
+  } else {
+    // Update existing user
+    var body = { display_name: display_name, role: role };
+    if (password) body.password = password;
+
+    apiFetch('/api/users/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      if (data.ok) {
+        showToast('用户信息已更新', 'success');
+        closeUserModal();
+        loadUsers();
+      } else {
+        showToast(data.msg || '更新失败', 'error');
+      }
+    }).catch(function() {});
+  }
+}
+
+function deleteUser(id, username) {
+  if (!confirm('确定要删除用户「' + username + '」吗？')) return;
+  apiFetch('/api/users/' + id, { method: 'DELETE' }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast('用户已删除', 'success');
+      loadUsers();
+    } else {
+      showToast(data.msg || '删除失败', 'error');
+    }
+  }).catch(function() {});
+}
+
+// ===== Batch operations =====
+var batchMode = false;
+var batchSelectedIds = [];
+
+function toggleBatchMode() {
+  batchMode = !batchMode;
+  batchSelectedIds = [];
+  var btn = document.getElementById('batchModeBtn');
+  var bar = document.getElementById('batchBar');
+  var selectAllRow = document.getElementById('batchSelectAllRow');
+  var selectAllCb = document.getElementById('batchSelectAllCb');
+  if (batchMode) {
+    btn.style.background = 'var(--primary)';
+    btn.style.color = 'white';
+    btn.style.borderColor = 'var(--primary)';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 退出批量';
+    selectAllRow.classList.add('show');
+  } else {
+    btn.style.background = 'var(--card-bg)';
+    btn.style.color = 'var(--text-secondary)';
+    btn.style.borderColor = 'var(--border)';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> 批量操作';
+    bar.classList.remove('show');
+    selectAllRow.classList.remove('show');
+    selectAllCb.classList.remove('checked');
+  }
+  loadDocList();
+}
+
+function toggleBatchItem(id) {
+  var idx = batchSelectedIds.indexOf(id);
+  if (idx >= 0) {
+    batchSelectedIds.splice(idx, 1);
+  } else {
+    batchSelectedIds.push(id);
+  }
+  // update visual
+  var item = document.querySelector('.doc-item[data-id="' + id + '"]');
+  if (item) {
+    var cb = item.querySelector('.doc-checkbox');
+    var nowSelected = idx < 0;
+    if (cb) cb.classList.toggle('checked', nowSelected);
+    item.classList.toggle('batch-selected', nowSelected);
+  }
+  // sync select-all checkbox
+  var allItems = document.querySelectorAll('.doc-item[data-id]');
+  var selectAllCb = document.getElementById('batchSelectAllCb');
+  selectAllCb.classList.toggle('checked', batchSelectedIds.length === allItems.length && allItems.length > 0);
+  updateBatchBar();
+}
+
+function batchToggleAll() {
+  var items = document.querySelectorAll('.doc-item[data-id]');
+  var selectAllCb = document.getElementById('batchSelectAllCb');
+  if (batchSelectedIds.length === items.length) {
+    // deselect all
+    batchSelectedIds = [];
+    selectAllCb.classList.remove('checked');
+  } else {
+    batchSelectedIds = [];
+    items.forEach(function(el) { batchSelectedIds.push(parseInt(el.getAttribute('data-id'))); });
+    selectAllCb.classList.add('checked');
+  }
+  items.forEach(function(item) {
+    var id = parseInt(item.getAttribute('data-id'));
+    var cb = item.querySelector('.doc-checkbox');
+    var sel = batchSelectedIds.indexOf(id) >= 0;
+    if (cb) cb.classList.toggle('checked', sel);
+    item.classList.toggle('batch-selected', sel);
+  });
+  updateBatchBar();
+}
+
+function updateBatchBar() {
+  var bar = document.getElementById('batchBar');
+  if (batchSelectedIds.length > 0) {
+    bar.classList.add('show');
+    document.getElementById('batchCount').textContent = batchSelectedIds.length;
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+function clearBatch() {
+  batchSelectedIds = [];
+  document.getElementById('batchSelectAllCb').classList.remove('checked');
+  batchMode = false;
+  toggleBatchMode();
+}
+
+function openBatchEditModal() {
+  if (batchSelectedIds.length === 0) return;
+  document.getElementById('batchEditCount').textContent = batchSelectedIds.length;
+  document.getElementById('batchCategory').value = '';
+  document.getElementById('batchSubType').value = '';
+  document.getElementById('batchCode').value = '';
+  document.getElementById('batchEditModal').classList.add('show');
+}
+
+function closeBatchEditModal() {
+  document.getElementById('batchEditModal').classList.remove('show');
+}
+
+function doBatchEdit() {
+  var category = document.getElementById('batchCategory').value;
+  var subType = document.getElementById('batchSubType').value;
+  var code = document.getElementById('batchCode').value.trim();
+
+  if (!category && !subType && !code) {
+    showToast('请至少修改一项', 'error');
+    return;
+  }
+
+  var body = { ids: batchSelectedIds };
+  if (category) body.category = category;
+  if (subType) body.sub_type = subType;
+  if (code) body.code = code;
+
+  apiFetch('/api/documents/batch-update', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast('已更新 ' + batchSelectedIds.length + ' 个文件', 'success');
+      closeBatchEditModal();
+      batchSelectedIds = [];
+      loadDocList();
+      updateBatchBar();
+    } else {
+      showToast(data.msg || '批量编辑失败', 'error');
+    }
+  }).catch(function() { showToast('网络错误', 'error'); });
+}
+
+function batchDelete() {
+  if (batchSelectedIds.length === 0) return;
+  if (!confirm('确定要删除选中的 ' + batchSelectedIds.length + ' 个文件吗？此操作不可恢复。')) return;
+
+  apiFetch('/api/documents/batch-delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ids: batchSelectedIds })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.ok) {
+      showToast('已删除 ' + batchSelectedIds.length + ' 个文件', 'success');
+      batchSelectedIds = [];
+      loadDocList();
+      updateBatchBar();
+    } else {
+      showToast(data.msg || '批量删除失败', 'error');
+    }
+  }).catch(function() { showToast('网络错误', 'error'); });
+}
+
+// ===== Init =====
+checkAuth();
+</script>
+</body>
+</html>
