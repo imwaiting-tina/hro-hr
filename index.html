@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -1150,13 +1150,21 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// ===== Supabase Init =====
+var SUPABASE_URL = 'https://hvbwqhcuabcprkiytzhm.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_ahMo6-HOD8RnXBNcLSYB8w_PZJPfLU6';
+var BUCKET = 'documents';
+var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ===== Auth state =====
 var currentUser = { username: 'admin', role: 'admin', display_name: 'HR管理员' };
 
 // ===== Global state =====
 var currentPreviewId = null;
 var uploadFiles = [];
+var cachedDocList = [];
 var currentSlotCallback = null;  // 流程页上传/替换后的回调
 
 // ===== Workflow template definitions =====
@@ -1227,19 +1235,57 @@ var WORKFLOW_TEMPLATES = {
   }
 };
 
-// ===== API helper (static mode - no 401 redirect) =====
-function apiFetch(url, opts) {
-  opts = opts || {};
-  return fetch(url, opts).then(function(r) {
-    if (r.status === 403) {
-      showToast('权限不足', 'error');
-      throw new Error('Forbidden');
-    }
-    if (r.status === 401) {
-      throw new Error('Unauthorized');
-    }
-    return r;
-  });
+// ===== Supabase helper functions =====
+// Format file size
+function formatFileSize(bytes) {
+  if (!bytes) return '-';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+// Get file extension
+function getExt(filename) {
+  var idx = filename.lastIndexOf('.');
+  return idx >= 0 ? filename.substring(idx).toLowerCase() : '';
+}
+
+// Get icon class by extension
+function getIconClass(ext) {
+  var map = {
+    '.pdf': 'icon-pdf', '.doc': 'icon-doc', '.docx': 'icon-doc',
+    '.xls': 'icon-xls', '.xlsx': 'icon-xls',
+    '.ppt': 'icon-ppt', '.pptx': 'icon-ppt',
+    '.jpg': 'icon-img', '.jpeg': 'icon-img', '.png': 'icon-img'
+  };
+  return map[ext] || 'icon-file';
+}
+
+// Determine code prefix from filename
+function inferCodePrefix(name) {
+  var upper = (name || '').toUpperCase();
+  if (upper.startsWith('HRC')) return 'HRC';
+  if (upper.startsWith('HRP')) return 'HRP';
+  if (upper.startsWith('HRT')) return 'HRT';
+  if (upper.startsWith('HRS')) return 'HRS';
+  return '';
+}
+
+// Build Supabase storage public URL
+function storageUrl(storagePath) {
+  return SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/' + storagePath;
+}
+
+// Download file via Supabase Storage
+function downloadStorageFile(storagePath, filename) {
+  var url = storageUrl(storagePath);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename || '';
+  a.target = '_blank';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // ===== Auth functions =====
@@ -1250,27 +1296,9 @@ function checkAuth() {
 
 function doLogin(e) {
   e.preventDefault();
-  var username = document.getElementById('loginUsername').value.trim();
-  var password = document.getElementById('loginPassword').value;
-  var errEl = document.getElementById('loginError');
-  errEl.classList.remove('show');
-
-  fetch('/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: username, password: password })
-  }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
-      currentUser = data.user;
-      onLoginSuccess();
-    } else {
-      errEl.textContent = data.msg || '登录失败';
-      errEl.classList.add('show');
-    }
-  }).catch(function() {
-    errEl.textContent = '网络错误，请重试';
-    errEl.classList.add('show');
-  });
+  // Static mode - accept any login
+  currentUser = { username: 'admin', role: 'admin', display_name: 'HR管理员' };
+  onLoginSuccess();
 }
 
 function doLogout() {
@@ -1420,8 +1448,8 @@ function showToast(msg, type) {
 
 // ===== Stats =====
 function loadStats() {
-  apiFetch('/api/documents/stats').then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) document.getElementById('statTotalDocs').textContent = data.total;
+  supabase.from('documents').select('*', { count: 'exact', head: true }).then(function(r) {
+    document.getElementById('statTotalDocs').textContent = r.count || 0;
   }).catch(function() {});
 }
 
@@ -1445,18 +1473,16 @@ function renderWorkflowPage(category, subType, containerId, dotColor) {
   });
   el.innerHTML = html;
 
-  // 逐个查询 slot 文件状态
+  // 逐个查询 slot 文件状态 via Supabase
   config.items.forEach(function(item) {
-    var url = '/api/documents/by-slot?category=' + encodeURIComponent(category)
-      + '&slot=' + encodeURIComponent(item.slot);
-    if (subType) url += '&sub_type=' + encodeURIComponent(subType);
-
-    apiFetch(url).then(function(r) { return r.json(); }).then(function(data) {
+    var query = supabase.from('documents').select('*').eq('category', category).eq('slot', item.slot);
+    if (subType) query = query.eq('sub_type', subType);
+    query.order('created_at', { ascending: false }).limit(1).then(function(r) {
       var actionsEl = document.getElementById('slot-actions-' + item.slot);
       if (!actionsEl) return;
 
-      if (data.data) {
-        var doc = data.data;
+      if (r.data && r.data.length > 0) {
+        var doc = r.data[0];
         var btns = '';
         btns += '<button class="wf-btn" onclick="event.stopPropagation();previewFile(' + doc.id + ')">预览</button>';
         btns += '<button class="wf-btn" onclick="event.stopPropagation();downloadFile(' + doc.id + ')">下载</button>';
@@ -1544,24 +1570,17 @@ function replaceSlotFile(docId, templateName) {
 
 function deleteSlotFile(docId, category, subType, slot) {
   if (!confirm('确定要删除「' + slot + '」对应的文件吗？此操作不可恢复。')) return;
-  apiFetch('/api/documents/' + docId, { method: 'DELETE' }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
-      showToast('文件已删除', 'success');
-      renderWorkflowPage(category, subType,
-        category === 'onboard' ? 'wf-onboard-' + subType :
-        category === 'renew' ? 'wf-renew-' + subType :
-        'wf-resign',
-        category === 'onboard' && subType === 'labor' ? 'var(--primary)' :
-        category === 'onboard' && subType === 'intern' ? 'var(--teal)' :
-        category === 'onboard' && subType === 'service' ? 'var(--amber)' :
-        category === 'renew' && subType === 'labor' ? 'var(--primary)' :
-        category === 'renew' && subType === 'service' ? 'var(--amber)' :
-        'var(--coral)'
-      );
-    } else {
-      showToast(data.msg || '删除失败', 'error');
-    }
-  }).catch(function() {});
+  supabase.from('documents').select('storage_path').eq('id', docId).single().then(function(r) {
+    if (!r.data) { showToast('文件不存在', 'error'); return; }
+    return supabase.storage.from(BUCKET).remove([r.data.storage_path]);
+  }).then(function() {
+    return supabase.from('documents').delete().eq('id', docId);
+  }).then(function() {
+    showToast('文件已删除', 'success');
+    renderPage(category, subType);
+  }).catch(function() {
+    showToast('删除失败', 'error');
+  });
 }
 
 // ===== Document list =====
@@ -1582,19 +1601,15 @@ function selectCodePrefix(prefix, el) {
 }
 
 function loadDocCategoryCounts() {
-  apiFetch('/api/documents?search=').then(function(r) { return r.json(); }).then(function(data) {
-    if (!data.data) return;
-    var all = data.data.length;
+  supabase.from('documents').select('name', { count: 'exact' }).then(function(r) {
+    var all = r.data ? r.data.length : 0;
     var counts = { HRC: 0, HRP: 0, HRT: 0, HRS: 0 };
-    data.data.forEach(function(doc) {
-      var code = (doc.code || '').toUpperCase();
-      var name = (doc.name || '').toUpperCase();
-      var src = code || name;
-      if (src.startsWith('HRC')) counts.HRC++;
-      else if (src.startsWith('HRP')) counts.HRP++;
-      else if (src.startsWith('HRT')) counts.HRT++;
-      else if (src.startsWith('HRS')) counts.HRS++;
-    });
+    if (r.data) {
+      r.data.forEach(function(doc) {
+        var prefix = inferCodePrefix(doc.name);
+        if (prefix) counts[prefix]++;
+      });
+    }
     document.getElementById('catCountAll').textContent = all + ' 份文件';
     document.getElementById('catCountHRC').textContent = counts.HRC + ' 份文件';
     document.getElementById('catCountHRP').textContent = counts.HRP + ' 份文件';
@@ -1604,42 +1619,61 @@ function loadDocCategoryCounts() {
 }
 
 function loadDocList() {
-  var search = document.getElementById('docSearch').value;
-  var url = '/api/documents?search=' + encodeURIComponent(search);
-  if (currentCodePrefix) url += '&code_prefix=' + encodeURIComponent(currentCodePrefix);
+  var search = document.getElementById('docSearch').value.trim().toLowerCase();
 
-  apiFetch(url).then(function(r) { return r.json(); }).then(function(data) {
+  var query = supabase.from('documents').select('*', { count: 'exact' }).order('created_at', { ascending: false });
+
+  supabase.from('documents').select('*', { count: 'exact' }).order('created_at', { ascending: false }).then(function(r) {
+    var docs = r.data || [];
+    var totalCount = r.count || 0;
+
+    // Client-side filtering
+    var filtered = docs;
+    if (search) {
+      filtered = docs.filter(function(d) {
+        return (d.name || '').toLowerCase().indexOf(search) >= 0;
+      });
+    }
+    if (currentCodePrefix) {
+      filtered = filtered.filter(function(d) {
+        return inferCodePrefix(d.name) === currentCodePrefix;
+      });
+    }
+
+    // Cache for other functions
+    cachedDocList = docs;
+
     var list = document.getElementById('docList');
-    document.getElementById('docCount').textContent = data.total;
+    document.getElementById('docCount').textContent = filtered.length;
 
-    if (!data.data || data.data.length === 0) {
+    if (filtered.length === 0) {
       var emptyMsg = isAdmin() ? '暂无文件，点击「扫描导入」或「上传文件」' : '暂无文件';
       list.innerHTML = '<li class="doc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div>' + emptyMsg + '</div></li>';
       return;
     }
 
     var html = '';
-    data.data.forEach(function(doc) {
+    filtered.forEach(function(doc) {
       var catLabel = { onboard: '入职', renew: '续签', resign: '离职' }[doc.category] || '';
       var subLabel = { labor: '全日制', intern: '实习', service: '劳务' }[doc.sub_type] || '';
-      var code = (doc.code || '').toUpperCase();
-      var name = (doc.name || '').toUpperCase();
-      var src = code || name;
+      var name = doc.name || '';
       var prefixLabel = '';
-      if (src.startsWith('HRC')) prefixLabel = 'HRC 合同协议';
-      else if (src.startsWith('HRP')) prefixLabel = 'HRP 流程表单';
-      else if (src.startsWith('HRT')) prefixLabel = 'HRT 作业模板';
-      else if (src.startsWith('HRS')) prefixLabel = 'HRS 制度文件';
-      var ext = doc.ext.replace('.', '').toUpperCase() || 'FILE';
+      var prefix = inferCodePrefix(name);
+      if (prefix === 'HRC') prefixLabel = 'HRC 合同协议';
+      else if (prefix === 'HRP') prefixLabel = 'HRP 流程表单';
+      else if (prefix === 'HRT') prefixLabel = 'HRT 作业模板';
+      else if (prefix === 'HRS') prefixLabel = 'HRS 制度文件';
+      var ext = getExt(doc.name).replace('.', '').toUpperCase() || 'FILE';
+      var iconCls = getIconClass(getExt(doc.name));
       var sel = batchSelectedIds.indexOf(doc.id) >= 0;
       html += '<li class="doc-item' + (sel ? ' batch-selected' : '') + '" ondblclick="previewFile(' + doc.id + ')" data-id="' + doc.id + '">';
       if (batchMode) {
         html += '  <div class="doc-checkbox' + (sel ? ' checked' : '') + '" onclick="event.stopPropagation();toggleBatchItem(' + doc.id + ')"></div>';
       }
-      html += '  <div class="doc-icon ' + doc.icon + '">' + ext + '</div>';
+      html += '  <div class="doc-icon ' + iconCls + '">' + ext + '</div>';
       html += '  <div class="doc-info">';
-      html += '    <div class="doc-filename">' + escHtml(doc.name) + '</div>';
-      html += '    <div class="doc-meta">' + (doc.code ? escHtml(doc.code) + ' · ' : '') + doc.file_size_fmt + (prefixLabel ? ' · ' + prefixLabel : (catLabel ? ' · ' + catLabel : '') + (subLabel ? ' · ' + subLabel : '')) + (doc.version && doc.version !== 'v1' ? ' · ' + doc.version : '') + '</div>';
+      html += '    <div class="doc-filename">' + escHtml(name) + '</div>';
+      html += '    <div class="doc-meta">' + formatFileSize(doc.size) + (prefixLabel ? ' · ' + prefixLabel : (catLabel ? ' · ' + catLabel : '') + (subLabel ? ' · ' + subLabel : '')) + '</div>';
       html += '  </div>';
       html += '  <div class="doc-actions">';
       html += '    <button class="doc-btn" onclick="event.stopPropagation();previewFile(' + doc.id + ')">预览</button>';
@@ -1653,7 +1687,9 @@ function loadDocList() {
       html += '</li>';
     });
     list.innerHTML = html;
-  }).catch(function() {});
+  }).catch(function(e) {
+    console.error('loadDocList failed:', e);
+  });
 }
 
 function escHtml(str) {
@@ -1673,62 +1709,28 @@ function previewFile(id) {
   body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">正在加载文件信息…</div>';
   document.getElementById('previewModal').classList.add('show');
 
-  // 直接按 id 获取单个文件信息，不加载全量列表
-  apiFetch('/api/documents/' + id).then(function(r) { return r.json(); }).then(function(resp) {
-    if (!resp || !resp.ok || !resp.data) {
+  supabase.from('documents').select('*').eq('id', id).single().then(function(r) {
+    var doc = r.data;
+    if (!doc) {
       body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">文件信息不存在</div>';
       return;
     }
-    var doc = resp.data;
     document.getElementById('previewTitle').textContent = doc.name;
 
-    // 检查物理文件是否存在
-    if (doc.file_exists === false) {
-      body.innerHTML = '<div style="text-align:center;padding:40px;">' +
-        '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" style="margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
-        '<p style="color:var(--text-muted);font-size:14px;">源文件已不存在，无法预览</p>' +
-        '<p style="color:var(--text-muted);font-size:12px;margin-top:6px;">文件名：' + escHtml(doc.name) + '</p>' +
-        '</div>';
-      return;
-    }
+    var ext = getExt(doc.name);
+    var previewUrl = storageUrl(doc.storage_path);
 
-    var ext = doc.ext || '';
-    var previewUrl = '/api/files/' + id + '/preview';
-
-    if (ext === '.jpg' || ext === '.jpeg' || ext === '.png') {
-      // 图片直接展示
+    if (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.gif' || ext === '.svg' || ext === '.webp') {
       body.innerHTML = '<div style="text-align:center;padding:16px;"><img src="' + previewUrl + '" style="max-width:100%;max-height:65vh;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" onerror="this.parentNode.innerHTML=\'<p style=\'color:var(--coral)\'>图片加载失败</p>\'" /></div>';
     } else if (ext === '.pdf') {
-      // PDF 直接 iframe
       body.innerHTML = '<iframe class="pdf-preview" src="' + previewUrl + '"></iframe>';
     } else if (ext === '.doc' || ext === '.docx' || ext === '.xls' || ext === '.xlsx' || ext === '.ppt' || ext === '.pptx') {
-      // Office 文件：先显示转换中，再请求预览 API
-      body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">正在转换文件格式，请稍候…</div>';
-      fetch(previewUrl, { credentials: 'include' }).then(function(r) {
-        if (r.ok) {
-          var ct = r.headers.get('content-type') || '';
-          if (ct.indexOf('application/pdf') >= 0) {
-            body.innerHTML = '<iframe class="pdf-preview" src="' + previewUrl + '"></iframe>';
-          } else if (ct.indexOf('image/') >= 0) {
-            body.innerHTML = '<div style="text-align:center;padding:16px;"><img src="' + previewUrl + '" style="max-width:100%;max-height:65vh;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" /></div>';
-          } else {
-            body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">此格式暂不支持在线预览，请下载后查看</div>';
-          }
-        } else if (r.status === 415) {
-          body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">文件转换失败，请下载后在本地打开查看</div>';
-        } else if (r.status === 404) {
-          body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">源文件已不存在，无法预览</div>';
-        } else {
-          body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">预览失败（' + r.status + '），请下载后查看</div>';
-        }
-      }).catch(function() {
-        body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">网络错误，请重试</div>';
-      });
+      body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">Office 文件暂不支持在线预览，请点击下载查看</div>';
     } else {
       body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">此格式暂不支持在线预览，请下载后查看</div>';
     }
-  }).catch(function() {
-    body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">网络错误，无法加载文件信息</div>';
+  }).catch(function(e) {
+    body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);">加载失败: ' + (e.message || '网络错误') + '</div>';
   });
 }
 
@@ -1743,27 +1745,40 @@ function downloadPreviewFile() {
 }
 
 function downloadFile(id) {
-  window.open('/api/files/' + id + '/download', '_blank');
+  supabase.from('documents').select('storage_path,name').eq('id', id).single().then(function(r) {
+    if (r.data) {
+      downloadStorageFile(r.data.storage_path, r.data.name);
+    }
+  }).catch(function() {
+    showToast('下载失败', 'error');
+  });
 }
 
 function deleteFile(id) {
   if (!confirm('确定要删除这个文件吗？此操作不可恢复。')) return;
-  apiFetch('/api/documents/' + id, { method: 'DELETE' }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
+  supabase.from('documents').select('storage_path').eq('id', id).single().then(function(r) {
+    if (!r.data) { showToast('文件不存在', 'error'); return; }
+    var paths = [r.data.storage_path];
+    return supabase.storage.from(BUCKET).remove(paths);
+  }).then(function() {
+    return supabase.from('documents').delete().eq('id', id);
+  }).then(function(r) {
+    if (!r.error) {
       showToast('文件已删除', 'success');
       loadDocList();
+      loadDocCategoryCounts();
     } else {
-      showToast(data.msg || '删除失败', 'error');
+      showToast(r.error.message || '删除失败', 'error');
     }
-  }).catch(function() {});
+  }).catch(function(e) {
+    showToast('删除失败: ' + (e.message || ''), 'error');
+  });
 }
 
 // ===== Edit document =====
 function editDoc(id) {
-  // Find doc info from current list
-  apiFetch('/api/documents?search=').then(function(r) { return r.json(); }).then(function(data) {
-    if (!data.data) return;
-    var doc = data.data.find(function(d) { return d.id === id; });
+  supabase.from('documents').select('*').eq('id', id).single().then(function(r) {
+    var doc = r.data;
     if (!doc) return;
 
     document.getElementById('editDocId').value = id;
@@ -1783,31 +1798,25 @@ function doEditDoc() {
   var id = document.getElementById('editDocId').value;
   var body = {
     code: document.getElementById('editCode').value.trim(),
-    name: document.getElementById('editName').value.trim(),
     category: document.getElementById('editCategory').value,
     sub_type: document.getElementById('editSubType').value
   };
 
-  apiFetch('/api/documents/' + id, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
+  supabase.from('documents').update(body).eq('id', id).then(function(r) {
+    if (!r.error) {
       showToast('文件信息已更新', 'success');
       closeEditModal();
       loadDocList();
     } else {
-      showToast(data.msg || '更新失败', 'error');
+      showToast(r.error.message || '更新失败', 'error');
     }
   }).catch(function() {});
 }
 
 // ===== Replace file =====
 function replaceFile(id) {
-  apiFetch('/api/documents?search=').then(function(r) { return r.json(); }).then(function(data) {
-    if (!data.data) return;
-    var doc = data.data.find(function(d) { return d.id === id; });
+  supabase.from('documents').select('*').eq('id', id).single().then(function(r) {
+    var doc = r.data;
     if (!doc) return;
 
     document.getElementById('replaceDocId').value = id;
@@ -1836,19 +1845,37 @@ function doReplace() {
   var fileInput = document.getElementById('replaceFile');
   if (!fileInput.files.length) return;
 
-  var formData = new FormData();
-  formData.append('file', fileInput.files[0]);
+  var file = fileInput.files[0];
+  var newPath = 'replaced/' + Date.now() + '_' + file.name;
+  var btn = document.getElementById('replaceBtn');
+  btn.disabled = true;
+  btn.textContent = '替换中...';
 
-  apiFetch('/api/documents/' + id + '/replace', { method: 'POST', body: formData }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
-      showToast('文件已替换为 ' + data.version, 'success');
+  supabase.storage.from(BUCKET).upload(newPath, file, { cacheControl: '3600', upsert: true }).then(function(r) {
+    if (r.error) { showToast('上传失败: ' + r.error.message, 'error'); btn.disabled = false; btn.textContent = '替换'; return; }
+    // Delete old file
+    return supabase.from('documents').select('storage_path').eq('id', id).single();
+  }).then(function(r) {
+    if (!r.data) return;
+    return supabase.storage.from(BUCKET).remove([r.data.storage_path]);
+  }).then(function() {
+    return supabase.from('documents').update({ storage_path: newPath, size: file.size, mime_type: file.type }).eq('id', id);
+  }).then(function(r) {
+    if (!r.error) {
+      showToast('文件已替换', 'success');
       closeReplaceModal();
       loadDocList();
       if (currentSlotCallback) { currentSlotCallback(); currentSlotCallback = null; }
     } else {
-      showToast(data.msg || '替换失败', 'error');
+      showToast(r.error.message || '替换失败', 'error');
     }
-  }).catch(function() {});
+    btn.disabled = false;
+    btn.textContent = '替换';
+  }).catch(function(e) {
+    showToast('替换失败: ' + (e.message || ''), 'error');
+    btn.disabled = false;
+    btn.textContent = '替换';
+  });
 }
 
 // ===== Upload =====
@@ -1915,38 +1942,7 @@ var isUploading = false;
 
 function doUpload() {
   if (uploadFiles.length === 0 || isUploading) return;
-
-  // 先检查同名文件
-  var names = uploadFiles.map(function(f) { return f.name; });
-  var btn = document.getElementById('uploadBtn');
-  btn.disabled = true;
-  btn.textContent = '检查中...';
-
-  apiFetch('/api/documents/check-names', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ names: names })
-  }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.duplicates && data.duplicates.length > 0) {
-      btn.disabled = false;
-      btn.textContent = '上传';
-      var dupList = data.duplicates.map(function(n) { return '「' + n + '」'; }).join('、');
-      showToast('以下文件已存在：' + dupList + '，请移除后重试', 'error');
-      // 标记重复文件
-      var items = document.getElementById('uploadFileList').children;
-      for (var i = 0; i < items.length; i++) {
-        if (data.duplicates.indexOf(uploadFiles[i].name) !== -1) {
-          items[i].style.background = '#FFF5F5';
-        }
-      }
-      return;
-    }
-    doUploadFiles();
-  }).catch(function() {
-    btn.disabled = false;
-    btn.textContent = '上传';
-    showToast('检查失败，请重试', 'error');
-  });
+  doUploadFiles();
 }
 
 function doUploadFiles() {
@@ -1968,41 +1964,67 @@ function doUploadFiles() {
   btn.textContent = '上传中 0/' + total;
   renderUploadPreview();
 
-  uploadFiles.forEach(function(file, idx) {
-    var formData = new FormData();
-    formData.append('file', file);
-    if (category) formData.append('category', category);
-    if (sub_type) formData.append('sub_type', sub_type);
-    if (slot) formData.append('slot', slot);
+  function finishUpload() {
+    isUploading = false;
+    var cb = currentSlotCallback;
+    closeUploadModal();
+    if (slot && cb) {
+      showToast(failed > 0 ? '上传完成（' + failed + '个失败）' : '上传成功', failed > 0 ? 'info' : 'success');
+      cb();
+    } else {
+      showToast(failed > 0 ? '上传完成，' + (total - failed) + '个成功，' + failed + '个失败' : '成功上传 ' + total + ' 个文件', failed > 0 ? 'info' : 'success');
+      loadDocList();
+      loadDocCategoryCounts();
+    }
+  }
 
-    apiFetch('/api/documents/upload', { method: 'POST', body: formData }).then(function(r) { return r.json(); }).then(function(data) {
-      completed++;
-      btn.textContent = '上传中 ' + completed + '/' + total;
-      if (!data.ok) failed++;
-      if (completed === total) {
-        isUploading = false;
-        var cb = currentSlotCallback;
-        closeUploadModal();
-        if (slot && cb) {
-          showToast(failed > 0 ? '上传完成（' + failed + '个失败）' : '上传成功', failed > 0 ? 'info' : 'success');
-          cb();
-        } else {
-          showToast(failed > 0 ? '上传完成，' + (total - failed) + '个成功，' + failed + '个失败' : '成功上传 ' + total + ' 个文件', failed > 0 ? 'info' : 'success');
-          loadDocList();
-          loadDocCategoryCounts();
+  function uploadOne(file) {
+    var folder = category || 'other';
+    if (sub_type) folder += '/' + sub_type;
+    if (slot) folder += '/' + slot;
+    var filePath = folder + '/' + Date.now() + '_' + file.name;
+
+    return supabase.storage.from(BUCKET).upload(filePath, file, { cacheControl: '3600', upsert: false }).then(function(r) {
+      if (r.error) {
+        if (r.error.message && r.error.message.indexOf('Duplicate') >= 0) {
+          // Retry with different name
+          filePath = folder + '/' + Date.now() + '_' + Math.random().toString(36).substr(2,6) + '_' + file.name;
+          return supabase.storage.from(BUCKET).upload(filePath, file, { cacheControl: '3600', upsert: false });
         }
+        throw r.error;
       }
-    }).catch(function() {
-      completed++;
-      failed++;
-      btn.textContent = '上传中 ' + completed + '/' + total;
-      if (completed === total) {
-        isUploading = false;
-        var cb = currentSlotCallback;
-        closeUploadModal();
-        showToast(failed > 0 ? '上传完成，' + (total - failed) + '个成功，' + failed + '个失败' : '成功上传 ' + total + ' 个文件', failed > 0 ? 'info' : 'success');
-        if (!slot) { loadDocList(); loadDocCategoryCounts(); }
-      }
+      return r;
+    }).then(function(r) {
+      if (r.error) throw r.error;
+      return supabase.from('documents').insert([{
+        name: file.name,
+        storage_path: filePath,
+        category: category || null,
+        sub_type: sub_type || null,
+        slot: slot || null,
+        size: file.size,
+        mime_type: file.type
+      }]);
+    }).then(function(r2) {
+      if (r2.error) throw r2.error;
+    });
+  }
+
+  // Sequential uploads to avoid overwhelming
+  var chain = Promise.resolve();
+  uploadFiles.forEach(function(file) {
+    chain = chain.then(function() {
+      return uploadOne(file).then(function() {
+        completed++;
+        btn.textContent = '上传中 ' + completed + '/' + total;
+        if (completed === total) finishUpload();
+      }).catch(function(e) {
+        completed++;
+        failed++;
+        btn.textContent = '上传中 ' + completed + '/' + total;
+        console.error('Upload failed:', file.name, e);
+        if (completed === total) finishUpload();
+      });
     });
   });
 }
@@ -2032,24 +2054,47 @@ function autoMatchSlots() {
   document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-muted);">正在分析文件名与流程槽位的匹配关系...</div>';
   document.getElementById('autoMatchFooter').style.display = 'none';
 
-  apiFetch('/api/documents/auto-match', { method: 'POST' }).then(function(r) { return r.json(); }).then(function(data) {
-    if (!data.ok) {
-      document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--danger);">分析失败</div>';
+  supabase.from('documents').select('*').then(function(r) {
+    var docs = r.data || [];
+    var matches = [];
+    docs.forEach(function(doc) {
+      var name = doc.name || '';
+      if (doc.slot) return; // Already matched
+      // Simple name-based matching
+      var configs = WORKFLOW_TEMPLATES;
+      var found = false;
+      for (var cat in configs) {
+        if (found) break;
+        for (var st in configs[cat]) {
+          if (found) break;
+          configs[cat][st].items.forEach(function(item) {
+            if (found) return;
+            if (name.indexOf(item.name) >= 0 || item.name.indexOf(name) >= 0) {
+              matches.push({
+                doc_id: doc.id, doc_name: name, display_name: name,
+                category: cat, sub_type: st, slot: item.slot,
+                slot_label: item.name
+              });
+              found = true;
+            }
+          });
+        }
+      }
+    });
+
+    autoMatchData = matches;
+
+    if (matches.length === 0) {
+      document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div style="margin-top:12px;color:var(--text);font-weight:600;">所有文件均已匹配，或无法自动匹配</div><div style="margin-top:4px;color:var(--text-muted);font-size:13px;">请通过流程页手动上传文件</div></div>';
       return;
     }
-    autoMatchData = data.matches || [];
 
-    if (autoMatchData.length === 0) {
-      document.getElementById('autoMatchBody').innerHTML = '<div style="text-align:center;padding:40px 0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div style="margin-top:12px;color:var(--text);font-weight:600;">所有文件均已匹配</div><div style="margin-top:4px;color:var(--text-muted);font-size:13px;">没有需要自动匹配的文件</div></div>';
-      return;
-    }
-
-    var html = '<div style="margin-bottom:16px;font-size:13px;color:var(--text-secondary);">发现 <strong style="color:var(--primary);">' + autoMatchData.length + '</strong> 个文件可匹配到流程槽位：</div>';
+    var html = '<div style="margin-bottom:16px;font-size:13px;color:var(--text-secondary);">发现 <strong style="color:var(--primary);">' + matches.length + '</strong> 个文件可匹配到流程槽位：</div>';
     html += '<div style="border:1px solid var(--border-light);border-radius:var(--radius);overflow:hidden;">';
     html += '<div style="display:grid;grid-template-columns:1fr 32px 1fr;padding:8px 14px;background:#F7F8FA;font-size:11.5px;font-weight:600;color:var(--text-muted);">';
     html += '<span>文档名称</span><span></span><span>匹配槽位</span></div>';
 
-    autoMatchData.forEach(function(m) {
+    matches.forEach(function(m) {
       var catLabel = CATEGORY_LABELS[m.category] || m.category;
       var subLabel = SUBTYPE_LABELS[m.sub_type] || '';
       var tagHtml = '<span style="display:inline-block;padding:1px 6px;font-size:10.5px;border-radius:3px;background:var(--primary-light);color:var(--primary);margin-left:6px;">' + catLabel + (subLabel ? ' · ' + subLabel : '') + '</span>';
@@ -2080,20 +2125,18 @@ function applyAutoMatch() {
   btn.disabled = true;
   btn.textContent = '匹配中...';
 
-  var items = autoMatchData.map(function(m) { return { doc_id: m.doc_id, slot: m.slot, category: m.category, sub_type: m.sub_type }; });
-
-  apiFetch('/api/documents/apply-match', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ items: items })
-  }).then(function(r) { return r.json(); }).then(function(data) {
+  // Batch update slot/category for matched docs
+  var updatePromises = autoMatchData.map(function(m) {
+    return supabase.from('documents').update({ slot: m.slot, category: m.category, sub_type: m.sub_type }).eq('id', m.doc_id);
+  });
+  Promise.all(updatePromises).then(function(results) {
+    var errors = results.filter(function(r) { return r.error; });
     closeAutoMatchModal();
-    if (data.ok) {
-      showToast(data.msg, 'success');
+    if (errors.length === 0) {
+      showToast('成功匹配 ' + autoMatchData.length + ' 个文件', 'success');
     } else {
-      showToast(data.msg || '匹配失败', 'error');
+      showToast('成功匹配 ' + (autoMatchData.length - errors.length) + '个，' + errors.length + '个失败', 'info');
     }
-    // 刷新当前流程页面
     var activePage = document.querySelector('.page-section.active');
     if (activePage) {
       var pageId = activePage.id.replace('page-', '');
@@ -2110,46 +2153,13 @@ function applyAutoMatch() {
 
 // ===== Scan Import =====
 function scanImport() {
-  if (!confirm('将从 D:\\00hyt\\人事\\人事文件 扫描所有文件并导入数据库，已存在的文件会跳过。是否继续？')) return;
-  showToast('正在扫描文件...', 'info');
-
-  apiFetch('/api/import/scan', { method: 'POST' }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
-      showToast(data.msg, 'success');
-      loadDocList();
-      loadStats();
-    } else {
-      showToast(data.msg || '扫描失败', 'error');
-    }
-  }).catch(function() {});
+  showToast('请通过上传文件功能手动添加文件，扫描导入功能已更新为云端上传。', 'info');
 }
 
 // ===== User management =====
 function loadUsers() {
-  apiFetch('/api/users').then(function(r) { return r.json(); }).then(function(data) {
-    var tbody = document.getElementById('userTableBody');
-    if (!data.ok || !data.data || data.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">暂无用户</td></tr>';
-      return;
-    }
-
-    var html = '';
-    data.data.forEach(function(u) {
-      var roleClass = u.role === 'admin' ? 'admin' : 'employee';
-      var roleText = u.role === 'admin' ? '管理员' : '员工';
-      html += '<tr>';
-      html += '  <td style="font-weight:500;">' + escHtml(u.username) + '</td>';
-      html += '  <td>' + escHtml(u.display_name) + '</td>';
-      html += '  <td><span class="role-tag ' + roleClass + '">' + roleText + '</span></td>';
-      html += '  <td style="color:var(--text-muted);font-size:12px;">' + (u.created_at || '-') + '</td>';
-      html += '  <td class="actions">';
-      html += '    <button class="btn sm" onclick="editUser(' + u.id + ')">编辑</button>';
-      html += '    <button class="btn sm danger" onclick="deleteUser(' + u.id + ', \'' + escHtml(u.username) + '\')">删除</button>';
-      html += '  </td>';
-      html += '</tr>';
-    });
-    tbody.innerHTML = html;
-  }).catch(function() {});
+  var tbody = document.getElementById('userTableBody');
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">用户管理暂未接入数据库，请在 Supabase 控制台管理用户</td></tr>';
 }
 
 function openUserModal(id) {
@@ -2165,19 +2175,7 @@ function openUserModal(id) {
   document.getElementById('pwdLabel').textContent = '密码';
 
   if (!isNew) {
-    // Load user data for editing
-    apiFetch('/api/users').then(function(r) { return r.json(); }).then(function(data) {
-      if (!data.data) return;
-      var u = data.data.find(function(x) { return x.id === id; });
-      if (!u) return;
-      document.getElementById('userModalUsername').value = u.username;
-      document.getElementById('userModalUsername').readOnly = true;
-      document.getElementById('userModalDisplayName').value = u.display_name;
-      document.getElementById('userModalRole').value = u.role;
-      document.getElementById('userModalPassword').required = false;
-      document.getElementById('userModalPassword').placeholder = '留空则不修改';
-      document.getElementById('pwdLabel').textContent = '新密码（留空不修改）';
-    });
+    showToast('编辑用户功能暂未接入数据库', 'info');
   }
 
   document.getElementById('userModal').classList.add('show');
@@ -2198,56 +2196,11 @@ function doSaveUser() {
   var password = document.getElementById('userModalPassword').value;
   var role = document.getElementById('userModalRole').value;
 
-  if (!id) {
-    // Create new user
-    if (!username || !password) {
-      showToast('用户名和密码不能为空', 'error');
-      return;
-    }
-    apiFetch('/api/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username, password: password, display_name: display_name, role: role })
-    }).then(function(r) { return r.json(); }).then(function(data) {
-      if (data.ok) {
-        showToast('用户创建成功', 'success');
-        closeUserModal();
-        loadUsers();
-      } else {
-        showToast(data.msg || '创建失败', 'error');
-      }
-    }).catch(function() {});
-  } else {
-    // Update existing user
-    var body = { display_name: display_name, role: role };
-    if (password) body.password = password;
-
-    apiFetch('/api/users/' + id, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    }).then(function(r) { return r.json(); }).then(function(data) {
-      if (data.ok) {
-        showToast('用户信息已更新', 'success');
-        closeUserModal();
-        loadUsers();
-      } else {
-        showToast(data.msg || '更新失败', 'error');
-      }
-    }).catch(function() {});
-  }
+  showToast('用户管理暂未接入数据库，请在 Supabase 控制台操作', 'info');
 }
 
 function deleteUser(id, username) {
-  if (!confirm('确定要删除用户「' + username + '」吗？')) return;
-  apiFetch('/api/users/' + id, { method: 'DELETE' }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
-      showToast('用户已删除', 'success');
-      loadUsers();
-    } else {
-      showToast(data.msg || '删除失败', 'error');
-    }
-  }).catch(function() {});
+  showToast('用户管理暂未接入数据库', 'info');
 }
 
 // ===== Batch operations =====
@@ -2368,19 +2321,15 @@ function doBatchEdit() {
   if (subType) body.sub_type = subType;
   if (code) body.code = code;
 
-  apiFetch('/api/documents/batch-update', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
+  supabase.from('documents').update(body).in('id', batchSelectedIds).then(function(r) {
+    if (!r.error) {
       showToast('已更新 ' + batchSelectedIds.length + ' 个文件', 'success');
       closeBatchEditModal();
       batchSelectedIds = [];
       loadDocList();
       updateBatchBar();
     } else {
-      showToast(data.msg || '批量编辑失败', 'error');
+      showToast(r.error.message || '批量编辑失败', 'error');
     }
   }).catch(function() { showToast('网络错误', 'error'); });
 }
@@ -2389,20 +2338,37 @@ function batchDelete() {
   if (batchSelectedIds.length === 0) return;
   if (!confirm('确定要删除选中的 ' + batchSelectedIds.length + ' 个文件吗？此操作不可恢复。')) return;
 
-  apiFetch('/api/documents/batch-delete', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ids: batchSelectedIds })
-  }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
+  // First get all storage paths, then delete
+  supabase.from('documents').select('storage_path').in('id', batchSelectedIds).then(function(r) {
+    if (!r.data || r.data.length === 0) { showToast('未找到文件', 'error'); return; }
+    var paths = r.data.map(function(d) { return d.storage_path; });
+    return supabase.storage.from(BUCKET).remove(paths).then(function() {
+      return supabase.from('documents').delete().in('id', batchSelectedIds);
+    });
+  }).then(function(r) {
+    if (!r || !r.error) {
       showToast('已删除 ' + batchSelectedIds.length + ' 个文件', 'success');
       batchSelectedIds = [];
       loadDocList();
+      loadDocCategoryCounts();
       updateBatchBar();
-    } else {
-      showToast(data.msg || '批量删除失败', 'error');
+    } else if (r && r.error) {
+      showToast(r.error.message || '批量删除失败', 'error');
     }
   }).catch(function() { showToast('网络错误', 'error'); });
+}
+
+// ===== Page refresh helper =====
+function renderPage(category, subType) {
+  if (category === 'onboard') {
+    renderWorkflowPage('onboard', subType, 'wf-onboard-' + subType,
+      subType === 'labor' ? 'var(--primary)' : subType === 'intern' ? 'var(--teal)' : 'var(--amber)');
+  } else if (category === 'renew') {
+    renderWorkflowPage('renew', 'labor', 'wf-renew-labor', 'var(--primary)');
+    if (subType === 'service' || !subType) renderWorkflowPage('renew', 'service', 'wf-renew-service', 'var(--amber)');
+  } else if (category === 'resign') {
+    renderWorkflowPage('resign', '', 'wf-resign', 'var(--coral)');
+  }
 }
 
 // ===== Init =====
@@ -2410,3 +2376,4 @@ checkAuth();
 </script>
 </body>
 </html>
+
