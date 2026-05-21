@@ -441,7 +441,7 @@
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- ===== Login Overlay ===== -->
-<div class="login-overlay" id="loginOverlay">
+<div class="login-overlay hidden" id="loginOverlay">
   <div class="login-card">
     <div class="login-logo">HR 管理系统</div>
     <div class="login-subtitle">开弈信息科技（中国）有限公司</div>
@@ -1152,7 +1152,7 @@
 
 <script>
 // ===== Auth state =====
-var currentUser = null;
+var currentUser = { username: 'admin', role: 'admin', display_name: 'HR管理员' };
 
 // ===== Global state =====
 var currentPreviewId = null;
@@ -1227,17 +1227,16 @@ var WORKFLOW_TEMPLATES = {
   }
 };
 
-// ===== API helper with 401 intercept =====
+// ===== API helper (static mode - no 401 redirect) =====
 function apiFetch(url, opts) {
   opts = opts || {};
   return fetch(url, opts).then(function(r) {
-    if (r.status === 401) {
-      showLogin();
-      throw new Error('Unauthorized');
-    }
     if (r.status === 403) {
       showToast('权限不足', 'error');
       throw new Error('Forbidden');
+    }
+    if (r.status === 401) {
+      throw new Error('Unauthorized');
     }
     return r;
   });
@@ -1245,39 +1244,9 @@ function apiFetch(url, opts) {
 
 // ===== Auth functions =====
 function checkAuth() {
-  fetch('/api/auth/me').then(function(r) {
-    if (r.ok) return r.json();
-    return null;
-  }).then(function(data) {
-    if (data && data.ok) {
-      currentUser = data.user;
-      onLoginSuccess();
-    } else {
-      showLogin();
-    }
-  }).catch(function() {
-    showLogin();
-  });
+  // Static mode - skip API auth, show full UI immediately
+  onLoginSuccess();
 }
-
-// ===== 服务器连通性检测 =====
-(function() {
-  var dot = document.createElement('div');
-  dot.id = 'connDot';
-  dot.style.cssText = 'position:fixed;top:8px;right:8px;width:10px;height:10px;border-radius:50%;z-index:99999;transition:background .3s;background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,.6);';
-  document.body.appendChild(dot);
-  function check() {
-    fetch('/api/auth/me', { cache: 'no-store' }).then(function(r) {
-      dot.style.background = '#22c55e';
-      dot.style.boxShadow = '0 0 6px rgba(34,197,94,.6)';
-    }).catch(function() {
-      dot.style.background = '#ef4444';
-      dot.style.boxShadow = '0 0 6px rgba(239,68,68,.6)';
-    });
-  }
-  check();
-  setInterval(check, 5000);
-})();
 
 function doLogin(e) {
   e.preventDefault();
@@ -1305,11 +1274,9 @@ function doLogin(e) {
 }
 
 function doLogout() {
-  fetch('/api/auth/logout', { method: 'POST' }).then(function() {
-    currentUser = null;
-    showLogin();
-    closeUserDropdown();
-  });
+  // Static mode - reload page
+  location.reload();
+  closeUserDropdown();
 }
 
 function onLoginSuccess() {
