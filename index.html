@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -764,7 +764,7 @@
       <div class="sec-desc">全日制员工需提前一个月提出申请，按交接清单完成全部交接</div>
 
       <div class="card">
-        <div class="card-header"><span class="card-title">离职流程</span></div>
+        <div class="card-header"><span class="card-title">员工辞职流程</span></div>
         <div class="card-body">
           <div class="flow-chain">
             <div class="fc-node"><div class="fc-box coral" style="min-width:130px;">员工提前一个月<br>提出离职申请</div><div class="fc-label">全日制员工</div></div>
@@ -780,20 +780,21 @@
 
       <div class="dual-grid">
         <div class="card">
-          <div class="card-header"><span class="card-title">核心文件</span></div>
+          <div class="card-header"><span class="card-title" style="color:var(--coral);">员工辞职流程</span></div>
           <div class="card-body">
             <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">关联文件</div>
             <ul class="fl" id="wf-resign">
               <li style="color:var(--text-muted);">加载中...</li>
             </ul>
+            <div class="note"><strong>注意事项：</strong>全日制员工须提前 <strong>1 个月</strong> 提出申请，交接清单所有项目须逐项完成并 <strong>签字确认</strong>。</div>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><span class="card-title">注意事项</span></div>
+          <div class="card-header"><span class="card-title" style="color:var(--amber);">公司人员调整</span></div>
           <div class="card-body">
-            <ul class="step-list">
-              <li><span class="sn">!</span><span>全日制员工须提前 <strong>1 个月</strong> 提出申请</span></li>
-              <li><span class="sn">!</span><span>交接清单所有项目须逐项完成并 <strong>签字确认</strong></span></li>
+            <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">关联文件</div>
+            <ul class="fl" id="wf-resign-adjust">
+              <li style="color:var(--text-muted);">加载中...</li>
             </ul>
           </div>
         </div>
@@ -1226,10 +1227,19 @@ var WORKFLOW_TEMPLATES = {
   },
   resign: {
     '': {
-      title: '离职管理',
+      title: '员工辞职流程',
       items: [
         { name: '职工离职交接清单', slot: 'resign-离职交接清单' },
         { name: '离职申请表', slot: 'resign-离职申请表' }
+      ]
+    },
+    'adjust': {
+      title: '公司人员调整',
+      items: [
+        { name: '协商解除劳动合同协议', slot: 'resign-adjust-协商解除劳动合同协议' },
+        { name: '劳动合同到期终止协议', slot: 'resign-adjust-劳动合同到期终止协议' },
+        { name: '到期不续签通知书', slot: 'resign-adjust-到期不续签通知书' },
+        { name: '解除劳务协议通知书', slot: 'resign-adjust-解除劳务协议通知书' }
       ]
     }
   }
@@ -1422,6 +1432,7 @@ function showPage(id, navEl) {
   }
   if (id === 'resign') {
     renderWorkflowPage('resign', '', 'wf-resign', 'var(--coral)');
+    renderWorkflowPage('resign', 'adjust', 'wf-resign-adjust', 'var(--amber)');
   }
 }
 
@@ -1563,7 +1574,10 @@ function replaceSlotFile(docId, templateName) {
         renderWorkflowPage('renew', 'service', 'wf-renew-service', 'var(--amber)');
       };
     } else if (pageId === 'page-resign') {
-      currentSlotCallback = function() { renderWorkflowPage('resign', '', 'wf-resign', 'var(--coral)'); };
+      currentSlotCallback = function() {
+        renderWorkflowPage('resign', '', 'wf-resign', 'var(--coral)');
+        renderWorkflowPage('resign', 'adjust', 'wf-resign-adjust', 'var(--amber)');
+      };
     }
   }
 }
@@ -2368,6 +2382,7 @@ function renderPage(category, subType) {
     if (subType === 'service' || !subType) renderWorkflowPage('renew', 'service', 'wf-renew-service', 'var(--amber)');
   } else if (category === 'resign') {
     renderWorkflowPage('resign', '', 'wf-resign', 'var(--coral)');
+    renderWorkflowPage('resign', 'adjust', 'wf-resign-adjust', 'var(--amber)');
   }
 }
 
