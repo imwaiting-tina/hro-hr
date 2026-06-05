@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黄燕婷（Tina）· 系统上线计划 · 甘特图 v7</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f5f6fa;
+    color: #2c3042;
+    padding: 24px 28px 48px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 24px; padding-bottom: 16px;
+    border-bottom: 1px solid #e0e3ec;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #6c63ff, #a78bfa);
+    border: 2px solid #6c63ff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 600; color: #fff; flex-shrink: 0;
+  }
+  .header-title h1 { font-size: 18px; font-weight: 700; color: #1a1e2e; }
+  .header-title p { font-size: 11.5px; color: #6b7294; margin-top: 3px; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 500;
+  }
+  .pill-red { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+  .pill-purple { background: #ede9fe; color: #6c63ff; border: 1px solid #c4b5fd; }
+  .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+  /* SECTION */
+  .sec {
+    font-size: 10.5px; font-weight: 600; color: #8b90a8;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 10px; margin-top: 24px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sec::after { content: ''; flex: 1; height: 1px; background: #e0e3ec; }
+  .sec:first-of-type { margin-top: 0; }
+
+  /* MONTH LABELS */
+  .month-row {
+    display: grid;
+    grid-template-columns: 200px repeat(12, 1fr);
+    margin-bottom: 0;
+  }
+  .month-cell {
+    text-align: center; font-size: 11px; font-weight: 700; color: #6c63ff;
+    padding: 6px 0 4px;
+    border-left: 1px solid transparent;
+  }
+  .month-june { grid-column: 2 / 5; }
+  .month-july { grid-column: 5 / 9; }
+  .month-aug  { grid-column: 9 / 14; }
+
+  /* GANTT */
+  .gantt-wrap {
+    background: #ffffff; border: 1px solid #e5e7f0;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
+  }
+  .gantt-header {
+    display: grid;
+    grid-template-columns: 200px repeat(12, 1fr);
+    border-bottom: 2px solid #e5e7f0;
+    background: #fafbfe;
+  }
+  .gh-label {
+    padding: 10px 14px; font-size: 10px; font-weight: 600;
+    color: #8b90a8; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .gh-week {
+    padding: 6px 2px; text-align: center;
+    border-left: 1px solid #eef0f6;
+  }
+  .gh-week .wn { font-size: 11px; font-weight: 700; color: #1a1e2e; }
+  .gh-week .wd { font-size: 8.5px; color: #a0a6c0; margin-top: 1px; }
+
+  .gantt-row {
+    display: grid;
+    grid-template-columns: 200px repeat(12, 1fr);
+    border-bottom: 1px solid #f0f1f5;
+    min-height: 42px;
+    transition: background 0.15s;
+  }
+  .gantt-row:hover { background: #fafbff; }
+  .gantt-row:last-child { border-bottom: none; }
+
+  .gr-label {
+    padding: 8px 14px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .gr-name { font-size: 11.5px; font-weight: 600; color: #1a1e2e; line-height: 1.3; }
+  .gr-sub { font-size: 9px; color: #a0a6c0; margin-top: 1px; }
+
+  .gr-cell {
+    border-left: 1px solid #f0f1f5;
+    padding: 3px 2px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .bar {
+    width: 92%; height: 22px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8.5px; font-weight: 600; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .bar::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+    border-radius: 5px;
+  }
+  .b-purple { background: linear-gradient(90deg, #6c63ff, #a78bfa); }
+  .b-red    { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .b-amber  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .b-green  { background: linear-gradient(90deg, #10b981, #34d399); }
+  .b-blue   { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .b-pink   { background: linear-gradient(90deg, #ec4899, #f472b6); }
+  .b-teal   { background: linear-gradient(90deg, #14b8a6, #5eead4); }
+  .b-indigo { background: linear-gradient(90deg, #6366f1, #818cf8); }
+  .b-orange { background: linear-gradient(90deg, #f97316, #fb923c); }
+
+  .milestone {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #fff; font-weight: 700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .m-red { background: #dc2626; }
+  .m-green { background: #10b981; }
+
+  .cell-label {
+    font-size: 8px; color: #6b7294; text-align: center; line-height: 1.2;
+    max-width: 95%;
+  }
+
+  /* GROUP HEADER ROW */
+  .gantt-group {
+    display: grid;
+    grid-template-columns: 200px repeat(12, 1fr);
+    background: #f4f5fa;
+    border-bottom: 1px solid #e5e7f0;
+  }
+  .gg-label {
+    padding: 6px 14px;
+    font-size: 10px; font-weight: 700; color: #6c63ff;
+    letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .gg-label .gg-icon { font-size: 12px; }
+
+  /* PHASE BAR */
+  .phase-bar {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    background: #fafbfe;
+    border-bottom: 1px solid #e5e7f0;
+  }
+  .pb-label {
+    padding: 7px 14px; font-size: 10px; font-weight: 700; color: #8b90a8;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pb-track { display: flex; align-items: center; padding: 0 4px; gap: 2px; }
+  .pb-seg {
+    height: 20px; border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; font-size: 8.5px; font-weight: 600; color: #fff;
+  }
+  .s1 { flex: 2; background: linear-gradient(90deg, #6c63ff, #8b83ff); }
+  .s2 { flex: 6; background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .s3 { flex: 3; background: linear-gradient(90deg, #10b981, #34d399); }
+  .s4 { flex: 1; background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  /* WEEK DETAIL CARDS */
+  .week-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+  .wc {
+    background: #ffffff; border: 1px solid #e5e7f0;
+    border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .wc-full { grid-column: 1 / -1; }
+  .wc-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px; padding-bottom: 6px;
+    border-bottom: 1px solid #eef0f6;
+  }
+  .wc-title { font-size: 13px; font-weight: 700; color: #1a1e2e; }
+  .wc-date { font-size: 10px; color: #a0a6c0; }
+  .wc-focus {
+    display: inline-block; padding: 2px 8px; border-radius: 6px;
+    font-size: 9px; font-weight: 600; margin-bottom: 8px;
+  }
+  .wc-items { list-style: none; }
+  .wc-items li {
+    font-size: 10.5px; color: #4b5072; line-height: 1.6;
+    padding-left: 14px; position: relative; margin-bottom: 3px;
+  }
+  .wc-items li::before {
+    content: ''; position: absolute; left: 0; top: 6px;
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .wc-items li.purple::before { background: #6c63ff; }
+  .wc-items li.red::before    { background: #ef4444; }
+  .wc-items li.amber::before  { background: #f59e0b; }
+  .wc-items li.green::before  { background: #10b981; }
+  .wc-items li.blue::before   { background: #3b82f6; }
+  .wc-items li.pink::before   { background: #ec4899; }
+  .wc-items li.teal::before   { background: #14b8a6; }
+  .wc-items li.indigo::before { background: #6366f1; }
+  .wc-items li.orange::before { background: #f97316; }
+  .wc-tag {
+    display: inline-block; padding: 0px 5px; border-radius: 5px;
+    font-size: 8.5px; font-weight: 600; margin-left: 4px;
+    vertical-align: middle;
+  }
+  .wt-comm  { background: #ede9fe; color: #6c63ff; }
+  .wt-sys   { background: #dbeafe; color: #2563eb; }
+  .wt-doc   { background: #d1fae5; color: #059669; }
+  .wt-pri   { background: #fee2e2; color: #dc2626; }
+  .wt-data  { background: #fef3c7; color: #b45309; }
+  .wt-test  { background: #fee2e2; color: #dc2626; }
+
+  /* FOOTER */
+  .footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 14px; border-top: 1px solid #e0e3ec;
+    font-size: 10.5px; color: #a0a6c0;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="avatar">T</div>
+    <div class="header-title">
+      <h1>黄燕婷（Tina）· 系统上线计划</h1>
+      <p>全力系统上线 · 甘特图　6/8 — 8/31（12周）</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="pill pill-red"><span class="pill-dot"></span>Deadline · 8/31 系统上架</div>
+    <div class="pill pill-purple">W1—W12 · 6/8 — 8/31</div>
+  </div>
+</div>
+
+<!-- ══════════ GANTT CHART ══════════ -->
+<div class="sec">甘特图 · 十二周总览</div>
+
+<!-- Month labels -->
+<div class="month-row" style="margin-bottom:2px;">
+  <div style="padding:0 14px;"></div>
+  <div class="month-cell month-june">六月</div>
+  <div class="month-cell month-july">七月</div>
+  <div class="month-cell month-aug">八月</div>
+</div>
+
+<div class="gantt-wrap">
+
+  <!-- HEADER ROW -->
+  <div class="gantt-header">
+    <div class="gh-label">任务</div>
+    <div class="gh-week"><div class="wn">W1</div><div class="wd">6/8-6/13</div></div>
+    <div class="gh-week"><div class="wn">W2</div><div class="wd">6/15-6/20</div></div>
+    <div class="gh-week"><div class="wn">W3</div><div class="wd">6/22-6/27</div></div>
+    <div class="gh-week"><div class="wn">W4</div><div class="wd">6/29-7/4</div></div>
+    <div class="gh-week"><div class="wn">W5</div><div class="wd">7/6-7/11</div></div>
+    <div class="gh-week"><div class="wn">W6</div><div class="wd">7/13-7/18</div></div>
+    <div class="gh-week"><div class="wn">W7</div><div class="wd">7/20-7/25</div></div>
+    <div class="gh-week"><div class="wn">W8</div><div class="wd">7/27-8/1</div></div>
+    <div class="gh-week"><div class="wn">W9</div><div class="wd">8/3-8/8</div></div>
+    <div class="gh-week"><div class="wn">W10</div><div class="wd">8/10-8/15</div></div>
+    <div class="gh-week"><div class="wn">W11</div><div class="wd">8/17-8/22</div></div>
+    <div class="gh-week"><div class="wn">W12</div><div class="wd">8/24-8/31</div></div>
+  </div>
+
+  <!-- PHASE BAR -->
+  <div class="phase-bar">
+    <div class="pb-label">📊 阶段总览</div>
+    <div class="pb-track">
+      <div class="pb-seg s1">梳理盘点</div>
+      <div class="pb-seg s2">系统搭建</div>
+      <div class="pb-seg s3">测试修Bug</div>
+      <div class="pb-seg s4">上架</div>
+    </div>
+  </div>
+
+  <!-- ── GROUP: 流程梳理 ── -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">🔄</span>流程梳理 · 审批节点确认</div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">系统全流程 & 审批节点梳理</div>
+      <div class="gr-sub">参考V2.1说明书，逐模块确认</div>
+    </div>
+    <div class="gr-cell"><div class="bar b-purple">启动</div></div>
+    <div class="gr-cell"><div class="bar b-purple">深入</div></div>
+    <div class="gr-cell"><div class="bar b-purple">补全</div></div>
+    <div class="gr-cell"><div class="cell-label">确认</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">签字流程优先跑通</div>
+      <div class="gr-sub">线上签字→盖章全链路</div>
+    </div>
+    <div class="gr-cell"><div class="cell-label">设计</div></div>
+    <div class="gr-cell"><div class="bar b-red">开发</div></div>
+    <div class="gr-cell"><div class="bar b-red">联调</div></div>
+    <div class="gr-cell"><div class="milestone m-red">✓</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <!-- ── GROUP: 模块确认 ── -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">📋</span>模块确认 · 细节对齐</div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">保险模块梳理</div>
+      <div class="gr-sub">沟通：季嘉莉、沈明明、黄欢欢</div>
+    </div>
+    <div class="gr-cell"><div class="bar b-pink">沟通梳理</div></div>
+    <div class="gr-cell"><div class="cell-label">确认</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">员工手册优化</div>
+      <div class="gr-sub">对接：安子玥</div>
+    </div>
+    <div class="gr-cell"><div class="cell-label">对接</div></div>
+    <div class="gr-cell"><div class="bar b-amber">收集反馈</div></div>
+    <div class="gr-cell"><div class="bar b-amber">修改</div></div>
+    <div class="gr-cell"><div class="cell-label">定稿</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">大框架细节模块确认</div>
+      <div class="gr-sub">逐模块与V2.1对齐</div>
+    </div>
+    <div class="gr-cell"><div class="bar b-indigo">拆解</div></div>
+    <div class="gr-cell"><div class="bar b-indigo">逐模块确认</div></div>
+    <div class="gr-cell"><div class="bar b-indigo">确认</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <!-- ── GROUP: 内容产出 ── -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">📝</span>内容产出 · 文档与资料</div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">组织架构图更新</div>
+      <div class="gr-sub">参考以往架构，融入新变动</div>
+    </div>
+    <div class="gr-cell"><div class="bar b-blue">制作</div></div>
+    <div class="gr-cell"><div class="cell-label">确认</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">入职培训PPT更新</div>
+      <div class="gr-sub">与公司现状及新系统对齐</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-teal">PPT</div></div>
+    <div class="gr-cell"><div class="bar b-teal">定稿</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">职位管理整理</div>
+      <div class="gr-sub">每位在职员工的职能分工</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-amber">收集</div></div>
+    <div class="gr-cell"><div class="bar b-amber">整理</div></div>
+    <div class="gr-cell"><div class="bar b-amber">确认</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <!-- ── GROUP: 系统开发 ── -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">⚙️</span>系统开发 · 搭建与实现</div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">人事系统搭建（核心）</div>
+      <div class="gr-sub">按V2.1说明书 + 梳理结果开发</div>
+    </div>
+    <div class="gr-cell"><div class="bar b-green">架构</div></div>
+    <div class="gr-cell"><div class="bar b-green">招聘入职</div></div>
+    <div class="gr-cell"><div class="bar b-green">在职管理</div></div>
+    <div class="gr-cell"><div class="bar b-green">日常离职</div></div>
+    <div class="gr-cell"><div class="bar b-green">保险退休</div></div>
+    <div class="gr-cell"><div class="bar b-green">权限表单</div></div>
+    <div class="gr-cell"><div class="bar b-green">外部集成</div></div>
+    <div class="gr-cell"><div class="bar b-green">收尾</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">档案电子化</div>
+      <div class="gr-sub">获取扫描件 → 导入系统存档</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-blue">扫描</div></div>
+    <div class="gr-cell"><div class="bar b-blue">扫描</div></div>
+    <div class="gr-cell"><div class="bar b-blue">扫描</div></div>
+    <div class="gr-cell"><div class="bar b-blue">扫描</div></div>
+    <div class="gr-cell"><div class="bar b-blue">导入</div></div>
+    <div class="gr-cell"><div class="bar b-blue">导入</div></div>
+    <div class="gr-cell"><div class="cell-label">核对</div></div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+  </div>
+
+  <!-- ── GROUP: 测试上线 ── -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">🚀</span>测试 · 上架</div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">系统测试</div>
+      <div class="gr-sub">功能测试 + 流程跑通 + Bug修复</div>
+    </div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+    <div class="gr-cell"><div class="cell-label">自测启动</div></div>
+    <div class="gr-cell"><div class="bar b-orange">全面测试</div></div>
+    <div class="gr-cell"><div class="bar b-orange">Bug修复</div></div>
+    <div class="gr-cell"><div class="bar b-orange">回归验证</div></div>
+    <div class="gr-cell"><div class="bar b-orange">最终验收</div></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">系统上架 🎯</div>
+      <div class="gr-sub">最终交付 · 8/31</div>
+    </div>
+    <div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div><div class="gr-cell"></div>
+    <div class="gr-cell"><div class="milestone m-green">🚀</div></div>
+  </div>
+
+</div>
+
+<!-- ══════════ WEEK DETAILS ══════════ -->
+<div class="sec">每周计划详情（W1 — W12）</div>
+<div class="week-grid">
+
+  <!-- W1 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W1　6/8 — 6/13</div>
+      <div class="wc-date">第一周（本周）</div>
+    </div>
+    <div class="wc-focus" style="background:#ede9fe;color:#6c63ff;">🎯 梳理启动 + 保险模块沟通</div>
+    <ul class="wc-items">
+      <li class="purple"><strong>系统全流程 & 审批节点梳理（启动）</strong>——以V2.1说明书为底，逐模块拆解所有流程和审批签字节点<span class="wc-tag wt-sys">系统</span></li>
+      <li class="pink"><strong>保险模块梳理（沟通）</strong>——联系季嘉莉、沈明明、黄欢欢，收集险种、承保机构、保额、覆盖人员信息<span class="wc-tag wt-comm">沟通</span></li>
+      <li class="blue"><strong>组织架构图更新（制作）</strong>——参考以往架构图，融入近期变动<span class="wc-tag wt-doc">内容</span></li>
+      <li class="indigo"><strong>大框架细节模块确认（拆解）</strong>——将V2.1六大模块拆解为子模块，列出待确认问题<span class="wc-tag wt-sys">系统</span></li>
+    </ul>
+  </div>
+
+  <!-- W2 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W2　6/15 — 6/20</div>
+      <div class="wc-date">第二周</div>
+    </div>
+    <div class="wc-focus" style="background:#fee2e2;color:#dc2626;">🎯 签字流程设计 + 入职培训PPT + 保险确认</div>
+    <ul class="wc-items">
+      <li class="purple"><strong>系统全流程梳理（深入）</strong>——补充遗漏节点，与Jenny/Bella确认审批链路<span class="wc-tag wt-sys">系统</span></li>
+      <li class="red"><strong>签字流程设计</strong>——设计线上签字→盖章全链路，确定前置审批节点和流转逻辑<span class="wc-tag wt-pri">优先</span></li>
+      <li class="pink"><strong>保险模块梳理（确认）</strong>——汇总沟通结果，确认保险模块需求<span class="wc-tag wt-comm">沟通</span></li>
+      <li class="teal"><strong>入职培训PPT更新</strong>——更新内容框架、完成制作，整体定稿<span class="wc-tag wt-doc">内容</span></li>
+      <li class="indigo"><strong>大框架细节模块确认（深入）</strong>——逐模块确认字段、权限、流转规则<span class="wc-tag wt-sys">系统</span></li>
+    </ul>
+  </div>
+
+  <!-- W3 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W3　6/22 — 6/27</div>
+      <div class="wc-date">第三周</div>
+    </div>
+    <div class="wc-focus" style="background:#fee2e2;color:#dc2626;">🎯 签字流程开发 + 系统搭建启动 + 员工手册对接</div>
+    <ul class="wc-items">
+      <li class="red"><strong>签字流程开发</strong>——基于设计方案，开发线上签字确认功能，审批→签字→用印全链路<span class="wc-tag wt-pri">优先</span></li>
+      <li class="green"><strong>人事系统搭建（基础架构）</strong>——数据库表设计、RLS权限策略、Storage配置、前端框架<span class="wc-tag wt-sys">系统</span></li>
+      <li class="amber"><strong>员工手册优化（对接安子玥）</strong>——收集优化意见和修改需求<span class="wc-tag wt-comm">沟通</span></li>
+      <li class="amber"><strong>职位管理整理（启动收集）</strong>——开始收集每位在职员工职能分工信息<span class="wc-tag wt-data">数据</span></li>
+      <li class="blue"><strong>档案电子化（启动扫描）</strong>——开始分批获取纸质档案扫描件<span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- W4 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W4　6/29 — 7/4</div>
+      <div class="wc-date">第四周</div>
+    </div>
+    <div class="wc-focus" style="background:#dbeafe;color:#2563eb;">🎯 签字流程联调 + 招聘入职模块开发</div>
+    <ul class="wc-items">
+      <li class="purple"><strong>系统全流程梳理（补全确认）</strong>——最终确认所有模块流程和审批节点，形成完整流程图<span class="wc-tag wt-sys">系统</span></li>
+      <li class="red"><strong>签字流程联调测试</strong>——全链路联调，确保审批→签字→用印跑通<span class="wc-tag wt-pri">优先</span></li>
+      <li class="green"><strong>人事系统搭建（招聘+入职模块）</strong>——开发招聘管理、入职管理核心模块<span class="wc-tag wt-sys">系统</span></li>
+      <li class="amber"><strong>员工手册优化（收集反馈）</strong>——汇总安子玥反馈，整理修改清单<span class="wc-tag wt-comm">沟通</span></li>
+      <li class="blue"><strong>档案电子化（持续扫描）</strong>——继续分批扫描<span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- W5 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W5　7/6 — 7/11</div>
+      <div class="wc-date">第五周</div>
+    </div>
+    <div class="wc-focus" style="background:#dbeafe;color:#2563eb;">🎯 在职管理模块 + 手册定稿 + 职位管理确认</div>
+    <ul class="wc-items">
+      <li class="green"><strong>人事系统搭建（在职管理模块）</strong>——试用期、转正、合同续签、调岗调薪<span class="wc-tag wt-sys">系统</span></li>
+      <li class="amber"><strong>员工手册优化（修改定稿）</strong>——完成修改，形成终版<span class="wc-tag wt-doc">内容</span></li>
+      <li class="amber"><strong>职位管理整理（确认）</strong>——逐部门确认职能分工信息<span class="wc-tag wt-data">数据</span></li>
+      <li class="blue"><strong>档案电子化（持续扫描）</strong>——继续分批扫描<span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- W6 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W6　7/13 — 7/18</div>
+      <div class="wc-date">第六周</div>
+    </div>
+    <div class="wc-focus" style="background:#dbeafe;color:#2563eb;">🎯 日常+离职模块开发</div>
+    <ul class="wc-items">
+      <li class="green"><strong>人事系统搭建（日常管理模块）</strong>——钉钉假期、请假、排班、发薪<span class="wc-tag wt-sys">系统</span></li>
+      <li class="green"><strong>人事系统搭建（离职管理模块）</strong>——离职申请、交接清单、社保减员<span class="wc-tag wt-sys">系统</span></li>
+      <li class="blue"><strong>档案电子化（持续扫描）</strong>——继续分批扫描<span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- W7 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W7　7/20 — 7/25</div>
+      <div class="wc-date">第七周</div>
+    </div>
+    <div class="wc-focus" style="background:#dbeafe;color:#2563eb;">🎯 保险退休模块 + 权限表单</div>
+    <ul class="wc-items">
+      <li class="green"><strong>人事系统搭建（保险+退休模块）</strong>——保险管理、退休管理，数据来自W1-W2梳理成果<span class="wc-tag wt-sys">系统</span></li>
+      <li class="green"><strong>人事系统搭建（权限体系）</strong>——角色权限、RLS策略、薪资隔离<span class="wc-tag wt-sys">系统</span></li>
+      <li class="blue"><strong>档案电子化（系统导入启动）</strong>——将已扫描档案批量导入系统<span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- W8 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W8　7/27 — 8/1</div>
+      <div class="wc-date">第八周</div>
+    </div>
+    <div class="wc-focus" style="background:#fef3c7;color:#b45309;">🎯 表单电子化 + 外部集成</div>
+    <ul class="wc-items">
+      <li class="green"><strong>人事系统搭建（表单电子化）</strong>——全量表单清单、专属链接、PDF导出、归档存储<span class="wc-tag wt-sys">系统</span></li>
+      <li class="green"><strong>人事系统搭建（外部集成）</strong>——钉钉考勤/假期/发薪、用印系统对接<span class="wc-tag wt-sys">系统</span></li>
+      <li class="blue"><strong>档案电子化（持续导入）</strong>——继续导入已扫描档案<span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- W9 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W9　8/3 — 8/8</div>
+      <div class="wc-date">第九周</div>
+    </div>
+    <div class="wc-focus" style="background:#fef3c7;color:#b45309;">🎯 系统收尾 + 自测启动</div>
+    <ul class="wc-items">
+      <li class="green"><strong>人事系统搭建（收尾完善）</strong>——修复开发中遗留问题，补全边界条件和异常处理<span class="wc-tag wt-sys">系统</span></li>
+      <li class="blue"><strong>档案电子化（核对）</strong>——核对已导入档案与系统记录的一致性<span class="wc-tag wt-doc">档案</span></li>
+      <li class="orange"><strong>系统自测启动</strong>——已完成的核心功能开始自测，记录Bug<span class="wc-tag wt-test">测试</span></li>
+    </ul>
+  </div>
+
+  <!-- W10 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W10　8/10 — 8/15</div>
+      <div class="wc-date">第十周</div>
+    </div>
+    <div class="wc-focus" style="background:#fee2e2;color:#dc2626;">🎯 全面测试</div>
+    <ul class="wc-items">
+      <li class="orange"><strong>系统全面测试</strong>——全模块功能测试、流程跑通、权限验证、边界条件测试<span class="wc-tag wt-test">测试</span></li>
+      <li class="orange"><strong>签字盖章流程全链路验证</strong>——端到端跑通审批→签字→用印全流程<span class="wc-tag wt-test">测试</span></li>
+      <li class="blue"><strong>档案导入收尾</strong>——确认所有档案已导入系统<span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- W11 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W11　8/17 — 8/22</div>
+      <div class="wc-date">第十一周</div>
+    </div>
+    <div class="wc-focus" style="background:#fee2e2;color:#dc2626;">🎯 Bug修复 + 回归验证</div>
+    <ul class="wc-items">
+      <li class="orange"><strong>Bug修复（第一批）</strong>——修复测试阶段发现的Bug，优先处理阻断性问题<span class="wc-tag wt-test">测试</span></li>
+      <li class="orange"><strong>回归测试</strong>——已修复功能回归验证<span class="wc-tag wt-test">测试</span></li>
+    </ul>
+  </div>
+
+  <!-- W12 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W12　8/24 — 8/31</div>
+      <div class="wc-date">第十二周</div>
+    </div>
+    <div class="wc-focus" style="background:#d1fae5;color:#059669;">🎯 最终验收 + 上架交付</div>
+    <ul class="wc-items">
+      <li class="orange"><strong>Bug修复（第二批）+ 回归验证</strong>——修复剩余Bug，全面回归<span class="wc-tag wt-test">测试</span></li>
+      <li class="green"><strong>用户验收准备</strong>——数据迁移、权限配置、用户操作手册<span class="wc-tag wt-sys">系统</span></li>
+      <li class="green"><strong>系统上架 🎯</strong>——最终数据迁移、权限配置、用户验收，确认系统可正常使用<span class="wc-tag wt-pri">交付</span></li>
+      <li class="orange"><strong>上线后观察</strong>——监控系统运行状态，快速响应问题<span class="wc-tag wt-test">运维</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>黄燕婷（Tina） · 人力资源部</span>
+  <span>更新于 6/5 · v7.0</span>
+</div>
+
+</body>
+</html>
