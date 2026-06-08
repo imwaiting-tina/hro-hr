@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRO集团 · 招聘全流程</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; background: #f0f4f8; color: #333; min-height:100vh; }
+.header { background: linear-gradient(135deg,#1a3a5c,#2b579a); color: #fff; padding: 32px 24px; text-align: center; }
+.header h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; }
+.header p { font-size: 14px; opacity: .8; margin-top: 8px; }
+.stats { display: flex; justify-content: center; gap: 40px; margin-top: 16px; flex-wrap: wrap; }
+.stat-item { text-align: center; }
+.stat-num { font-size: 32px; font-weight: 700; }
+.stat-label { font-size: 13px; opacity: .75; }
+.container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+.legend { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.flow { position: relative; }
+.timeline { position: absolute; left: 72px; top: 0; bottom: 0; width: 3px; background: #c8d6e5; }
+.node { position: relative; display: flex; gap: 20px; margin-bottom: 4px; cursor: pointer; }
+.node:hover .node-card { transform: translateX(4px); box-shadow: 0 4px 20px rgba(43,87,154,.18); }
+.node-num { width: 44px; height: 44px; border-radius: 50%; background: #2b579a; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0; z-index: 2; position: relative; margin-left: 51px; }
+.node-num.hr { background: #e67e22; }
+.node-num.bu { background: #3498db; }
+.node-num.interviewer { background: #9b59b6; }
+.node-num.system { background: #1abc9c; }
+.node-num.board { background: #e74c3c; }
+.node-num.mixed { background: #f39c12; }
+.node-card { flex: 1; background: #fff; border-radius: 10px; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,.06); transition: .25s; border-left: 4px solid #2b579a; position: relative; z-index: 1; }
+.node-card.hr-card { border-left-color: #e67e22; }
+.node-card.bu-card { border-left-color: #3498db; }
+.node-card.interviewer-card { border-left-color: #9b59b6; }
+.node-card.system-card { border-left-color: #1abc9c; }
+.node-card.board-card { border-left-color: #e74c3c; }
+.node-card.mixed-card { border-left-color: #f39c12; }
+.node-title { font-size: 16px; font-weight: 700; color: #1a3a5c; }
+.node-role { font-size: 12px; color: #888; margin-bottom: 6px; }
+.node-role span { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 4px; }
+.role-hr { background: #fdebd0; color: #e67e22; }
+.role-bu { background: #d6eaf8; color: #3498db; }
+.role-interviewer { background: #e8daef; color: #9b59b6; }
+.role-system { background: #d1f2eb; color: #16a085; }
+.role-board { background: #fadbd8; color: #e74c3c; }
+.role-mixed { background: #fef9e7; color: #f39c12; }
+.node-tasks { font-size: 13px; color: #555; line-height: 1.7; margin-top: 4px; }
+.node-doc { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e0e0e0; font-size: 12px; color: #888; display: flex; align-items: center; gap: 6px; }
+.doc-icon { font-size: 16px; }
+.connector { display: flex; align-items: center; justify-content: flex-start; padding: 4px 0 4px 72px; position: relative; z-index: 1; }
+.connector-line { height: 28px; width: 3px; background: #c8d6e5; margin-left: 21px; }
+.approval-badge { display: inline-block; background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 6px; }
+.detail-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 100; justify-content: center; align-items: center; }
+.detail-overlay.active { display: flex; }
+.detail-card { background: #fff; border-radius: 14px; max-width: 640px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 28px; position: relative; box-shadow: 0 8px 40px rgba(0,0,0,.2); }
+.detail-close { position: absolute; top: 12px; right: 16px; border: none; background: none; font-size: 24px; cursor: pointer; color: #999; }
+.detail-close:hover { color: #333; }
+.detail-title { font-size: 20px; font-weight: 700; color: #1a3a5c; margin-bottom: 12px; }
+.detail-section { margin-bottom: 16px; }
+.detail-section h4 { font-size: 13px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.detail-section p,.detail-section li { font-size: 14px; color: #444; line-height: 1.7; }
+.detail-section ul { padding-left: 18px; }
+.detail-files { display: flex; flex-wrap: wrap; gap: 6px; }
+.detail-file-tag { background: #e8f0fe; color: #1a3a5c; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+.footer { text-align: center; padding: 32px; color: #999; font-size: 12px; }
+@media (max-width: 768px) {
+  .timeline,.connector-line { left: 36px; }
+  .node-num { margin-left: 15px; width: 36px; height: 36px; font-size: 14px; }
+  .node { gap: 12px; }
+  .connector { padding-left: 36px; }
+  .header h1 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>HRO Group · 招聘全流程</h1>
+  <p>收简历 → 需求发布 → 匹配 → 面试(HR/部门/董事) → 审批 → Offer → 入职准备</p>
+  <div class="stats">
+    <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">流程节点</div></div>
+    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">参与角色</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">核心表单</div></div>
+    <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">状态类型</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot" style="background:#e67e22"></span> HR</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#3498db"></span> 用人部门(BU)</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#e74c3c"></span> 董事/老板</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9b59b6"></span> 面试者</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#1abc9c"></span> 系统自动</div>
+</div>
+
+<div class="flow">
+
+<div class="node" onclick="openDetail(1)">
+  <div class="node-num hr">1</div>
+  <div class="node-card hr-card">
+    <div class="node-title">简历收集与入库</div>
+    <div class="node-role"><span class="role-hr">HR</span> 日常持续操作</div>
+    <div class="node-tasks">多渠道收集简历 → 上传至CV库 → 系统自动+手动打标签 → 去重检查 → 状态设为"待筛选"</div>
+    <div class="node-doc"><span class="doc-icon">📄</span> 简历文件 → CV库存储</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(2)">
+  <div class="node-num bu">2</div>
+  <div class="node-card bu-card">
+    <div class="node-title">用人需求发布与审批</div>
+    <div class="node-role"><span class="role-bu">BU Head</span> <span class="role-hr">人事部</span> <span class="role-board">Jenny</span></div>
+    <div class="node-tasks">填写聘用员工申请表 → 人事部确认(编制+预算) → Jenny终审 → 发布 → 系统自动匹配CV库 <span class="approval-badge">三级审批</span></div>
+    <div class="node-doc"><span class="doc-icon">📋</span> HRT-000-2022 聘用员工申请表</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(3)">
+  <div class="node-num hr">3</div>
+  <div class="node-card hr-card">
+    <div class="node-title">简历匹配与初筛</div>
+    <div class="node-role"><span class="role-hr">HR</span></div>
+    <div class="node-tasks">根据岗位标签从CV库检索 → 多标签组合筛选 → 关键词全文搜索 → 生成候选人短名单 → 标记"已推荐"</div>
+    <div class="node-doc"><span class="doc-icon">🔍</span> 候选人短名单</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(4)">
+  <div class="node-num hr">4</div>
+  <div class="node-card hr-card">
+    <div class="node-title">HR一面</div>
+    <div class="node-role"><span class="role-hr">HR</span></div>
+    <div class="node-tasks">发送面试通知 → 面试 → 填写一面评估 → 通过则系统自动触发求职申请表（发送免登录链接给面试者）<br>不通过 → 标记"人才储备"</div>
+    <div class="node-doc"><span class="doc-icon">📝</span> 一面评估记录 + 触发求职申请表链接</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(5)">
+  <div class="node-num interviewer">5</div>
+  <div class="node-card interviewer-card">
+    <div class="node-title">求职申请表填写</div>
+    <div class="node-role"><span class="role-interviewer">面试者</span> 免登录·专属链接</div>
+    <div class="node-tasks">点击专属链接 → 填写基本信息(姓名/联系方式/教育/工作经历/技能/期望薪资等) → 电子签名 → 提交</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块一</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(6)">
+  <div class="node-num bu">6</div>
+  <div class="node-card bu-card">
+    <div class="node-title">部门二面</div>
+    <div class="node-role"><span class="role-bu">BU Head</span></div>
+    <div class="node-tasks">系统发送求职申请表+二面通知 → BU Head查看基本信息 → 安排面试 → 填写二面评价(通过/不通过/待定) → 结果自动同步HR</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块二(二面)</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(7)">
+  <div class="node-num board">7</div>
+  <div class="node-card board-card">
+    <div class="node-title">董事终面</div>
+    <div class="node-role"><span class="role-board">董事/老板</span></div>
+    <div class="node-tasks">系统发送求职申请表+终面通知 → 查看前两轮评价 → 面试 → 给出最终结论(录用/不录用) → 结果同步HR+BU Head</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块二(终面)</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(8)">
+  <div class="node-num mixed">8</div>
+  <div class="node-card mixed-card">
+    <div class="node-title">综合评估与录用审批</div>
+    <div class="node-role"><span class="role-bu">BU Head</span> <span class="role-hr">人事部</span> <span class="role-board">Jenny</span></div>
+    <div class="node-tasks">三方评估汇总 → BU Head填写录用审批单(岗位/薪资/入职日期/合同类型) → 三级签字 → 审批完成 <span class="approval-badge">审批完成→方可盖章用印</span></div>
+    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块三(录用审批单) ─ 此为唯一审批载体</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(9)">
+  <div class="node-num hr">9</div>
+  <div class="node-card hr-card">
+    <div class="node-title">入职谈话</div>
+    <div class="node-role"><span class="role-hr">HR</span> <span class="role-system">系统·腾讯会议</span></div>
+    <div class="node-tasks">HR选择时间 → 系统自动预约腾讯会议 → 短信通知面试者 → 线上谈话(确认到岗日期/薪资福利/合同) → HR填写纪要</div>
+    <div class="node-doc"><span class="doc-icon">🎥</span> 腾讯会议记录 + 谈话纪要</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(10)">
+  <div class="node-num hr">10</div>
+  <div class="node-card hr-card">
+    <div class="node-title">Offer发送</div>
+    <div class="node-role"><span class="role-hr">HR</span> <span class="role-system">系统·公司邮箱</span></div>
+    <div class="node-tasks">HR选择模板 → 系统生成录用通知书PDF → 设定回复时效(默认X小时) → 公司公共邮箱自动发送 → 状态"Offer待回复"</div>
+    <div class="node-doc"><span class="doc-icon">📧</span> HRT-003-2020 录用通知书 PDF</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(11)">
+  <div class="node-num system">11</div>
+  <div class="node-card system-card">
+    <div class="node-title">Offer追踪</div>
+    <div class="node-role"><span class="role-system">系统自动</span></div>
+    <div class="node-tasks">定时轮询邮箱 → 智能识别回复(接受/拒绝) → 接受→通知HR启动入职 | 拒绝→流程结束 | 超时→"已过期"可延期重发 → 临近截止自动提醒</div>
+    <div class="node-doc"><span class="doc-icon">🤖</span> 邮件回复 + 语义识别</div>
+  </div>
+</div>
+<div class="connector"><div class="connector-line"></div></div>
+
+<div class="node" onclick="openDetail(12)">
+  <div class="node-num hr">12</div>
+  <div class="node-card hr-card">
+    <div class="node-title"><span style="font-size:18px;">🚀</span> 入职准备交接</div>
+    <div class="node-role"><span class="role-hr">HR</span> 流程进入入职管理模块</div>
+    <div class="node-tasks">Offer被接收 → 系统自动通知HR → 启动入职准备：入职引导表、行政安排(门禁/HKMS/工位)、合同准备、钉钉入职、培训通知</div>
+    <div class="node-doc"><span class="doc-icon">📦</span> 流程交接至入职管理模块 → 产品说明书第五章</div>
+  </div>
+</div>
+
+</div><!-- flow -->
+</div><!-- container -->
+
+<div class="footer">HRO Group · 招聘管理板块全流程 &copy; 2026 · GitHub Pages 部署</div>
+
+<!-- 弹窗详情 -->
+<div class="detail-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()">
+<div class="detail-card" id="detailCard"></div>
+</div>
+
+<script>
+const nodeData = [
+  null,
+  {
+    title:'N1 简历收集与入库',
+    executor:'HR（日常操作）',
+    tasks:['多渠道收集简历：招聘网站下载、邮件自动抓取、内推上传、猎头推荐','上传至系统CV库（支持PDF/Word/图片格式）','系统自动打标签（技能/行业/职级/来源）+ HR手动补充修正','基于"姓名+手机号+邮箱"自动去重','首次入库默认状态"待筛选"'],
+    files:['简历文件 → CV库存储'],
+    deps:'无（日常持续操作）'
+  },
+  {
+    title:'N2 用人需求发布与审批',
+    executor:'BU Head 填写 → 人事部确认 → Jenny终审',
+    tasks:['BU Head登录系统 → 进入"用人需求"→"新建申请"','填写《聘用员工申请表》(HRT-000-2022)：岗位名称、人数、地点、期望到岗日期（工作时效起点）、职责、要求、薪资预算、用工性质、紧急程度等','字段联动：选择"替代离职"时弹出被替代员工搜索框','预算校验：超出预算申请给出系统提示','提交 → 人事部确认(审核编制与预算) → 可确认/驳回/要求补充','人事部确认通过 → 自动推送Jenny终审 → 正式发布 → 系统匹配CV库推荐候选人'],
+    files:['HRT-000-2022 聘用员工申请表（已审批发布）'],
+    deps:'审批链：BU Head → 人事部确认 → Jenny确认 → 已发布'
+  },
+  {
+    title:'N3 简历匹配与初筛',
+    executor:'HR',
+    tasks:['根据已发布岗位标签从CV库检索匹配简历','多标签组合筛选 + 关键词全文搜索','生成候选人短名单','逐一查看简历详情，筛选进入面试候选人','被选中简历状态更新为"已推荐"'],
+    files:['候选人短名单（从CV库标记）'],
+    deps:'依赖：N2需求已发布'
+  },
+  {
+    title:'N4 HR一面',
+    executor:'HR',
+    tasks:['通过系统向候选人发送面试通知','进行HR一面面试','面试后在系统填写一面评估(评价+通过/不通过)','通过 → 系统自动发送免登录Token链接，触发求职申请表填写','不通过 → 简历标记"一面未通过"→ 可入人才储备'],
+    files:['一面评估记录'],
+    deps:'依赖：N3初筛完成'
+  },
+  {
+    title:'N5 求职申请表填写',
+    executor:'面试者（无系统账号，通过专属Token链接访问）',
+    tasks:['点击专属链接打开电子表单','填写Part1基本信息：姓名/性别/出生日期/身份证号/手机/邮箱/地址/学历/工作经历/教育经历/技能/期望薪资等','上传电子签名','支持草稿保存，中途可暂停','提交前预览确认 → 提交后不可修改(可申请重填)'],
+    files:['HRP-001-2023 求职申请表 板块一（面试者基本信息）'],
+    deps:'依赖：N4 HR一面通过'
+  },
+  {
+    title:'N6 部门二面',
+    executor:'BU Head（用人部门负责人）',
+    tasks:['系统自动发送求职申请表+二面通知给BU Head','BU Head查看求职申请表Part1（面试者基本信息）','安排二面并面试','填写二面评价：评分 + 文字 + 结果(通过/不通过/待定)','不通过→填写拒因→标记"二面未通过"→可入人才储备','通过→系统自动推进终面安排','二面结果自动同步HR'],
+    files:['HRP-001-2023 求职申请表 板块二（二面评价）'],
+    deps:'依赖：N5求职申请表Part1完成'
+  },
+  {
+    title:'N7 董事终面',
+    executor:'董事（Jenny作为终面面试官）',
+    tasks:['系统自动发送求职申请表+终面通知给董事','董事查看Part1+Part2（基本信息+二面评价）','安排终面并面试','填写终面评价+最终结论(录用/不录用)','不录用→填写拒因→流程结束','录用→系统推进综合评估与录用审批','终面结果自动同步HR+BU Head'],
+    files:['HRP-001-2023 求职申请表 板块二（终面评价与结论）'],
+    deps:'依赖：N6二面通过'
+  },
+  {
+    title:'N8 综合评估与录用审批',
+    executor:'BU Head填写 + 人事部签字 + Jenny签字（三级审批）',
+    tasks:['HR综合一面/二面/终面评估，BU Head录入录用审批单','填写Part3：录用岗位、建议薪资(基本+绩效+补贴)、入职日期、试用期、合同类型','BU Head电子签名 → 人事部签字 → Jenny签字','三方签字完毕 → 录用审批完成 → 通知HR推进','⚠ 此板块即为全系统唯一的录用审批载体，入职管理不重复'],
+    files:['HRP-001-2023 求职申请表 板块三（录用审批单·三方已签）'],
+    deps:'审批链：BU Head → 人事部 → Jenny'
+  },
+  {
+    title:'N9 入职谈话',
+    executor:'HR + 腾讯会议系统',
+    tasks:['HR选择谈话时间 → 系统调用腾讯会议API自动创建会议','系统发送含会议号和入会链接的短信通知面试者','线上入职谈话：确认到岗日期、沟通薪资福利、说明合同信息','HR在系统填写谈话纪要','确认面试者接受条件 → 推进Offer流程'],
+    files:['腾讯会议记录 + 谈话纪要'],
+    deps:'外部集成：腾讯会议API + 短信服务'
+  },
+  {
+    title:'N10 Offer发送',
+    executor:'HR + 公司邮箱系统',
+    tasks:['HR选择Offer邮件模板（支持变量替换：{姓名}{岗位}{薪资}等）','系统自动生成《录用通知书》(HRT-003-2020)PDF','HR设定回复截止时间(默认X小时)','系统通过公司公共邮箱自动发送Offer邮件','状态变更为"Offer待回复"'],
+    files:['HRT-003-2020 录用通知书 PDF'],
+    deps:'前提：N8录用审批完成 + N9入职谈话完成'
+  },
+  {
+    title:'N11 Offer追踪',
+    executor:'系统自动执行',
+    tasks:['定时轮询公司邮箱收件箱','通过关键词/语义分析识别回复意图','接受 → "已录用"→通知HR→触发入职准备','拒绝 → "已拒绝"→通知HR→流程结束','超时未回 → "已过期"→通知HR→可手动延期重发','临近截止自动发送提醒邮件'],
+    files:['邮件回复 + 系统自动识别结果'],
+    deps:'外部集成：公司邮箱(SMTP/IMAP) + 智能语义识别'
+  },
+  {
+    title:'N12 入职准备交接',
+    executor:'HR',
+    tasks:['Offer被接收 → 系统自动通知HR','启动入职准备流程：填写入职引导表','行政安排自动通知：门禁卡(Bob)、HKMS账户(Jason)、工位+电脑+文具(物业部)','准备合同版本(劳动/劳务/实习/保安版)','钉钉入职 + 培训通知','流程进入入职管理模块（产品说明书第五章）'],
+    files:['流程交接至入职管理模块'],
+    deps:'依赖：N11 Offer被接收'
+  }
+];
+
+function openDetail(n) {
+  const d = nodeData[n];
+  if (!d) return;
+  let html = `<button class="detail-close" onclick="closeDetail()">&times;</button>`;
+  html += `<div class="detail-title">${d.title}</div>`;
+  html += `<div class="detail-section"><h4>👤 执行人</h4><p>${d.executor}</p></div>`;
+  html += `<div class="detail-section"><h4>✅ 任务清单</h4><ul>${d.tasks.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
+  html += `<div class="detail-section"><h4>📄 产出文件</h4><div class="detail-files">${d.files.map(f=>`<span class="detail-file-tag">${f}</span>`).join('')}</div></div>`;
+  html += `<div class="detail-section"><h4>🔗 依赖 / 审批链</h4><p>${d.deps}</p></div>`;
+  document.getElementById('detailCard').innerHTML = html;
+  document.getElementById('detailOverlay').classList.add('active');
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('active');
+}
+</script>
+
+</body>
+</html>
