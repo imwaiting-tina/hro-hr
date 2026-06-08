@@ -115,7 +115,7 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; background: #f0f
     <div class="node-title">用人需求发布与审批</div>
     <div class="node-role"><span class="role-bu">BU Head</span> <span class="role-hr">人事部</span> <span class="role-board">Jenny</span></div>
     <div class="node-tasks">填写聘用员工申请表 → 人事部确认(编制+预算) → Jenny终审 → 发布 → 系统自动匹配CV库 <span class="approval-badge">三级审批</span></div>
-    <div class="node-doc"><span class="doc-icon">📋</span> HRT-000-2022 聘用员工申请表</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> 《HRT-000-2022 聘用员工申请表》</div>
   </div>
 </div>
 <div class="connector"><div class="connector-line"></div></div>
@@ -148,7 +148,7 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; background: #f0f
     <div class="node-title">求职申请表填写</div>
     <div class="node-role"><span class="role-interviewer">面试者</span> 免登录·专属链接</div>
     <div class="node-tasks">点击专属链接 → 填写基本信息(姓名/联系方式/教育/工作经历/技能/期望薪资等) → 电子签名 → 提交</div>
-    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块一</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> 《HRP-001-2023 求职申请表》· 板块一</div>
   </div>
 </div>
 <div class="connector"><div class="connector-line"></div></div>
@@ -159,7 +159,7 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; background: #f0f
     <div class="node-title">部门二面</div>
     <div class="node-role"><span class="role-bu">BU Head</span></div>
     <div class="node-tasks">系统发送求职申请表+二面通知 → BU Head查看基本信息 → 安排面试 → 填写二面评价(通过/不通过/待定) → 结果自动同步HR</div>
-    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块二(二面)</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> 《HRP-001-2023 求职申请表》· 板块二(二面)</div>
   </div>
 </div>
 <div class="connector"><div class="connector-line"></div></div>
@@ -170,7 +170,7 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; background: #f0f
     <div class="node-title">董事终面</div>
     <div class="node-role"><span class="role-board">董事/老板</span></div>
     <div class="node-tasks">系统发送求职申请表+终面通知 → 查看前两轮评价 → 面试 → 给出最终结论(录用/不录用) → 结果同步HR+BU Head</div>
-    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块二(终面)</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> 《HRP-001-2023 求职申请表》· 板块二(终面)</div>
   </div>
 </div>
 <div class="connector"><div class="connector-line"></div></div>
@@ -181,7 +181,7 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; background: #f0f
     <div class="node-title">综合评估与录用审批</div>
     <div class="node-role"><span class="role-bu">BU Head</span> <span class="role-hr">人事部</span> <span class="role-board">Jenny</span></div>
     <div class="node-tasks">三方评估汇总 → BU Head填写录用审批单(岗位/薪资/入职日期/合同类型) → 三级签字 → 审批完成 <span class="approval-badge">审批完成→方可盖章用印</span></div>
-    <div class="node-doc"><span class="doc-icon">📋</span> HRP-001-2023 求职申请表 · 板块三(录用审批单) ─ 此为唯一审批载体</div>
+    <div class="node-doc"><span class="doc-icon">📋</span> 《HRP-001-2023 求职申请表》· 板块三(录用审批单) ─ 此为唯一审批载体</div>
   </div>
 </div>
 <div class="connector"><div class="connector-line"></div></div>
@@ -203,7 +203,7 @@ body { font-family: 'Microsoft YaHei','PingFang SC',sans-serif; background: #f0f
     <div class="node-title">Offer发送</div>
     <div class="node-role"><span class="role-hr">HR</span> <span class="role-system">系统·公司邮箱</span></div>
     <div class="node-tasks">HR选择模板 → 系统生成录用通知书PDF → 设定回复时效(默认X小时) → 公司公共邮箱自动发送 → 状态"Offer待回复"</div>
-    <div class="node-doc"><span class="doc-icon">📧</span> HRT-003-2020 录用通知书 PDF</div>
+    <div class="node-doc"><span class="doc-icon">📧</span> 《HRT-003-2020 录用通知书》 PDF</div>
   </div>
 </div>
 <div class="connector"><div class="connector-line"></div></div>
@@ -253,7 +253,7 @@ const nodeData = [
     title:'N2 用人需求发布与审批',
     executor:'BU Head 填写 → 人事部确认 → Jenny终审',
     tasks:['BU Head登录系统 → 进入"用人需求"→"新建申请"','填写《聘用员工申请表》(HRT-000-2022)：岗位名称、人数、地点、期望到岗日期（工作时效起点）、职责、要求、薪资预算、用工性质、紧急程度等','字段联动：选择"替代离职"时弹出被替代员工搜索框','预算校验：超出预算申请给出系统提示','提交 → 人事部确认(审核编制与预算) → 可确认/驳回/要求补充','人事部确认通过 → 自动推送Jenny终审 → 正式发布 → 系统匹配CV库推荐候选人'],
-    files:['HRT-000-2022 聘用员工申请表（已审批发布）'],
+    files:['《HRT-000-2022 聘用员工申请表》（已审批发布）'],
     deps:'审批链：BU Head → 人事部确认 → Jenny确认 → 已发布'
   },
   {
@@ -274,28 +274,28 @@ const nodeData = [
     title:'N5 求职申请表填写',
     executor:'面试者（无系统账号，通过专属Token链接访问）',
     tasks:['点击专属链接打开电子表单','填写Part1基本信息：姓名/性别/出生日期/身份证号/手机/邮箱/地址/学历/工作经历/教育经历/技能/期望薪资等','上传电子签名','支持草稿保存，中途可暂停','提交前预览确认 → 提交后不可修改(可申请重填)'],
-    files:['HRP-001-2023 求职申请表 板块一（面试者基本信息）'],
+    files:['《HRP-001-2023 求职申请表》板块一（面试者基本信息）'],
     deps:'依赖：N4 HR一面通过'
   },
   {
     title:'N6 部门二面',
     executor:'BU Head（用人部门负责人）',
     tasks:['系统自动发送求职申请表+二面通知给BU Head','BU Head查看求职申请表Part1（面试者基本信息）','安排二面并面试','填写二面评价：评分 + 文字 + 结果(通过/不通过/待定)','不通过→填写拒因→标记"二面未通过"→可入人才储备','通过→系统自动推进终面安排','二面结果自动同步HR'],
-    files:['HRP-001-2023 求职申请表 板块二（二面评价）'],
+    files:['《HRP-001-2023 求职申请表》板块二（二面评价）'],
     deps:'依赖：N5求职申请表Part1完成'
   },
   {
     title:'N7 董事终面',
     executor:'董事（Jenny作为终面面试官）',
     tasks:['系统自动发送求职申请表+终面通知给董事','董事查看Part1+Part2（基本信息+二面评价）','安排终面并面试','填写终面评价+最终结论(录用/不录用)','不录用→填写拒因→流程结束','录用→系统推进综合评估与录用审批','终面结果自动同步HR+BU Head'],
-    files:['HRP-001-2023 求职申请表 板块二（终面评价与结论）'],
+    files:['《HRP-001-2023 求职申请表》板块二（终面评价与结论）'],
     deps:'依赖：N6二面通过'
   },
   {
     title:'N8 综合评估与录用审批',
     executor:'BU Head填写 + 人事部签字 + Jenny签字（三级审批）',
     tasks:['HR综合一面/二面/终面评估，BU Head录入录用审批单','填写Part3：录用岗位、建议薪资(基本+绩效+补贴)、入职日期、试用期、合同类型','BU Head电子签名 → 人事部签字 → Jenny签字','三方签字完毕 → 录用审批完成 → 通知HR推进','⚠ 此板块即为全系统唯一的录用审批载体，入职管理不重复'],
-    files:['HRP-001-2023 求职申请表 板块三（录用审批单·三方已签）'],
+    files:['《HRP-001-2023 求职申请表》板块三（录用审批单·三方已签）'],
     deps:'审批链：BU Head → 人事部 → Jenny'
   },
   {
@@ -309,7 +309,7 @@ const nodeData = [
     title:'N10 Offer发送',
     executor:'HR + 公司邮箱系统',
     tasks:['HR选择Offer邮件模板（支持变量替换：{姓名}{岗位}{薪资}等）','系统自动生成《录用通知书》(HRT-003-2020)PDF','HR设定回复截止时间(默认X小时)','系统通过公司公共邮箱自动发送Offer邮件','状态变更为"Offer待回复"'],
-    files:['HRT-003-2020 录用通知书 PDF'],
+    files:['《HRT-003-2020 录用通知书》PDF'],
     deps:'前提：N8录用审批完成 + N9入职谈话完成'
   },
   {
