@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>招聘流程看板 · 开弈集团 HRO</title>
+  <style>
+    :root {
+      --brand: #1a3c6e;
+      --brand-light: #2563eb;
+      --accent: #f59e0b;
+      --green: #059669;
+      --purple: #7c3aed;
+      --red: #dc2626;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+      --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --card-hover: 0 8px 32px rgba(0,0,0,0.14);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 60%, #fef3c7 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--brand);
+      color: white;
+      padding: 20px 40px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(26,60,110,0.3);
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    header .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 900;
+    }
+    header h1 { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+    header .subtitle { font-size: 12px; opacity: 0.72; margin-top: 2px; }
+    header .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 12px;
+    }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+    }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-light);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 18px;
+    }
+
+    /* ── Info cards row ── */
+    .info-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .info-card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px 18px;
+      box-shadow: var(--card-shadow);
+      border-top: 3px solid var(--brand-light);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .info-card:hover { transform: translateY(-3px); box-shadow: var(--card-hover); }
+    .info-card .ic-label { font-size: 11px; color: var(--gray-400); margin-bottom: 6px; }
+    .info-card .ic-value { font-size: 18px; font-weight: 700; color: var(--brand); }
+    .info-card .ic-sub { font-size: 12px; color: var(--gray-600); margin-top: 4px; }
+
+    /* ── Source card ── */
+    .source-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 40px;
+      border-left: 4px solid var(--green);
+    }
+    .source-card h3 {
+      font-size: 16px; font-weight: 700; color: var(--green);
+      display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    }
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .source-item {
+      background: var(--gray-50);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+    }
+    .source-item strong { color: var(--brand); display: block; margin-bottom: 4px; font-size: 12px; }
+
+    /* ── Flow section ── */
+    .flow-section { margin-bottom: 48px; }
+
+    /* ── Stage header ── */
+    .stage-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .stage-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .stage-title { font-size: 18px; font-weight: 700; color: var(--brand); }
+    .stage-arrow {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand-light), transparent);
+      margin-left: 6px;
+    }
+
+    /* ── Steps grid ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      padding-left: 50px;
+    }
+
+    /* ── Step card ── */
+    .step-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: var(--card-shadow);
+      border-top: 3px solid var(--brand-light);
+      transition: transform .18s, box-shadow .18s;
+      position: relative;
+    }
+    .step-card:hover { transform: translateY(-3px); box-shadow: var(--card-hover); }
+    .step-card.green { border-top-color: var(--green); }
+    .step-card.purple { border-top-color: var(--purple); }
+    .step-card.amber { border-top-color: var(--accent); }
+    .step-card.red { border-top-color: var(--red); }
+
+    .step-num {
+      display: inline-block;
+      background: var(--gray-100);
+      color: var(--gray-600);
+      font-size: 11px; font-weight: 700;
+      border-radius: 6px;
+      padding: 2px 8px;
+      margin-bottom: 10px;
+    }
+    .step-title { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 10px; }
+    .step-meta { display: flex; flex-direction: column; gap: 6px; }
+    .meta-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 12px; color: var(--gray-600);
+    }
+    .meta-icon { flex-shrink: 0; width: 16px; text-align: center; }
+    .meta-text { flex: 1; line-height: 1.5; }
+
+    /* Role tag */
+    .role-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+    }
+    .role-hr { background: #dbeafe; color: #1d4ed8; }
+    .role-bu { background: #d1fae5; color: #065f46; }
+    .role-jenny { background: #ede9fe; color: #5b21b6; }
+    .role-cand { background: #fef3c7; color: #92400e; }
+
+    /* Form tag */
+    .form-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #fef9c3;
+      color: #78350f;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid #fcd34d;
+    }
+
+    /* ── Connector arrow between stages ── */
+    .stage-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0 24px 18px;
+    }
+    .connector-line {
+      width: 3px; height: 32px;
+      background: linear-gradient(180deg, var(--brand-light), var(--purple));
+      border-radius: 2px;
+    }
+
+    /* ── Approval flow card ── */
+    .approval-card {
+      background: linear-gradient(135deg, #ede9fe, #dbeafe);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin: 14px 0 0 50px;
+      border: 1px solid #c4b5fd;
+    }
+    .approval-card h4 {
+      font-size: 13px; font-weight: 700; color: var(--purple);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .approval-flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .approval-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .approval-step .a-box {
+      background: white;
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-size: 12px; font-weight: 600;
+      color: var(--brand);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      white-space: nowrap;
+    }
+    .approval-step .a-role {
+      font-size: 10px; color: var(--gray-400);
+    }
+    .approval-arrow {
+      font-size: 18px; color: var(--purple);
+      padding: 0 8px;
+      margin-bottom: 18px;
+    }
+
+    /* ── Offer & Interview card ── */
+    .highlight-card {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-left: 50px;
+      border: 1px solid #a7f3d0;
+      box-shadow: var(--card-shadow);
+    }
+    .highlight-card h4 {
+      font-size: 14px; font-weight: 700; color: var(--green);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .highlight-card p {
+      font-size: 13px; color: var(--gray-600); line-height: 1.6;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: var(--card-shadow);
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+    .legend-title { font-size: 13px; font-weight: 700; color: var(--brand); flex-shrink: 0; margin-right: 8px; }
+    .legend-item {
+      display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-600);
+    }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .info-row { grid-template-columns: repeat(2, 1fr); }
+      .source-grid { grid-template-columns: 1fr; }
+      .steps-grid { padding-left: 0; }
+      .approval-card, .highlight-card { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">弈</div>
+    <div>
+      <h1>招聘流程看板</h1>
+      <div class="subtitle">开弈集团 · HRO 人事系统 · 招聘板块流程梳理 v1</div>
+    </div>
+  </div>
+  <div class="badge">📄 现流程梳理 · 2026</div>
+</header>
+
+<!-- ── Main ── -->
+<main>
+
+  <!-- 统计卡片 -->
+  <div class="section-title">📊 整体概览</div>
+  <div class="info-row">
+    <div class="info-card">
+      <div class="ic-label">主要流程节点</div>
+      <div class="ic-value">5</div>
+      <div class="ic-sub">收简历 → 需求 → 面试 → 谈话 → Offer</div>
+    </div>
+    <div class="info-card" style="border-top-color:#059669">
+      <div class="ic-label">面试阶段</div>
+      <div class="ic-value">4</div>
+      <div class="ic-sub">初筛 · 一面 · 二面 · 终面</div>
+    </div>
+    <div class="info-card" style="border-top-color:#7c3aed">
+      <div class="ic-label">审批层级</div>
+      <div class="ic-value">3</div>
+      <div class="ic-sub">BU负责人 → 人事部 → Jenny终审</div>
+    </div>
+    <div class="info-card" style="border-top-color:#f59e0b">
+      <div class="ic-label">关键表单</div>
+      <div class="ic-value">2</div>
+      <div class="ic-sub">《聘用员工申请表》《求职申请表》</div>
+    </div>
+  </div>
+
+  <!-- 简历来源 -->
+  <div class="section-title">🔍 简历渠道与账号信息</div>
+  <div class="source-card">
+    <h3>🏢 招聘平台：Boss直聘</h3>
+    <div class="source-grid">
+      <div class="source-item">
+        <strong>公司账号</strong>上海弈工分信息
+      </div>
+      <div class="source-item">
+        <strong>实名认证</strong>原周凯楠 → <b>现黄燕婷</b>（6.4交接完毕）
+      </div>
+      <div class="source-item">
+        <strong>绑定手机</strong>15617500410
+      </div>
+      <div class="source-item">
+        <strong>收费标准</strong>¥98 元 / 月（按发布岗位计费）
+      </div>
+      <div class="source-item">
+        <strong>已发布职位</strong>财务/账务助理、CS/AI技术实习生、法务助理
+      </div>
+      <div class="source-item">
+        <strong>当前负责人</strong><span class="role-tag role-hr">黄燕婷（人事部）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 流程节点 1 ── -->
+  <div class="section-title">🔄 招聘全流程</div>
+
+  <div class="flow-section">
+    <div class="stage-header">
+      <div class="stage-num">1</div>
+      <div class="stage-title">收取简历</div>
+      <div class="stage-arrow"></div>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card green">
+        <div class="step-num">步骤 1.1</div>
+        <div class="step-title">📥 平台收取简历</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">🔧</div>
+            <div class="meta-text">Boss直聘平台日常维护、接收候选人投递</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-connector"><div class="connector-line"></div></div>
+
+  <!-- ── 流程节点 2 ── -->
+  <div class="flow-section">
+    <div class="stage-header">
+      <div class="stage-num">2</div>
+      <div class="stage-title">发布用人需求</div>
+      <div class="stage-arrow"></div>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card amber">
+        <div class="step-num">步骤 2.1</div>
+        <div class="step-title">📋 填写聘用员工申请表</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-bu">BU 负责人</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">📄</div>
+            <div class="meta-text"><span class="form-tag">《聘用员工申请表》</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">ℹ️</div>
+            <div class="meta-text">明确岗位要求，提交人事部作为招聘依据</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-connector"><div class="connector-line"></div></div>
+
+  <!-- ── 流程节点 3 ── -->
+  <div class="flow-section">
+    <div class="stage-header">
+      <div class="stage-num">3</div>
+      <div class="stage-title">面试全流程</div>
+      <div class="stage-arrow"></div>
+    </div>
+    <div class="steps-grid">
+
+      <!-- 阶段一 -->
+      <div class="step-card green">
+        <div class="step-num">阶段一 · 步骤 3.1</div>
+        <div class="step-title">🔍 初筛简历</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">📄</div>
+            <div class="meta-text">依据 <span class="form-tag">《聘用员工申请表》</span> 条件进行初筛</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">收到用人需求后，当天或次日在平台发布职位并收录简历</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段一 - 一面 -->
+      <div class="step-card green">
+        <div class="step-num">阶段一 · 步骤 3.2</div>
+        <div class="step-title">🎤 进行一面</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">收到合适简历当天与候选人沟通时间进行一面</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段三 求职申请表 -->
+      <div class="step-card amber">
+        <div class="step-num">阶段三 · 步骤 3.3</div>
+        <div class="step-title">📝 填写求职申请表 Part 1</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-cand">通过一面的候选人</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">📄</div>
+            <div class="meta-text"><span class="form-tag">《求职申请表》第一联</span>（个人基本信息）</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">通过一面后当场填写</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段三 - 安排二面 -->
+      <div class="step-card">
+        <div class="step-num">阶段三 · 步骤 3.4</div>
+        <div class="step-title">📅 安排二面</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">一面通过当天将简历和一面结果给到BU负责人，若合适则两个工作日内安排二面</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段三 - 二面 -->
+      <div class="step-card">
+        <div class="step-num">阶段三 · 步骤 3.5</div>
+        <div class="step-title">🎤 进行二面</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-bu">BU 负责人</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段三 - 填写二面结果 -->
+      <div class="step-card amber">
+        <div class="step-num">阶段三 · 步骤 3.6</div>
+        <div class="step-title">📝 填写求职申请表 Part 2（二面结果）</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-bu">BU 负责人</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">📄</div>
+            <div class="meta-text"><span class="form-tag">《求职申请表》第二联</span>（面试结果一）</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">完成二面当天</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段四 - 安排终面 -->
+      <div class="step-card purple">
+        <div class="step-num">阶段四 · 步骤 3.7</div>
+        <div class="step-title">📅 安排终面</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">二面通过后将简历和二面结果给到 Jenny 和黄一萧，本周内或下周初安排终面</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段四 - 终面 -->
+      <div class="step-card purple">
+        <div class="step-num">阶段四 · 步骤 3.8</div>
+        <div class="step-title">🎤 进行终面</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-jenny">Jenny + 黄一萧</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阶段四 - 填写终面结果 -->
+      <div class="step-card purple">
+        <div class="step-num">阶段四 · 步骤 3.9</div>
+        <div class="step-title">📝 填写求职申请表 Part 2（终面结果）</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-jenny">Jenny + 黄一萧</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">📄</div>
+            <div class="meta-text"><span class="form-tag">《求职申请表》第二联</span>（面试结果二）</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">完成终面当天</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps-grid -->
+
+    <!-- 阶段五 收取结果 -->
+    <div class="steps-grid" style="margin-top:14px">
+
+      <div class="step-card red">
+        <div class="step-num">阶段五 · 步骤 3.10</div>
+        <div class="step-title">📬 收取终面结果</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">终面完成当天或次日</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card red">
+        <div class="step-num">阶段五 · 步骤 3.11</div>
+        <div class="step-title">📢 通知用人部门结果</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">得到面试结果当天</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card amber">
+        <div class="step-num">阶段五 · 步骤 3.12</div>
+        <div class="step-title">📝 填写录用审批单</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-bu">BU 负责人</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">📄</div>
+            <div class="meta-text"><span class="form-tag">《求职申请表》第三联</span>（录用审批单）</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">⏱️</div>
+            <div class="meta-text">得到面试结果当天</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps-grid row2 -->
+
+    <!-- 审批流 -->
+    <div class="approval-card">
+      <h4>🔐 录用审批流（三级签字）</h4>
+      <div class="approval-flow">
+        <div class="approval-step">
+          <div class="a-box">① BU 负责人</div>
+          <div class="a-role">填写信息并签字确认</div>
+        </div>
+        <div class="approval-arrow">→</div>
+        <div class="approval-step">
+          <div class="a-box">② 人事部（黄燕婷）</div>
+          <div class="a-role">审核签字</div>
+        </div>
+        <div class="approval-arrow">→</div>
+        <div class="approval-step">
+          <div class="a-box">③ Jenny</div>
+          <div class="a-role">终审签字确认</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /flow-section -->
+
+  <div class="stage-connector"><div class="connector-line"></div></div>
+
+  <!-- ── 流程节点 4 ── -->
+  <div class="flow-section">
+    <div class="stage-header">
+      <div class="stage-num">4</div>
+      <div class="stage-title">入职谈话</div>
+      <div class="stage-arrow"></div>
+    </div>
+    <div class="highlight-card">
+      <h4>💬 入职谈话</h4>
+      <p>
+        <b>参与人：</b>BU 负责人、人事部（黄燕婷）、拟录取的候选人<br /><br />
+        <b>主要内容：</b>与拟录取的候选人确认入职时间、薪资福利、合同期限等信息，达成双方共识。
+      </p>
+    </div>
+  </div>
+
+  <div class="stage-connector"><div class="connector-line"></div></div>
+
+  <!-- ── 流程节点 5 ── -->
+  <div class="flow-section">
+    <div class="stage-header">
+      <div class="stage-num">5</div>
+      <div class="stage-title">Offer 发放与追踪</div>
+      <div class="stage-arrow"></div>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card green">
+        <div class="step-num">步骤 5.1</div>
+        <div class="step-title">📧 正式发送 Offer</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">🔧</div>
+            <div class="meta-text">以邮件形式正式发送 Offer 给拟录取候选人</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-card green">
+        <div class="step-num">步骤 5.2</div>
+        <div class="step-title">🔄 追踪确认状态</div>
+        <div class="step-meta">
+          <div class="meta-row">
+            <div class="meta-icon">👤</div>
+            <div class="meta-text"><span class="role-tag role-hr">黄燕婷（人事部）</span></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-icon">🔧</div>
+            <div class="meta-text">追踪候选人邮件确认情况，为后续入职安排作准备</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 角色图例 -->
+  <div class="legend">
+    <div class="legend-title">角色图例</div>
+    <div class="legend-item"><span class="role-tag role-hr">黄燕婷（人事部）</span>&nbsp;招聘主导人</div>
+    <div class="legend-item"><span class="role-tag role-bu">BU 负责人</span>&nbsp;用人部门</div>
+    <div class="legend-item"><span class="role-tag role-jenny">Jenny + 黄一萧</span>&nbsp;终审层</div>
+    <div class="legend-item"><span class="role-tag role-cand">候选人</span>&nbsp;应聘者</div>
+  </div>
+
+</main>
+
+<footer>
+  开弈集团 · HRO 人事系统 · 招聘板块流程梳理 v1 &nbsp;|&nbsp; 文档整理：人事部 &nbsp;|&nbsp; 2026
+</footer>
+
+</body>
+</html>
