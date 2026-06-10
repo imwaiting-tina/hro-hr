@@ -340,47 +340,61 @@ body{
   <div class="section" id="r1-interview">
     <div class="section-title">STEP 3 — 面试全流程 <span class="badge badge-orange">5 阶段</span></div>
 
-    <div class="flow-lane">
-      <div class="flow-node">
-        <div class="node-step">阶段一</div>
-        <div class="node-title">初筛简历</div>
-        <div class="node-executor">黄燕婷</div>
-        <div class="node-time">得到用人需求后，当天或次日就在平台发布职位信息，收录合适简历</div>
+    <!-- 前两阶段：初筛简历 + 一面 -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">一</div><div><h3>阶段一：初筛简历</h3><div class="card-subtitle">执行人：黄燕婷</div></div></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.65">得到用人需求后，当天或次日就在平台发布职位信息，收录合适简历。</div>
       </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">阶段二</div>
-        <div class="node-title">一面</div>
-        <div class="node-executor">黄燕婷</div>
-        <div class="node-time">收到合适简历当天与候选人沟通时间进行一面</div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">阶段三</div>
-        <div class="node-title">填写第一联 + 二面</div>
-        <div class="node-executor">候选人 / BU负责人</div>
-        <div class="node-time">通过一面后：候选人填写《求职申请表》第一联（个人基本信息）<br><br>黄燕婷一面通过当天把简历和一面结果给到 BU 负责人，若合适则两个工作日内安排二面。BU 负责人进行二面，当天填写《求职申请表》第二联（面试结果一）</div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">阶段四</div>
-        <div class="node-title">终面</div>
-        <div class="node-executor">Jenny & 黄一萧</div>
-        <div class="node-time">黄燕婷二面通过后将简历和二面结果给到 Jenny 和黄一萧，本周内或下周初安排终面<br><br>Jenny 和黄一萧进行终面，当天填写《求职申请表》第二联（面试结果二）</div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">阶段五</div>
-        <div class="node-title">收取结果 + 录用审批</div>
-        <div class="node-executor">黄燕婷 / BU负责人</div>
-        <div class="node-time">黄燕婷于终面当天或次日收取面试结果并通知用人部门<br><br>BU 负责人根据综合结果当天填写《求职申请表》第三联（录用审批单）</div>
-        <div class="node-approval">三级审批：BU负责人 → 人事部(黄燕婷) → Jenny 终审</div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">二</div><div><h3>阶段二：一面</h3><div class="card-subtitle">执行人：黄燕婷</div></div></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.65">收到合适简历当天与候选人沟通时间进行一面。</div>
       </div>
     </div>
 
-    <div class="highlight-block">
-      <div class="hl-title">🔴 录用审批单 — 三级审批链</div>
-      <div class="hl-content">BU 负责人填写相关信息后签字确认 → 人事部（黄燕婷）签字 → Jenny 终审签字确认</div>
+    <!-- 阶段三：填写第一联 + 二面（内容多，满宽） -->
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#fff4e5">三</div><div><h3>阶段三：填写第一联 + 二面</h3><div class="card-subtitle">执行人：候选人 / BU 负责人</div></div></div>
+      <div class="card-grid">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">3a</div><h3 style="font-size:13px">候选人填写《求职申请表》第一联</h3></div>
+          <div class="doc-desc" style="font-size:13px;line-height:1.65">通过一面后，候选人填写《求职申请表》第一联（个人基本信息）。</div>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">3b</div><h3 style="font-size:13px">BU 负责人二面 + 填写第二联</h3></div>
+          <div class="doc-desc" style="font-size:13px;line-height:1.65">黄燕婷一面通过当天把简历和一面结果给到 BU 负责人，若合适则<strong>两个工作日内</strong>安排二面。BU 负责人进行二面，当天填写《求职申请表》第二联（面试结果一）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 阶段四：终面 -->
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#feeee8">四</div><div><h3>阶段四：终面</h3><div class="card-subtitle">执行人：Jenny & 黄一萧</div></div></div>
+      <div class="card-grid">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="doc-desc" style="font-size:13px;line-height:1.65">黄燕婷二面通过后将简历和二面结果给到 Jenny 和黄一萧，<strong>本周内或下周初</strong>安排终面。</div>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="doc-desc" style="font-size:13px;line-height:1.65">Jenny 和黄一萧进行终面，当天填写《求职申请表》第二联（面试结果二）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 阶段五：收取结果 + 录用审批（满宽 + 审批链） -->
+    <div class="card card-full">
+      <div class="card-header"><div class="icon" style="background:#eaf2ff">五</div><div><h3>阶段五：收取结果 + 录用审批</h3><div class="card-subtitle">执行人：黄燕婷 / BU 负责人</div></div></div>
+      <div class="card-grid">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="doc-desc" style="font-size:13px;line-height:1.65">黄燕婷于终面<strong>当天或次日</strong>收取面试结果并通知用人部门。</div>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="doc-desc" style="font-size:13px;line-height:1.65">BU 负责人根据综合结果当天填写《求职申请表》<strong>第三联（录用审批单）</strong>。</div>
+        </div>
+      </div>
+      <div class="highlight-block" style="margin-top:16px">
+        <div class="hl-title">🔴 录用审批单 — 三级审批链</div>
+        <div class="hl-content">BU 负责人填写相关信息后签字确认 → 人事部（黄燕婷）签字 → Jenny 终审签字确认</div>
+      </div>
     </div>
   </div>
 
@@ -517,42 +531,40 @@ body{
       行政准备工作
       <span class="badge badge-green">5 项</span>
     </div>
-    <div class="flow-lane">
-      <div class="flow-node">
-        <div class="node-step">行政 ①</div>
-        <div class="node-title">门禁卡 + 工位 + 电脑 + 文具</div>
-        <div class="node-executor">物业行政（原周凯楠，现程璐）</div>
-        <div class="node-time">汪顺负责工位/电脑安排</div>
+
+    <!-- 前三项：门禁工位电脑 + 邮件HKMS + 钉钉 -->
+    <div class="card-grid three-col">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">①</div><div><h3>门禁卡 + 工位 + 电脑 + 文具</h3><div class="card-subtitle">物业行政（原周凯楠，现程璐）</div></div></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.65">汪顺负责工位/电脑安排。</div>
       </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">行政 ②</div>
-        <div class="node-title">邮件 + HKMS 系统账户</div>
-        <div class="node-executor">黄欢欢</div>
-        <div class="node-time">黄燕婷提供员工信息</div>
-        <div class="node-doc">需提供：中文名、英文名、入职时间、入职公司、身份证号码</div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">②</div><div><h3>邮件 + HKMS 系统账户</h3><div class="card-subtitle">执行人：黄欢欢</div></div></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.65">黄燕婷提供员工信息。</div>
+        <div style="margin-top:10px;background:#f6f8fa;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-muted);line-height:1.6">
+          <strong>需提供：</strong>中文名、英文名、入职时间、入职公司、身份证号码
+        </div>
       </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">行政 ③</div>
-        <div class="node-title">钉钉添加员工</div>
-        <div class="node-executor">黄燕婷</div>
-        <div class="node-time">设置考勤组，协助第一次打卡</div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">③</div><div><h3>钉钉添加员工</h3><div class="card-subtitle">执行人：黄燕婷</div></div></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.65">设置考勤组，协助第一次打卡。</div>
       </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">行政 ④</div>
-        <div class="node-title">拉入微信工作群</div>
-        <div class="node-executor">原周凯楠，现黄燕婷</div>
-        <div class="node-time">添加群聊后，发送含新人介绍的迎新公告</div>
+    </div>
+
+    <!-- 后两项：微信工作群 + 员工培训 -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#f2eeff">④</div><div><h3>拉入微信工作群</h3><div class="card-subtitle">原周凯楠，现黄燕婷</div></div></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.65">添加群聊后，发送含新人介绍的迎新公告。</div>
       </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">
-        <div class="node-step">行政 ⑤</div>
-        <div class="node-title">员工培训</div>
-        <div class="node-executor">黄燕婷</div>
-        <div class="node-doc">新员工入职培训PPT-20250324版（需更新）</div>
-        <div class="node-time">介绍公司概况，强调公司制度（行政制度、人事制度-考勤和薪资、财务制度、印章制度），指导使用流程工具（HKMS基础报销系统、钉钉打卡）</div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">⑤</div><div><h3>员工培训</h3><div class="card-subtitle">执行人：黄燕婷</div></div></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.65">
+          使用《新员工入职培训PPT-20250324版》<strong>（需更新）</strong>。
+        </div>
+        <div style="margin-top:10px;background:#f6f8fa;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-muted);line-height:1.6">
+          <strong>培训内容：</strong>介绍公司概况，强调公司制度（行政制度、人事制度-考勤和薪资、财务制度、印章制度），指导使用流程工具（HKMS基础报销系统、钉钉打卡）。
+        </div>
       </div>
     </div>
   </div>
