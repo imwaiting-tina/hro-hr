@@ -83,7 +83,7 @@ body{
 .sidebar-footer{padding:14px 22px;border-top:1px solid rgba(255,255,255,0.08);font-size:11px;color:rgba(255,255,255,0.22)}
 
 /* ====== MAIN ====== */
-.main{margin-left:260px;flex:1;padding:30px 36px 50px;min-height:100vh}
+.main{margin-left:260px;flex:1;padding:28px 40px 60px;min-height:100vh;max-width:1400px}
 
 .page{display:none}
 .page.active{display:block}
@@ -126,10 +126,10 @@ body{
   margin-bottom:24px;
 }
 .flow-node{
-  flex-shrink:0;min-width:150px;max-width:175px;
+  flex-shrink:0;min-width:170px;max-width:220px;
   background:var(--card-bg);border-radius:var(--radius);
   border:1.5px solid var(--border);box-shadow:var(--shadow);
-  padding:14px 12px;position:relative;
+  padding:16px 14px;position:relative;
   transition:transform 0.15s,box-shadow 0.15s;
 }
 .flow-node:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(20,30,60,0.13)}
@@ -166,12 +166,19 @@ body{
 .tag-purple{background:var(--tag-purple);color:var(--tag-purple-text)}
 
 /* ====== CARD GRID ====== */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:20px;margin-bottom:20px}
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:20px}
+.card-grid.single-col{grid-template-columns:1fr}
+.card-grid.three-col{grid-template-columns:repeat(3,1fr)}
+.card-grid.wide-left{grid-template-columns:1.5fr 1fr}
+.card-grid.wide-right{grid-template-columns:1fr 1.5fr}
 .card{
   background:var(--card-bg);border-radius:var(--radius-lg);
   border:1.5px solid var(--border);box-shadow:var(--shadow);
   padding:22px 24px;
+  height:fit-content;
 }
+.card.card-full{grid-column:1/-1}
+.card.card-span-2{grid-column:span 2}
 .card-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .card-header .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .card-header h3{font-size:15px;font-weight:700;color:var(--primary)}
@@ -415,96 +422,45 @@ body{
       <span class="badge badge-blue">按员工类型分类</span>
     </div>
 
-    <div class="card-grid">
+    <!-- 全日制员工 —— 满宽占一行，内部分左右两列 -->
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#eaf2ff">📁</div><div><h3>全日制员工</h3><div class="card-subtitle">除保安、实习生以外</div></div></div>
+      <div class="card-grid">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">A</div><h3 style="font-size:13px">基本信息 + 审批类</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-name">新员工入职引导表</div><div class="doc-desc"><strong>执行人：</strong>人事相关-黄燕婷、（原）行政相关-周凯楠、开设邮箱和 HKMS-黄欢欢、开设门禁卡-王力、工位和电脑安排-原蔡心宇，现汪顺</div></div></li>
+            <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-name">录用通知书</div><div class="doc-desc"><strong>签署人：</strong>员工本人<br><strong>需审批签字：</strong>人事负责人（黄一萧） <span class="tag tag-orange">一级审批</span></div></div></li>
+            <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-name">员工信息登记表</div><div class="doc-desc"><strong>面向：</strong>所有公司自用员工<br><strong>基本信息填写人：</strong>员工本人<br><strong>需收取材料：</strong>身份证和银行卡正的反面复印件、户口本户主页和本人页的复印件、学历证明复印件、一个月内的体检报告和其它在简历中所提到的证件<br><strong>收取材料执行人：</strong>黄燕婷</div></div></li>
+            <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-name">录用审批单</div><div class="doc-desc"><strong>签署人：</strong>员工本人<br><strong>审批链：</strong>BU 负责人签字确认 → 人事部负责人（黄一萧）签字 → Jenny 终审签字确认<br>※ 需确定是否可用《求职申请表》第三联替代 <span class="tag tag-red">三级审批</span></div></div></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#feeee8;font-size:13px">B</div><h3 style="font-size:13px">合同签署类</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">⑦</div><div class="doc-body"><div class="doc-name">劳动合同（一式两份）</div><div class="doc-desc"><strong>其中包含：</strong>《劳动合同》《保密协议》《员工尽职廉洁协议》《试用期录用条件》<br><strong>签署人：</strong>员工本人 · <strong>签字数：</strong>一整份四处<br><strong>用印：</strong>法定代表人或委托代理人（签章）四处用印<br><strong>用印时间点：</strong>录用审批单三级审批完成后<br><strong>盖章后：</strong>一份给员工，一份存档案</div></div></li>
+            <li><div class="doc-num">⑩</div><div class="doc-body"><div class="doc-name">保安的劳动合同（一式两份）</div><div class="doc-desc"><strong>面向：</strong>公司自用保安 · <strong>签字数：</strong>一份一处<br><strong>用印：</strong>一份一处 · <strong>盖章后：</strong>一份给员工，一份存档案</div></div></li>
+            <li><div class="doc-num">⑪</div><div class="doc-body"><div class="doc-name">员工手册</div><div class="doc-desc"><strong>签署人：</strong>员工本人 · <strong>用印：</strong>员工签署页盖章<br><strong>用印时间点：</strong>审批单流程结束后<br><strong>盖章后：</strong>裁剪签署页存档案，正文给员工</div></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-      <!-- 全日制员工 -->
+    <!-- 实习生 + 退休返聘 —— 两列并排 -->
+    <div class="card-grid">
       <div class="card">
-        <div class="card-header"><div class="icon" style="background:#eaf2ff">📁</div><div><h3>全日制员工</h3><div class="card-subtitle">除保安、实习生以外</div></div></div>
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">🎓</div><div><h3>实习生</h3></div></div>
         <ul class="doc-list">
-          <li>
-            <div class="doc-num">①</div>
-            <div class="doc-body">
-              <div class="doc-name">新员工入职引导表</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>全日制员工除保安、实习生<br><strong>执行人：</strong>人事相关-黄燕婷、（原）行政相关-周凯楠、开设邮箱和 HKMS-黄欢欢、开设门禁卡-王力、工位和电脑安排-原蔡心宇，现汪顺</div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">②</div>
-            <div class="doc-body">
-              <div class="doc-name">录用通知书</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>全日制员工除保安、实习生<br><strong>签署人：</strong>员工本人<br><strong>需审批签字：</strong>人事负责人（黄一萧） <span class="tag tag-orange">一级审批</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">③</div>
-            <div class="doc-body">
-              <div class="doc-name">员工信息登记表</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>所有公司自用员工<br><strong>基本信息填写人：</strong>员工本人<br><strong>需收取材料：</strong>身份证和银行卡正的反面复印件、户口本户主页和本人页的复印件、学历证明复印件、一个月内的体检报告和其它在简历中所提到的证件<br><strong>收取材料执行人：</strong>黄燕婷</div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">④</div>
-            <div class="doc-body">
-              <div class="doc-name">录用审批单</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>全日制员工<br><strong>签署人：</strong>员工本人<br><strong>需要审批：</strong>BU 负责人签字确认，再人事部负责人（黄一萧）签字，最后 Jenny 终审签字确认<br>※ 需确定通过面试入职的员工是否能用《求职申请表》第三联-录用审批单替代 <span class="tag tag-red">三级审批</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑤</div>
-            <div class="doc-body">
-              <div class="doc-name">应届生实习录用表</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>实习生<br><strong>签署人：</strong>员工本人<br><strong>需要审批：</strong>BU 负责人签字确认，再人事部负责人（黄一萧）签字<br>※ 需确定通过面试入职的员工是否能用《求职申请表》第三联-录用审批单替代 <span class="tag tag-orange">二级审批</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑥</div>
-            <div class="doc-body">
-              <div class="doc-name">劳务录用审批单</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>退休返聘人员<br><strong>签署人：</strong>员工本人<br><strong>需要审批：</strong>BU 负责人签字确认，再人事部负责人（黄一萧）签字，最后 Jenny 终审签字确认 <span class="tag tag-red">三级审批</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑦</div>
-            <div class="doc-body">
-              <div class="doc-name">劳动合同（一式两份）</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>全日制员工除保安<br><strong>其中包含：</strong>《劳动合同》、《保密协议》、《员工尽职廉洁协议》、《试用期录用条件》<br><strong>签署人：</strong>员工本人<br><strong>员工签字数：</strong>一整份四处<br><strong>需公司用印：</strong>法定代表人或委托代理人（签章）一整份四处用印<br><strong>用印时间点：</strong>录用审批单三级审批完成后可走用印流程<br><strong>盖章后操作：</strong>一份给到员工，另一份存于员工档案</div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑧</div>
-            <div class="doc-body">
-              <div class="doc-name">实习协议（一式两份）</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>实习生<br><strong>签署人：</strong>员工本人<br><strong>员工签字数：</strong>一份一处<br><strong>需公司用印：</strong>法定代表人或委托代理人（签章）一份一处用印<br><strong>用印时间点：</strong>应届生实习录用表二级审批完成后可走用印流程<br><strong>盖章后操作：</strong>一份给到员工，另一份存于员工档案</div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑨</div>
-            <div class="doc-body">
-              <div class="doc-name">劳务协议（一式两份）</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>退休返聘人员<br><strong>签署人：</strong>员工本人<br><strong>员工签字数：</strong>一份一处<br><strong>需公司用印：</strong>法定代表人或委托代理人（签章）一份一处用印<br><strong>用印时间点：</strong>劳务录用审批单三级审批完成后可走用印流程<br><strong>盖章后操作：</strong>一份给到员工，另一份存于员工档案</div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑩</div>
-            <div class="doc-body">
-              <div class="doc-name">保安的劳动合同（一式两份）</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>公司自用保安<br><strong>签署人：</strong>员工本人<br><strong>员工签字数：</strong>一份一处<br><strong>需公司用印：</strong>法定代表人或委托代理人（签章）一份一处用印<br><strong>盖章后操作：</strong>一份给到员工，另一份存于员工档案</div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑪</div>
-            <div class="doc-body">
-              <div class="doc-name">员工手册</div>
-              <div class="doc-desc"><strong>签署人：</strong>员工本人<br><strong>需公司用印：</strong>员工签署页盖章<br><strong>用印时间点：</strong>审批单流程结束后可走用印流程<br><strong>盖章后操作：</strong>裁剪签署页存于员工档案，含正文内容的手册给到员工</div>
-            </div>
-          </li>
-          <li>
-            <div class="doc-num">⑫</div>
-            <div class="doc-body">
-              <div class="doc-name">三方协议（共四联，公司留存一份对应联）</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>实习生<br><strong>涉及的公司信息：</strong>需提供信息登记号<br><strong>信息登记号来源：</strong>上海学生事务中心<br><strong>网址：</strong>http://www.firstjob.shec.edu.cn<br><strong>签署人：</strong>员工本人<br><strong>员工签字数：</strong>第一联一处，其余三联为复写纸<br><strong>需公司用印：</strong>法定代表人或委托代理人（签章）四联共四处用印<br><strong>用印时间点：</strong>应届生实习录用表二级审批完成后可走用印流程<br><strong>盖章后操作：</strong>公司联存于员工档案，其他三联给到员工</div>
-            </div>
-          </li>
+          <li><div class="doc-num">⑤</div><div class="doc-body"><div class="doc-name">应届生实习录用表</div><div class="doc-desc"><strong>签署人：</strong>员工本人<br><strong>审批链：</strong>BU 负责人签字确认 → 人事部负责人（黄一萧）签字<br>※ 需确定是否可用《求职申请表》第三联替代 <span class="tag tag-orange">二级审批</span></div></div></li>
+          <li><div class="doc-num">⑧</div><div class="doc-body"><div class="doc-name">实习协议（一式两份）</div><div class="doc-desc"><strong>签署人：</strong>员工本人 · <strong>签字数：</strong>一份一处<br><strong>用印：</strong>法定代表人或委托代理人（签章）一份一处<br><strong>用印时间点：</strong>应届生实习录用表二级审批完成后<br><strong>盖章后：</strong>一份给员工，一份存档案</div></div></li>
+          <li><div class="doc-num">⑫</div><div class="doc-body"><div class="doc-name">三方协议（共四联，公司留存一份对应联）</div><div class="doc-desc"><strong>涉及：</strong>需提供信息登记号（来源：上海学生事务中心 firstjob.shec.edu.cn）<br><strong>签署人：</strong>员工本人 · <strong>签字数：</strong>第一联一处，其余三联为复写纸<br><strong>用印：</strong>法定代表人或委托代理人（签章）四联共四处<br><strong>用印时间点：</strong>应届生实习录用表二级审批完成后<br><strong>盖章后：</strong>公司联存档案，其他三联给员工</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🔄</div><div><h3>退休返聘人员</h3></div></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">⑥</div><div class="doc-body"><div class="doc-name">劳务录用审批单</div><div class="doc-desc"><strong>签署人：</strong>员工本人<br><strong>审批链：</strong>BU 负责人签字确认 → 人事部负责人（黄一萧）签字 → Jenny 终审签字确认 <span class="tag tag-red">三级审批</span></div></div></li>
+          <li><div class="doc-num">⑨</div><div class="doc-body"><div class="doc-name">劳务协议（一式两份）</div><div class="doc-desc"><strong>签署人：</strong>员工本人 · <strong>签字数：</strong>一份一处<br><strong>用印：</strong>法定代表人或委托代理人（签章）一份一处<br><strong>用印时间点：</strong>劳务录用审批单三级审批完成后<br><strong>盖章后：</strong>一份给员工，一份存档案</div></div></li>
         </ul>
       </div>
     </div>
@@ -664,7 +620,7 @@ body{
       <span class="badge badge-green">触发：实习期结束前一周</span>
     </div>
 
-    <!-- 实习生评估 -->
+    <!-- 实习生评估表 + 转正签劳动合同 —— 两列并排 -->
     <div class="card-grid">
       <div class="card">
         <div class="card-header"><div class="icon" style="background:#e6f7ee">①</div><h3>实习生评估表</h3></div>
@@ -677,10 +633,6 @@ body{
           </li>
         </ul>
       </div>
-    </div>
-
-    <!-- 转正签劳动合同 -->
-    <div class="card-grid" style="margin-top:16px">
       <div class="card">
         <div class="card-header"><div class="icon" style="background:#eaf2ff">②</div><h3>劳动合同（一式两份）— 实习转正</h3></div>
         <ul class="doc-list">
@@ -702,8 +654,8 @@ body{
       <span class="badge badge-blue">合同续签 + 人员流动</span>
     </div>
 
+    <!-- 续签合同：全日制 + 退休返聘 两列并排 -->
     <div class="card-grid">
-      <!-- 续签劳动合同 -->
       <div class="card">
         <div class="card-header"><div class="icon" style="background:#eaf2ff">📄</div><h3>全日制员工续签</h3></div>
         <ul class="doc-list">
@@ -723,8 +675,6 @@ body{
           </li>
         </ul>
       </div>
-
-      <!-- 续签劳务协议 -->
       <div class="card">
         <div class="card-header"><div class="icon" style="background:#fff4e5">📄</div><h3>退休返聘人员续签</h3></div>
         <ul class="doc-list">
@@ -744,30 +694,34 @@ body{
           </li>
         </ul>
       </div>
+    </div>
 
-      <!-- 员工流动表 -->
-      <div class="card">
-        <div class="card-header"><div class="icon" style="background:#f2eeff">⑤</div><h3>员工流动表</h3></div>
-        <ul class="doc-list">
-          <li>
-            <div class="doc-body">
-              <div class="doc-name">《员工流动表》</div>
-              <div class="doc-desc"><strong>面向的员工类型：</strong>全日制员工<br><strong>触发节点：</strong>员工发生调岗、调薪、晋升、重新定级等<br><strong>需要审批：</strong>原部门负责人签字确认，现部门负责人（若有）签字确认，人事部负责人签字确认，Jenny 签字确认，依次审批，共三到四级审批</div>
-              <div style="margin-top:10px">
-                <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px"><strong>审批顺序（三至四级）：</strong></div>
-                <div class="approval-chain">
-                  <div class="approval-step">原部门负责人</div>
-                  <div class="approval-arrow-sm">→</div>
-                  <div class="approval-step">现部门负责人（若有）</div>
-                  <div class="approval-arrow-sm">→</div>
-                  <div class="approval-step">人事部负责人</div>
-                  <div class="approval-arrow-sm">→</div>
-                  <div class="approval-step final">Jenny</div>
-                </div>
+    <!-- 员工流动表 —— 满宽独占一行 -->
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">⑤</div><h3>员工流动表</h3></div>
+      <div class="card-grid">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <ul class="doc-list">
+            <li>
+              <div class="doc-body">
+                <div class="doc-name">《员工流动表》</div>
+                <div class="doc-desc"><strong>面向的员工类型：</strong>全日制员工<br><strong>触发节点：</strong>员工发生调岗、调薪、晋升、重新定级等<br><strong>需要审批：</strong>原部门负责人签字确认，现部门负责人（若有）签字确认，人事部负责人签字确认，Jenny 签字确认，依次审批，共三到四级审批</div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px"><strong>审批顺序（三至四级）：</strong></div>
+          <div class="approval-chain">
+            <div class="approval-step">原部门负责人</div>
+            <div class="approval-arrow-sm">→</div>
+            <div class="approval-step">现部门负责人（若有）</div>
+            <div class="approval-arrow-sm">→</div>
+            <div class="approval-step">人事部负责人</div>
+            <div class="approval-arrow-sm">→</div>
+            <div class="approval-step final">Jenny</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
