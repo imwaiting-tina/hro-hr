@@ -71,6 +71,7 @@ body{
 .nav-item.r1 .nav-icon{background:#3a5f9b}
 .nav-item.r2 .nav-icon{background:#2e6b55}
 .nav-item.r3 .nav-icon{background:#7a4e9b}
+.nav-item.r4 .nav-icon{background:#c06a2a}
 .nav-sub-item{
   display:flex;align-items:center;gap:8px;
   padding:8px 22px 8px 42px;cursor:pointer;
@@ -97,6 +98,7 @@ body{
 .page-header-icon.blue{background:linear-gradient(135deg,#4e7ac7,#1a2a4a)}
 .page-header-icon.green{background:linear-gradient(135deg,#2eb877,#146a3e)}
 .page-header-icon.purple{background:linear-gradient(135deg,#9b6bd0,#4a20a0)}
+.page-header-icon.orange{background:linear-gradient(135deg,#e8943a,#c06a2a)}
 .page-header-text h1{font-size:24px;font-weight:700;color:var(--primary)}
 .page-header-text p{font-size:13.5px;color:var(--text-muted);margin-top:4px}
 .breadcrumb{font-size:12px;color:var(--text-muted);margin-bottom:16px}
@@ -251,6 +253,19 @@ body{
     <div class="nav-sub-item" onclick="scrollToSection('r3-probation')">试用期管理</div>
     <div class="nav-sub-item" onclick="scrollToSection('r3-intern')">实习生管理</div>
     <div class="nav-sub-item" onclick="scrollToSection('r3-renew')">合同续签 & 流动</div>
+
+    <div class="nav-item r4" onclick="showPage('position',this)">
+      <div class="nav-icon">📊</div>职位管理
+    </div>
+    <div class="nav-sub-item" onclick="scrollToSection('p1')">1. 财务总监（CFO）</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p2')">2. 会计岗（财务会计·境内）</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p3')">3. 账务部负责人（账务总监）</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p4')">4. 香港办负责人（境外财务统筹）</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p5')">5. 集团品牌管理负责人</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p6')">6. 行政专员（集团行政服务）</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p7')">7. 集团人事专员（HR服务岗）</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p8')">8. 人力资源规划专员/总监</div>
+    <div class="nav-sub-item" onclick="scrollToSection('p9')">9. 集团法务专员/法务总监</div>
   </nav>
   <div class="sidebar-footer">HRO 人事系统 v1.0</div>
 </aside>
@@ -987,6 +1002,510 @@ body{
   </div>
 </div><!-- /page-inservice -->
 
+<!-- ============= PAGE: 职位管理板块 ============= -->
+<div id="page-position" class="page">
+  <div class="breadcrumb">人事流程 › <span>职位管理</span></div>
+  <div class="page-header">
+    <div class="page-header-icon orange">📊</div>
+    <div class="page-header-text">
+      <h1>职位管理 — 大后台岗位说明书</h1>
+      <p>时代开弈集团 · 依据《2025年大后台职能分工v250930 2.0》 · 编制日期：2025年10月 · 共 9 个岗位</p>
+    </div>
+  </div>
+
+  <div class="highlight-block" style="margin-bottom:28px">
+    <div class="hl-title">📌 组织架构说明</div>
+    <div class="hl-content">
+      集团大后台覆盖 <strong>大财务（财务部、账务部、香港办）</strong> 及 <strong>集团职能（品牌管理、行政服务、人事服务、人力资源管理、集团法务）</strong> 两大板块，
+      共设 9 个核心岗位，各岗位均配备完整的岗位概述、主要职责、KPI考核指标及任职资格。
+    </div>
+  </div>
+
+  <!-- ===== 1. 财务总监（CFO） ===== -->
+  <div class="section" id="p1">
+    <div class="section-title">1. 财务部负责人 / 财务总监（CFO） <span class="badge badge-red">高管</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>大财务 · 财务部</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>董事会 / Jenny</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>蔡心宇、芦智蔚、黄欢欢及账务部团队</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          统筹集团财务部及账务部的全面运营，负责税务申报、财务会计、报表申报、收入成本费用审核；主导集团付款合规流程的审核签字；向董事会按期提交各类合并财务报表；管理集团贷款与融资事务；推动高新技术资质及ISO9000体系规划。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">领导部门员工完成所负责公司的税务收入确认、资产负债表、损益表，以及非个税的税务 & 财务会计 & 报表申报 & 收入成本费用审核，<strong>每月15日前（含15日）</strong>向公司提交截止上月的财务报告。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">负责集团内所有付款下的业务内部流程（立项+用印）合规流程的审核签字，以及HKMS相关权限的审核流程确认。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">配合业务部门，完成HRO招商落税统筹 & 处理客户个税投诉 & 小微企业代理记账服务。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">每年度<strong>第一个月20日前</strong>，向董事会提交所管理的所申报财务会计报表的合并报表。</div></div></li>
+        <li><div class="doc-num">5</div><div class="doc-body"><div class="doc-desc">参与集团内所有付款下的业务内部流程（立项+用印）检查及相关流程登记的审核签字。</div></div></li>
+        <li><div class="doc-num">6</div><div class="doc-body"><div class="doc-desc">向董事会提交高新技术公司账务清理；参与公司合规流程的审核和审批；高新技术资质按<strong>3年总结+3年计划</strong>做规划；负责开弈人力资源缓交社保金的处置。</div></div></li>
+        <li><div class="doc-num">7</div><div class="doc-body"><div class="doc-desc">贷款及融资管理：根据公司资金计划及业务流程，确定贷款归还时效及重新放贷款流程及时间，确保续贷正常。</div></div></li>
+        <li><div class="doc-num">8</div><div class="doc-body"><div class="doc-desc">每年第一季度内，完成向董事会提交截止上年度的《资产设备清册》；负责管理集团所投资公司的在建装修装饰工程管理 & 固定资产管理。</div></div></li>
+        <li><div class="doc-num">9</div><div class="doc-body"><div class="doc-desc">集团内所有购买的单件/组合件价格超过<strong>2000元以上</strong>的家具、电器和设施设备的立项审核、入库领用登记、维修保养费用审核、报废处置提请。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">财务报表按时提交率（每月15日前）</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">合规流程审核完整率</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">合并报表提交准时率（每年1月20日前）</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">贷款续贷零逾期</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">财务/会计/审计相关本科及以上学历，持有CPA或中级会计师资格优先</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">10年以上财务管理经验，有集团化财务统筹经验者优先</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">熟悉税务申报、账务处理、合并报表编制流程</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">具备合规意识，熟悉HKMS或类似财务审批系统</div></div></li>
+          <li><div class="doc-num">⑤</div><div class="doc-body"><div class="doc-desc">具备较强的沟通协调能力及向董事会汇报能力</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 2. 会计岗 ===== -->
+  <div class="section" id="p2">
+    <div class="section-title">2. 会计岗（财务会计 · 境内） <span class="badge badge-blue">专业岗</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>大财务 · 财务部</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>财务总监（CFO）/ Jason</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>—</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          负责所分配的集团内企业的日常账务处理、税务申报、发票管理及财务报表编制，按时向财务负责人提交各项会计报表，配合内外部审计工作。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责（按人员分工）</h3></div>
+      <div class="card-grid three-col">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#eaf2ff;font-size:13px">蔡</div><h3 style="font-size:13px">蔡心宇（分两组）</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc"><strong>开弈人力（‼重点）、</strong>靠普人力、开博人力、南京开弈、乾钵、时代人才 共6家</div></div></li>
+            <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc"><strong>开弈信息（‼重点）、</strong>深圳和弈、天津2家、开弈医疗、市场营销、开弈外包 共7家</div></div></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#e6f7ee;font-size:13px">芦</div><h3 style="font-size:13px">芦智蔚</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc"><strong>开弈人才（‼重点）、</strong>开弈人力研究院、微芮洺、弈工分健康、弈工分文化 共5家</div></div></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#fff4e5;font-size:13px">吴</div><h3 style="font-size:13px">吴松成</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">开弈投资、弈工分信息（含历史遗留问题处理，<strong>2025.1.1—2026.12.31</strong>）共2家</div></div></li>
+          </ul>
+        </div>
+      </div>
+      <div class="doc-desc" style="font-size:12.5px;line-height:1.65;color:var(--text-muted);margin-top:8px">
+        <strong>通用职责：</strong>完成所负责公司的税务收入确认、资产负债表、损益表，及非个税的税务申报 & 财务会计 & 报表申报，<strong>每月15日前</strong>向公司提交截止上月的财务报告；负责参与集团内所有付款下的业务内部流程（立项+用印）检查，审核签字。
+      </div>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">财务报表按时提交率</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">税务申报零逾期/零罚款</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">账务差错率</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">财务/会计相关本科及以上学历，持有初级或中级会计师资格</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">3年以上企业账务工作经验</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">熟悉税务申报、发票管理及相关财务软件</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">工作细心、有责任心</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 3. 账务部负责人 ===== -->
+  <div class="section" id="p3">
+    <div class="section-title">3. 账务部负责人（账务总监） <span class="badge badge-red">高管</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>大财务 · 账务部</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>财务总监（CFO）/ Jason</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>账务部团队</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          统筹人才系人力资源业务的账务工作，包括客户发票、代理发薪、报税、客户账务、资金台账核算及客户账单用印管理；负责集团所有公司银行账户的付款操作；管理Payroll下所有薪酬福利的执行与统计；编制集团投资系P&L报表。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">人才系人力资源业务的客户发票 & 客户代理发薪 & 报税 & 客户账务 & 客户资金台账核算 & 客户账单用印管理。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">Payroll下所有薪酬福利的执行和统计，含员工 & 客户商保/意外险的增减核算。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">集团所有公司所有银行账户的付款操作，以及收付款下的收支现金标记和统计（<strong>每工作日</strong>）。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">对开弈投资系所改造的资产面积总表，合同面积租金应收实收账款管理及投资系佣金&绩效计算，按<strong>月/季/年会议</strong>提报开弈投资系P&L。</div></div></li>
+        <li><div class="doc-num">5</div><div class="doc-body"><div class="doc-desc">每年度<strong>第一个月15日前</strong>，向董事会提交开弈投资系和开弈人才系已审核通过截止12月31日的Closes版合并P&L表。</div></div></li>
+        <li><div class="doc-num">6</div><div class="doc-body"><div class="doc-desc">加强薪酬审批和执行流程：依据（1）钉钉考勤统计表；（2）入职离职调整工资审批；（3）KPI计算和审核；（4）年终奖金计算和审核。</div></div></li>
+        <li><div class="doc-num">7</div><div class="doc-body"><div class="doc-desc">协助BU，管理客户个税台账 & 开弈人才系内部P&L表 & 开弈信息&开弈香港IIT管理下的财务规划和执行落实。</div></div></li>
+        <li><div class="doc-num">8</div><div class="doc-body"><div class="doc-desc"><strong>（王倩）</strong>负责境外账务部职能对应的职能，以及境外公司账户管理 & 贷款 & 理财对接。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">客户账单准时发出率</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">银行付款操作准确率</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">P&L报表按时提交率</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">薪酬发放零差错</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">财务/会计相关本科及以上学历</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">5年以上账务/薪酬核算经验，有HRO/外包薪酬服务经验者优先</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">熟悉银行付款操作、发票管理及薪酬核算流程</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">熟练使用财务软件及Excel</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 4. 香港办负责人 ===== -->
+  <div class="section" id="p4">
+    <div class="section-title">4. 香港办负责人（境外财务统筹） <span class="badge badge-red">高管</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>大财务 · 香港办</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>CFO / 董事会</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>王倩（境外账务）</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          负责香港办年度资金预算编制与执行管控；统筹所有境内主要股权持股公司及境外账务、财务审计；行使类监事职责，发起外部合规审计；统筹境外除财务外的所有内外部协调事务。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">每年度<strong>12月份</strong>，向董事会提交下一年的资金预算1.0版；每年<strong>1月前</strong>，协调所有部门Closed资金预算；解决对外融资及集团BU公司间拆借计划；管理财政返税资金 & 理财管理。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">统筹所有境内主要的股权持股公司，以及境外会计做账及财务审计；按IIT管理项目下、按富平99号项目下存档及备案来自财务部的财务申报表（按<strong>三年周期</strong>）。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">担任章程中<strong>类监事职责</strong>，有权发起外部审计对公司财务会计进行年度内审或外部年度审计；负责委托外部专业机构对集团内公司按年按需进行合规审计。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">境外除财务外的所有相关工作事务的内外部协调 / 香港办预算费用执行管控 / 境外印章用印 / 董事成员个人境外事务协调。</div></div></li>
+        <li><div class="doc-num">5</div><div class="doc-body"><div class="doc-desc">接受集团董事授权，协调内外部资源跟踪『公司经营层面所未处理掉的&又联系到董事』的公司事务，统筹安排经营管理层人员有效对接。</div></div></li>
+        <li><div class="doc-num">6</div><div class="doc-body"><div class="doc-desc"><strong>（王倩）</strong>对接董秘，定期完成Jenny个人及家庭的信用卡账单、报销、及时还款及分类标记统计（<strong>每月26日</strong>）。</div></div></li>
+        <li><div class="doc-num">7</div><div class="doc-body"><div class="doc-desc">境外公司用印档案归档登记入库管理 & 财务档案入库 & 银行代发流水单&费用凭证的入库档案管理。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">年度资金预算准时提交率</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">境外合规审计无重大发现</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">境外印章用印规范率</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">财务/审计/法律相关专业，本科及以上学历</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">8年以上集团境外财务或审计工作经验</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">熟悉香港及境外公司法规、税务规定</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">具备较强的跨境协调与组织能力，英语工作流利</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 5. 集团品牌管理负责人 ===== -->
+  <div class="section" id="p5">
+    <div class="section-title">5. 集团品牌管理负责人 <span class="badge badge-purple">职能岗</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>集团大后台 · 品牌管理</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>蔡心宇 / 董事会</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>—</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          负责集团品牌及荣誉档案的统一管理，维护对外介绍材料；管理集团视觉系统标准与模版；统筹品牌展示空间及园区广告屏内容规划。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">集团品牌及荣誉档案统一管理，包括公司对外介绍材料的更新和管理。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">集团视觉系统管理（标准、规则发布及模版更新管理）。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">集团自用区域C1区域1楼品牌展示和接待服务空间规划设计方案制定。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">园区LED广告屏内容规划管理。</div></div></li>
+        <li><div class="doc-num">5</div><div class="doc-body"><div class="doc-desc">集团用于展示的档案资料管理，包括各项奖杯、奖状、荣誉、标准合同、宣传材料等。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">品牌物料更新及时率</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">园区广告屏内容按计划发布率</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">品牌管理、市场营销或设计相关专业</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">3年以上品牌管理或市场工作经验</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">具备较强的审美和视觉设计能力</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">能独立管理品牌档案及物料</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 6. 行政专员 ===== -->
+  <div class="section" id="p6">
+    <div class="section-title">6. 行政专员（集团行政服务） <span class="badge badge-green">职能岗</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>集团大后台 · 行政服务</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>蔡心宇 / 周凯楠</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>—</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          负责集团日常行政事务，包括公司年度计划跟踪、会议组织、办公区保洁管理、外部接待、电话网络及办公设施设备的统筹管理；协助新员工工位安排及员工福利发放。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">公司年度计划、公司内部会议、会议布置需跟踪工作 & 工作任务单跟踪管理<strong>（☞蔡心宇，按周按需）</strong>。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">集团自用办公区的保洁管理（保洁阿姨具体区域和保洁要求）<strong>（☞周凯楠）</strong>。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">集团外部接待支持，包括园区路线图、会议流程、会议场地搭建（桌椅、席卡、屏幕等）<strong>（☞周凯楠）</strong>。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">集团办公使用区域内的电话、网络、快递、绿化、保洁、前台、会议室等的管理<strong>（☞周凯楠）</strong>。</div></div></li>
+        <li><div class="doc-num">5</div><div class="doc-body"><div class="doc-desc">公司所有电脑、电器、电子会议、安防设施设备的MIS统筹管理；集团资产管理（含固定资产、办公家具设施设备等）<strong>（☞王力）</strong>。</div></div></li>
+        <li><div class="doc-num">6</div><div class="doc-body"><div class="doc-desc">新员工工位安排、工牌制作；员工福利的执行，员工节日、体检、餐费福利结算等<strong>（☞周凯楠 蔡心宇）</strong>。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">会议组织满意度</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">行政任务按时完成率</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">固定资产台账准确率</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">行政管理、文秘或相关专业，大专及以上学历</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">2年以上行政工作经验</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">工作细致、执行力强</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">具备良好的沟通协调能力</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 7. 集团人事专员 ===== -->
+  <div class="section" id="p7">
+    <div class="section-title">7. 集团人事专员（HR服务岗） <span class="badge badge-blue">职能岗</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>集团大后台 · 人事服务</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>黄一萧 / Jenny</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>—</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          负责集团员工入离职手续办理、钉钉考勤管理、劳动关系维护，商保社保公积金增减操作，建立并维护员工人事档案；统筹Payroll制作及发放。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">员工入离职、钉钉考勤、劳动关系、商保社保公积金增减等的设置、通知以及跟踪；建立人事档案，及时更新员工状态表相关信息<strong>（☞王妤杨 黄一萧）</strong>。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">新员工工位安排、工牌制作；员工福利的执行，员工节日、体检、餐费福利结算等<strong>（☞周凯楠 蔡心宇）</strong>。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">考勤的统计 & 员工薪资绩效计算 & 发放 & 报税 & 邮箱管理（邮件备份管理）& 工资单发放 & 钉钉流程配置<strong>（☞黄欢欢 Jenny）</strong>。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">统筹HR各职能，完成每月每年Payroll的制作、审批、发放，以及工资单发放到员工<strong>（☞黄欢欢 Jenny）</strong>。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">入离职手续办理准时率</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">考勤数据准确率</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">薪酬发放零差错率</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">员工档案完整性</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">人力资源管理或相关专业，大专及以上学历</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">2年以上人事工作经验，熟悉劳动法及社保政策</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">熟练使用钉钉、Excel及HR信息系统</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">具备较强的保密意识和责任心</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 8. 人力资源规划专员/总监 ===== -->
+  <div class="section" id="p8">
+    <div class="section-title">8. 人力资源规划专员 / 人力资源总监 <span class="badge badge-red">高管</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>集团人力资源管理</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>薪酬委员会 / 董事会 / 王妤杨</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>—</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          负责集团人力资源战略规划，制定5年规划与3年计划；推动公司组织、职位、职级、编制、薪酬体系发展与调整；制定人事政策、搭建招聘渠道、推进管培生孵化计划；2025年底前完成绩效KPI政策制订和高管KPI考评Review接管。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">根据公司经营计划完成公司人力资源计划的配置、管理、执行<strong>（5年规划3年计划）</strong>。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">公司组织、职位、职级、编制、薪酬的发展管理与调整<strong>（5年规划3年计划）</strong>。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">人事政策制定、人事表单及文件的制作、宣发与管理<strong>（5年规划3年计划）</strong>。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">开通集团境外境内的优秀人才招聘渠道，思考公司人才发展的储备计划；适时启动管培生人才孵化及培养计划<strong>（5年规划3年计划）</strong>。</div></div></li>
+        <li><div class="doc-num">5</div><div class="doc-body"><div class="doc-desc"><strong>2025年年底前</strong>，接手Susan的绩效管理的KPI政策制订；以及接手Vivien原对高管和大后台的KPI考评Review（<strong>2025年11月启动</strong>）。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">人力资源规划文件按期提交率</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">编制调整执行准确率</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">管培生招募及培养计划落地率</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">KPI政策完成时间节点达成</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">人力资源管理或相关专业，本科及以上学历</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">8年以上HR工作经验，有集团人力资源规划经验者优先</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">熟悉绩效管理、薪酬设计及组织架构设计</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">具备较强的战略思维和文案能力</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 9. 集团法务专员/法务总监 ===== -->
+  <div class="section" id="p9">
+    <div class="section-title">9. 集团法务专员 / 法务总监 <span class="badge badge-red">高管</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">🏢</div><h3>岗位信息</h3></div>
+        <table class="info-table">
+          <tr><td class="label-col">所在部门</td><td>集团大后台 · 集团法务</td></tr>
+          <tr><td class="label-col">汇报对象</td><td>王妤扬 / 外部法务</td></tr>
+          <tr><td class="label-col">直接管辖</td><td>李欣怡（境内印章）</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">📋</div><h3>岗位概述</h3></div>
+        <div class="doc-desc" style="font-size:13px;line-height:1.75">
+          负责集团诉讼、仲裁及劳动社保仲裁案件的统筹跟踪；完成各BU、职能部门、集团的合同与文件起草和审核；统筹管理境内外印章的保管与用印；负责集团内所有公司的工商、资质、年检、经济申报等合规事务。
+        </div>
+      </div>
+    </div>
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#f2eeff">📝</div><h3>主要职责</h3></div>
+      <ul class="doc-list">
+        <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">诉讼 & 仲裁案件 & 员工劳动社保仲裁案件按照<strong>'哪个BU产生/谁跟踪的任务，则由谁负责到底'</strong>的原则进行任务分配；集团法务进行跨年度工作的统筹跟踪。</div></div></li>
+        <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">不能落到BU的其他集团新项目、公共职能条线涉及用印的审核，以及相关法务工作的统筹、委托法务服务管理。</div></div></li>
+        <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">按需按时按质，跟踪完成各个BU、职能部门、集团的合同、文件起草和审核；对外部法务的工作量进行考核、分摊，费用统计等。</div></div></li>
+        <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">集团内所有公司的工商 & 资质 & 年检 & 经济申报等。</div></div></li>
+        <li><div class="doc-num">5</div><div class="doc-body"><div class="doc-desc"><strong>（王妤扬）</strong>境外印章保管、用印；<strong>（李欣怡）</strong>境内印章保管、用印；以及用印后的用印档案和电子档案的统一管理。</div></div></li>
+        <li><div class="doc-num">6</div><div class="doc-body"><div class="doc-desc">境外公司用印档案归档登记入库管理 & 财务档案入库 & 银行代发流水单&费用凭证的入库档案管理。</div></div></li>
+        <li><div class="doc-num">7</div><div class="doc-body"><div class="doc-desc">关于非财务会计以及雇员合同外的原由总裁办所管理的公司档案，所有公司档案统一由<strong>王倩</strong>负责管理。</div></div></li>
+      </ul>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🎯</div><h3>主要KPI考核指标</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">合同审核及时率</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">印章使用合规率</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">工商/年检按时完成率</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">诉讼案件跟踪无遗漏</div></div></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">🎓</div><h3>任职资格</h3></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-desc">法学相关专业，本科及以上学历，持有法律职业资格证书优先</div></div></li>
+          <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-desc">5年以上企业法务或律所工作经验</div></div></li>
+          <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-desc">熟悉劳动法、公司法及相关经济法规</div></div></li>
+          <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-desc">具备较强的文字表达能力和合规意识</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-position -->
+
 </main>
 
 <script>
@@ -998,8 +1517,12 @@ function showPage(id,el){
   window.scrollTo(0,0);
 }
 function scrollToSection(id){
-  showPage(id.startsWith('r1')?'recruit':id.startsWith('r2')?'onboard':'inservice',
-    document.querySelector('.nav-item.'+(id.startsWith('r1')?'r1':id.startsWith('r2')?'r2':'r3')));
+  var page, navClass;
+  if(id.startsWith('r1')){page='recruit';navClass='r1';}
+  else if(id.startsWith('r2')){page='onboard';navClass='r2';}
+  else if(id.startsWith('r3')){page='inservice';navClass='r3';}
+  else{page='position';navClass='r4';}
+  showPage(page,document.querySelector('.nav-item.'+navClass));
   setTimeout(()=>{
     const el=document.getElementById(id);
     if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
