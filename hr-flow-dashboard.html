@@ -27,6 +27,8 @@
   --tag-red-text: #b03030;
   --tag-purple: #f2eeff;
   --tag-purple-text: #5a30b0;
+  --accent3: #2e8b8b;
+  --accent4: #8b4513;
   --shadow: 0 2px 10px rgba(20,30,60,0.08);
   --radius: 8px;
   --radius-lg: 12px;
@@ -72,6 +74,8 @@ body{
 .nav-item.r2 .nav-icon{background:#2e6b55}
 .nav-item.r3 .nav-icon{background:#7a4e9b}
 .nav-item.r4 .nav-icon{background:#c06a2a}
+.nav-item.r5 .nav-icon{background:#2e6b55}
+.nav-item.r6 .nav-icon{background:#8b4513}
 .nav-sub-item{
   display:flex;align-items:center;gap:8px;
   padding:8px 22px 8px 42px;cursor:pointer;
@@ -253,6 +257,20 @@ body{
     <div class="nav-sub-item" onclick="scrollToSection('r3-probation')">试用期管理</div>
     <div class="nav-sub-item" onclick="scrollToSection('r3-intern')">实习生管理</div>
     <div class="nav-sub-item" onclick="scrollToSection('r3-renew')">合同续签 & 流动</div>
+
+    <div class="nav-item r5" onclick="showPage('daily',this)">
+      <div class="nav-icon">📅</div>日常管理
+    </div>
+    <div class="nav-sub-item" onclick="scrollToSection('d1')">钉钉事务</div>
+    <div class="nav-sub-item" onclick="scrollToSection('d2')">发薪管理</div>
+    <div class="nav-sub-item" onclick="scrollToSection('d3')">商业保险</div>
+
+    <div class="nav-item r6" onclick="showPage('offboard',this)">
+      <div class="nav-icon">🚪</div>离职管理
+    </div>
+    <div class="nav-sub-item" onclick="scrollToSection('o1')">主动离职流程</div>
+    <div class="nav-sub-item" onclick="scrollToSection('o2')">被辞退流程</div>
+    <div class="nav-sub-item" onclick="scrollToSection('o3')">离职交接清单</div>
 
     <div class="nav-item r4" onclick="showPage('position',this)">
       <div class="nav-icon">📊</div>职位管理
@@ -1002,6 +1020,324 @@ body{
   </div>
 </div><!-- /page-inservice -->
 
+<!-- ============= PAGE: 日常管理板块 ============= -->
+<div id="page-daily" class="page">
+  <div class="breadcrumb">人事流程 › <span>日常管理</span></div>
+  <div class="page-header">
+    <div class="page-header-icon" style="background:linear-gradient(135deg,#2e8b8b,#1a5a5a)">📅</div>
+    <div class="page-header-text">
+      <h1>日常管理</h1>
+      <p>钉钉事务 · 发薪管理 · 商业保险</p>
+    </div>
+  </div>
+
+  <!-- （一）钉钉事务 -->
+  <div class="section" id="d1">
+    <div class="section-title">（一）钉钉事务 <span class="badge badge-blue">管理员 + 员工双视角</span></div>
+
+    <!-- 管理员主要使用板块 -->
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#eaf2ff">🔧</div><div><h3>管理员主要使用板块（调用 API，链接钉钉）</h3></div></div>
+      <div class="card-grid three-col">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">考</div><h3 style="font-size:13px">考勤管理</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">①</div><div class="doc-body"><div class="doc-name">考勤报表导出统计</div><div class="doc-desc">每月1日导出上月周期内考勤记录，对所有人的记录进行统计汇总</div></div></li>
+            <li><div class="doc-num">②</div><div class="doc-body"><div class="doc-name">考勤组设置</div><div class="doc-desc">根据不同工时、地点分类，设置不同的考勤组</div></div></li>
+            <li><div class="doc-num">③</div><div class="doc-body"><div class="doc-name">班次管理</div><div class="doc-desc">根据不同的考勤时间设置班次</div></div></li>
+            <li><div class="doc-num">④</div><div class="doc-body"><div class="doc-name">排班管理</div><div class="doc-desc">排班性质的部门在月末将值班表发送至人事，人事根据值班表排班</div></div></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#e6f7ee;font-size:13px">假</div><h3 style="font-size:13px">假期管理</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">⑤</div><div class="doc-body"><div class="doc-name">员工假期余额管理</div><div class="doc-desc">根据工龄发放年假；支持手动调整（+/−天数+备注）</div></div></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#fff4e5;font-size:13px">审</div><h3 style="font-size:13px">审批管理</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-num">⑥</div><div class="doc-body"><div class="doc-name">OA审批</div><div class="doc-desc">请假流程管理；数据备查（按人/按类型/按状态检索）</div></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 系统操作对照表 -->
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#eaf2ff">🖥</div><div><h3>在系统操作的事项</h3></div></div>
+      <table class="info-table">
+        <tr><th>序号</th><th>功能</th><th>操作说明</th></tr>
+        <tr><td>1</td><td>考勤报表/统计</td><td>选部门/月份 → 看汇总 → 导出 Excel/PDF（读本地库已同步数据）</td></tr>
+        <tr><td>2</td><td>查看原始打卡记录</td><td>员工明细、异常标记（迟到/缺卡等）以报表/列表形式查看</td></tr>
+        <tr><td>3</td><td>假期余额查看</td><td>员工年假/调休等余额列表</td></tr>
+        <tr><td>4</td><td>假期余额调整</td><td>输入"+1天/−0.5天/备注（结转/手工修正）"→ 点确认 → 钉钉 API 回写并记操作日志</td></tr>
+        <tr><td>5</td><td>审批数据备查</td><td>在本站按人/按类型/按状态检索请假、加班、出差、补卡等（数据来自同步/回调落库）</td></tr>
+        <tr><td>6</td><td>排班结果核对</td><td>看某月某人的排班表（只读），方便做考勤对账</td></tr>
+        <tr><td>7</td><td>快捷入口</td><td>页面里放按钮【去钉钉设置考勤组/班次/排班】，一键跳钉钉后台（免登跳转最佳）</td></tr>
+      </table>
+    </div>
+
+    <!-- 仍需在钉钉操作的事项 -->
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#feeee8">🔗</div><div><h3>仍在【钉钉】里操作的事项</h3></div></div>
+      <div class="card-grid three-col">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">⚙</div><h3 style="font-size:13px">考勤组设置 / 班次管理 / 规则</h3></div>
+          <div class="doc-desc" style="font-size:12.5px;line-height:1.6;color:var(--text-muted)">定位WiFi/范围/弹性/班次算法等核心规则配置，需在钉钉后台操作。</div>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">📅</div><h3 style="font-size:13px">排班管理</h3></div>
+          <div class="doc-desc" style="font-size:12.5px;line-height:1.6;color:var(--text-muted)">按人/按日期拖排班、批量排班，需在钉钉后台操作。</div>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">📋</div><h3 style="font-size:13px">审批模板配置</h3></div>
+          <div class="doc-desc" style="font-size:12.5px;line-height:1.6;color:var(--text-muted)">请假、加班、补卡、出差模板字段/流程节点配置，需在钉钉后台操作。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 普通员工使用板块 -->
+    <div class="card card-full">
+      <div class="card-header"><div class="icon" style="background:#e6f7ee">👤</div><div><h3>普通员工主要使用板块</h3></div></div>
+      <div class="card-grid">
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#eaf2ff;font-size:13px">📍</div><h3 style="font-size:13px">考勤</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-body"><div class="doc-desc">打卡，查看个人考勤记录</div></div></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+          <div class="card-header"><div class="icon" style="background:#eaf2ff;font-size:13px">📝</div><h3 style="font-size:13px">OA审批</h3></div>
+          <ul class="doc-list">
+            <li><div class="doc-body"><div class="doc-desc">请假、加班、外出、出差、（原补卡）</div></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- （二）发薪 -->
+  <div class="section" id="d2">
+    <div class="section-title">（二）发薪管理 <span class="badge badge-green">钉钉智能工资条</span></div>
+    <div class="card card-full">
+      <div class="card-header"><div class="icon" style="background:#e6f7ee">💰</div><div><h3>工资条发放方式</h3></div></div>
+      <div class="highlight-block">
+        <div class="hl-title">📌 操作路径</div>
+        <div class="hl-content">工资条直接链接钉钉的"智能工资条"板块，通过该板块完成工资条发放。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- （三）保险 -->
+  <div class="section" id="d3">
+    <div class="section-title">（三）商业保险 <span class="badge badge-orange">共 4 种</span></div>
+    <div class="card-grid two-col">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">①</div><div><h3>计划一：员工计划</h3></div></div>
+        <table class="info-table">
+          <tr><td class="label-col">投保对象</td><td>在职员工且满足 16–65 周岁，续保可至 69 周岁</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">③</div><div><h3>计划四：子女计划（无社保）</h3></div></div>
+        <table class="info-table">
+          <tr><td class="label-col">投保对象</td><td>在职员工的子女且出生后 90 天且健康出院至 18 周岁，未婚全日制学生可延长至 23 周岁</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">②</div><div><h3>计划三：高管计划</h3></div></div>
+        <table class="info-table">
+          <tr><td class="label-col">投保对象</td><td>指定高管 · 共 6 人</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">④</div><div><h3>友邦意外险</h3></div></div>
+        <table class="info-table">
+          <tr><td class="label-col">投保对象</td><td>物业保洁人员</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-daily -->
+
+<!-- ============= PAGE: 离职管理板块 ============= -->
+<div id="page-offboard" class="page">
+  <div class="breadcrumb">人事流程 › <span>离职管理</span></div>
+  <div class="page-header">
+    <div class="page-header-icon" style="background:linear-gradient(135deg,#8b4513,#5a2d0a)">🚪</div>
+    <div class="page-header-text">
+      <h1>离职管理</h1>
+      <p>主动离职 · 被辞退 · 离职交接清单</p>
+    </div>
+  </div>
+
+  <!-- 离职触发时间点 -->
+  <div class="section">
+    <div class="section-title">离职触发时间点</div>
+    <div class="card card-full">
+      <table class="info-table">
+        <tr><th>员工类型</th><th>提前通知期</th></tr>
+        <tr><td>签署劳动合同并转正的员工</td><td>提前 <strong>30 天</strong>申请 / 被通知</td></tr>
+        <tr><td>签署劳务协议 / 实习协议的员工</td><td>提前 <strong>7 天</strong>申请 / 被通知</td></tr>
+        <tr><td>在试用期的员工</td><td>提前 <strong>3 天</strong>申请 / 被通知</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 主动离职 -->
+  <div class="section" id="o1">
+    <div class="section-title">主动离职流程 <span class="badge badge-blue">离职申请表 + 三级审批</span></div>
+    <div class="flow-lane">
+      <div class="flow-node">
+        <div class="node-step">STEP 1</div>
+        <div class="node-title">员工填写离职申请表</div>
+        <div class="node-executor">员工本人发起</div>
+        <div class="node-time">提前 30 天（劳动合同）/ 7 天（劳务/实习）/ 3 天（试用期）</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="node-step">STEP 2</div>
+        <div class="node-title">三级审批流转</div>
+        <div class="node-executor">BU 负责人 → 人事部负责人 → Jenny</div>
+        <div class="node-approval">三级审批</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="node-step">STEP 3</div>
+        <div class="node-title">审批完成 → 启动离职交接</div>
+        <div class="node-executor">系统自动同步</div>
+        <div class="node-time">离职交接清单自动生成</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">📄</div><h3>《离职申请表》填写字段</h3></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+          <span class="tag tag-blue">姓名</span><span class="tag tag-blue">部门</span><span class="tag tag-blue">职位</span><span class="tag tag-blue">入职日期</span><span class="tag tag-blue">计划离职日期</span><span class="tag tag-blue">离职事由</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee">🔁</div><h3>审批链详情</h3><span class="badge badge-red" style="margin-left:8px">三级审批</span></div>
+        <div class="approval-chain" style="flex-direction:column;align-items:flex-start;gap:8px;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:8px"><div class="approval-step">① BU 负责人填写意见并确认</div></div>
+          <div style="color:var(--text-muted);padding-left:10px;font-size:13px">↓</div>
+          <div style="display:flex;align-items:center;gap:8px"><div class="approval-step">② 人事部负责人（黄一萧）填写意见并确认</div></div>
+          <div style="color:var(--text-muted);padding-left:10px;font-size:13px">↓</div>
+          <div style="display:flex;align-items:center;gap:8px"><div class="approval-step final">③ Jenny 填写意见并确认（终审）</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 被辞退 -->
+  <div class="section" id="o2">
+    <div class="section-title">被辞退流程 <span class="badge badge-red">协商解除协议 + 用印</span></div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#feeee8">📝</div><h3>《协商解除劳动合同协议》</h3><div class="card-subtitle">固定模板 · 一式两份</div></div>
+        <table class="info-table" style="margin-top:8px">
+          <tr><td class="label-col">需填写字段</td><td>解除劳动合同日期、薪资待遇结算日期、离职移交最后期限、经济补偿金的具体金额及发放日期</td></tr>
+          <tr><td class="label-col">执行人</td><td>BU 负责人发出解聘需求 → 人事部负责人同意 → Jenny 同意 → 人事部拟定协议</td></tr>
+          <tr><td class="label-col">用印要求</td><td>法定代表人或委托代理人（签章）一整份四处用印</td></tr>
+          <tr><td class="label-col">用印时间点</td><td>通知员工解除合同的审批完成后可走用印流程</td></tr>
+          <tr><td class="label-col">盖章后操作</td><td>一份给到员工，另一份存于员工档案</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">⚙</div><h3>被辞退流程触发条件</h3></div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-title">BU 负责人发起解聘需求</div>
+            <div class="tl-sub">说明解聘原因，提交至人事部</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-title">人事部负责人审核</div>
+            <div class="tl-sub">黄一萧审核解聘合理性，确认后提交 Jenny</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-title">Jenny 终审确认</div>
+            <div class="tl-sub">审批完成后，人事部拟定《协商解除劳动合同协议》</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-title">走用印流程</div>
+            <div class="tl-sub">法定代表人或委托代理人签章（一整份四处用印）</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-title">盖章交付</div>
+            <div class="tl-sub">一份给员工，一份存员工档案</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 离职交接清单 -->
+  <div class="section" id="o3">
+    <div class="section-title">离职交接清单 <span class="badge badge-orange">自动同步 + 4 部门签字</span></div>
+
+    <div class="highlight-block" style="margin-bottom:20px">
+      <div class="hl-title">📌 自动同步规则</div>
+      <div class="hl-content">填写离职申请表后，以下字段自动同步至离职交接清单：<br><strong>姓名、职位、部门负责人、离职时间、离职事由</strong></div>
+    </div>
+
+    <div class="card card-full" style="margin-bottom:20px">
+      <div class="card-header"><div class="icon" style="background:#eaf2ff">📋</div><div><h3>交接项目清单 — 按部门</h3></div></div>
+
+      <!-- 所接管工作 / 部门负责人 -->
+      <div class="card" style="margin-bottom:16px;box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+        <div class="card-header"><div class="icon" style="background:#f2eeff;font-size:13px">部</div><div><h3 style="font-size:13px">所接管工作 · 部门负责人</h3><div class="card-subtitle">交接情况及签名：_______________</div></div></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">所有相关的书面文件、合同等的交接</div></div></li>
+          <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">所有相关的电子文档的交接</div></div></li>
+          <li><div class="doc-num">3</div><div class="doc-body"><div class="doc-desc">正在进行工作的交接</div></div></li>
+          <li><div class="doc-num">4</div><div class="doc-body"><div class="doc-desc">对外客户关系及沟通程度的交接</div></div></li>
+        </ul>
+      </div>
+
+      <!-- MIS部门 -->
+      <div class="card" style="margin-bottom:16px;box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+        <div class="card-header"><div class="icon" style="background:#e6f7ee;font-size:13px">M</div><div><h3 style="font-size:13px">MIS部门负责人</h3><div class="card-subtitle">交接情况及签名：_______________</div></div></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">保存备份 E-mail 内容并切断 E-mail 地址</div></div></li>
+        </ul>
+      </div>
+
+      <!-- Admin部门 -->
+      <div class="card" style="margin-bottom:16px;box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+        <div class="card-header"><div class="icon" style="background:#fff4e5;font-size:13px">A</div><div><h3 style="font-size:13px">Admin部门负责人</h3><div class="card-subtitle">交接情况及签名：_______________</div></div></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">门禁卡的归还</div></div></li>
+        </ul>
+      </div>
+
+      <!-- Finance部门 -->
+      <div class="card" style="margin-bottom:16px;box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+        <div class="card-header"><div class="icon" style="background:#feeee8;font-size:13px">F</div><div><h3 style="font-size:13px">Finance部门负责人</h3><div class="card-subtitle">交接情况及签名：_______________</div></div></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">应收应付款项的结算</div></div></li>
+          <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">预借款等的结算</div></div></li>
+        </ul>
+      </div>
+
+      <!-- HR部门 -->
+      <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff;font-size:13px">H</div><div><h3 style="font-size:13px">HR部门负责人</h3><div class="card-subtitle">交接情况及签名：_______________</div></div></div>
+        <ul class="doc-list">
+          <li><div class="doc-num">1</div><div class="doc-body"><div class="doc-desc">公司档案的归还</div></div></li>
+          <li><div class="doc-num">2</div><div class="doc-body"><div class="doc-desc">登记个人联系信息</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-offboard -->
+
 <!-- ============= PAGE: 职位管理板块 ============= -->
 <div id="page-position" class="page">
   <div class="breadcrumb">人事流程 › <span>职位管理</span></div>
@@ -1521,6 +1857,8 @@ function scrollToSection(id){
   if(id.startsWith('r1')){page='recruit';navClass='r1';}
   else if(id.startsWith('r2')){page='onboard';navClass='r2';}
   else if(id.startsWith('r3')){page='inservice';navClass='r3';}
+  else if(id.startsWith('d')){page='daily';navClass='r5';}
+  else if(id.startsWith('o')){page='offboard';navClass='r6';}
   else{page='position';navClass='r4';}
   showPage(page,document.querySelector('.nav-item.'+navClass));
   setTimeout(()=>{
