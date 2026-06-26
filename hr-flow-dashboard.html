@@ -145,6 +145,7 @@ body{
 .node-time{font-size:10.5px;color:var(--text-muted);margin-top:2px;line-height:1.4}
 .node-doc{font-size:10.5px;background:var(--tag-orange);color:var(--tag-orange-text);padding:2px 6px;border-radius:3px;margin-top:4px;display:inline-block}
 .node-approval{font-size:10.5px;background:var(--tag-red);color:var(--tag-red-text);padding:2px 6px;border-radius:3px;margin-top:4px;display:inline-block}
+.node-approval.final{background:#c0392b;color:#fff;font-weight:600}
 .flow-arrow{flex-shrink:0;width:30px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:20px;font-weight:300}
 
 /* ====== INFO TABLE ====== */
@@ -958,32 +959,114 @@ body{
       </div>
     </div>
 
-    <!-- 员工流动表 —— 满宽独占一行 -->
-    <div class="card card-full" style="margin-bottom:20px">
-      <div class="card-header"><div class="icon" style="background:#f2eeff">⑤</div><h3>员工流动表</h3></div>
-      <div class="card-grid">
-        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
-          <ul class="doc-list">
-            <li>
-              <div class="doc-body">
-                <div class="doc-name">《员工流动表》</div>
-                <div class="doc-desc"><strong>面向的员工类型：</strong>全日制员工<br><strong>触发节点：</strong>员工发生调岗、调薪、晋升、重新定级等<br><strong>需要审批：</strong>原部门负责人签字确认，现部门负责人（若有）签字确认，人事部负责人签字确认，Jenny 签字确认，依次审批，共三到四级审批</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
-          <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px"><strong>审批顺序（三至四级）：</strong></div>
-          <div class="approval-chain">
-            <div class="approval-step">原部门负责人</div>
-            <div class="approval-arrow-sm">→</div>
-            <div class="approval-step">现部门负责人（若有）</div>
-            <div class="approval-arrow-sm">→</div>
-            <div class="approval-step">人事部负责人</div>
-            <div class="approval-arrow-sm">→</div>
-            <div class="approval-step final">Jenny</div>
+    <!-- ====== 员工流动板块 ====== -->
+    <div id="r3-flow" style="margin-top:24px">
+      <div class="section-title">（4）员工流动
+        <span class="badge badge-purple">人事专员发起 · 四级审批</span>
+      </div>
+
+      <!-- 触发场景说明 -->
+      <div class="highlight-block" style="margin-bottom:20px">
+        <div class="hl-title">📌 触发场景</div>
+        <div class="hl-content">员工发生<strong>调岗、调薪、晋升、重新定级</strong>等变动时，通过员工流动模块进行管理。<br>由 <strong>人事专员</strong> 填写表单后发起，系统自动流转审批链。</div>
+      </div>
+
+      <!-- 审批流程 -->
+      <div class="card card-full" style="margin-bottom:20px">
+        <div class="card-header"><div class="icon" style="background:#f2eeff">🔁</div><div><h3>审批流程</h3><div class="card-subtitle">共四级审批</div></div></div>
+        <div class="flow-lane" style="padding:16px 0 8px">
+          <div class="flow-node">
+            <div class="node-step">发起</div>
+            <div class="node-title">人事专员填写</div>
+            <div class="node-executor">完成表单后发布</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="node-step">1st</div>
+            <div class="node-title">流出部门负责人</div>
+            <div class="node-approval">审批</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="node-step">2nd</div>
+            <div class="node-title">流入部门负责人</div>
+            <div class="node-approval">审批</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="node-step">3rd</div>
+            <div class="node-title">人事负责人</div>
+            <div class="node-approval">审批</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="node-step">终审</div>
+            <div class="node-title">Jenny</div>
+            <div class="node-approval final">终审确认</div>
           </div>
         </div>
+      </div>
+
+      <!-- 表单字段 -->
+      <div class="card card-full" style="margin-bottom:20px">
+        <div class="card-header"><div class="icon" style="background:#eaf2ff">📋</div><div><h3>表单字段</h3><div class="card-subtitle">表 2-20 员工流动表单字段</div></div></div>
+        <div class="card-grid" style="margin-top:12px">
+          <!-- 必填字段 -->
+          <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+            <div class="card-header"><div class="icon" style="background:#feeee8;font-size:12px">必</div><h3 style="font-size:13px">基本信息（必填）</h3></div>
+            <table class="info-table" style="margin-top:4px">
+              <tr><th style="width:36%">字段名称</th><th style="width:30%">字段类型</th><th>说明</th></tr>
+              <tr><td>员工姓名</td><td><span class="tag tag-blue">花名册选择</span></td><td>必填</td></tr>
+              <tr><td>主管经理</td><td><span class="tag tag-blue">花名册选择</span></td><td>必填</td></tr>
+              <tr><td>目前职位</td><td><span class="tag">文本</span></td><td>必填</td></tr>
+              <tr><td>目前部门</td><td><span class="tag tag-green">部门选择</span></td><td>必填</td></tr>
+              <tr><td>员工流动原因</td><td><span class="tag tag-orange">单选</span></td><td>薪酬调整 / 重新定级 / 晋升 / 开发流动 / 市场调整 / 调动 / 其他（需补充）</td></tr>
+              <tr><td>新职位</td><td><span class="tag">文本</span></td><td>必填</td></tr>
+              <tr><td>新部门</td><td><span class="tag tag-green">部门选择</span></td><td>必填</td></tr>
+              <tr><td>新主管</td><td><span class="tag tag-blue">花名册选择</span></td><td>必填</td></tr>
+              <tr><td>目前级别</td><td><span class="tag tag-purple">下拉选择</span></td><td>I–V 级</td></tr>
+              <tr><td>新级别</td><td><span class="tag tag-purple">下拉选择</span></td><td>I–V 级</td></tr>
+            </table>
+          </div>
+          <!-- 补充字段 -->
+          <div class="card" style="box-shadow:none;border:1px solid var(--border);border-radius:var(--radius)">
+            <div class="card-header"><div class="icon" style="background:#e6f7ee;font-size:12px">选</div><h3 style="font-size:13px">补充信息</h3></div>
+            <table class="info-table" style="margin-top:4px">
+              <tr><th style="width:36%">字段名称</th><th style="width:30%">字段类型</th><th>说明</th></tr>
+              <tr><td>目前区域</td><td><span class="tag">文本</span></td><td></td></tr>
+              <tr><td>新区域</td><td><span class="tag">文本</span></td><td></td></tr>
+              <tr><td>目前薪酬</td><td><span class="tag tag-orange">数字</span></td><td>单位：元/月</td></tr>
+              <tr><td>新薪酬</td><td><span class="tag tag-orange">数字</span></td><td>单位：元/月</td></tr>
+              <tr><td>变动生效日期</td><td><span class="tag tag-blue">日历格式</span></td><td>年月日</td></tr>
+              <tr><td>建议流动的原因</td><td><span class="tag">文本</span></td><td></td></tr>
+              <tr><td>执行变动的关键行动</td><td><span class="tag">文本</span></td><td></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 角色权限 -->
+      <div class="card card-full">
+        <div class="card-header"><div class="icon" style="background:#fff4e5">🔐</div><div><h3>角色权限说明</h3><div class="card-subtitle">表 2-21 员工流动板块权限说明</div></div></div>
+        <table class="info-table" style="margin-top:8px">
+          <tr><th style="width:22%">角色</th><th>操作权限</th></tr>
+          <tr>
+            <td><span class="tag tag-blue">人事专员</span></td>
+            <td>可查看所有流动信息并填写表单字段；完成表单填写后发布，可保存草稿；选择审批线（流出/流入部门自动匹配负责人）</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-green">部门负责人</span></td>
+            <td>仅查看自己部门的流动信息，并审批</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-orange">人事负责人</span></td>
+            <td>可查看所有流动信息，并进行人事审批</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-red">Jenny</span></td>
+            <td>可查看所有流动信息，并进行最终审批</td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
