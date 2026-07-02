@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HRO 人事管理系统 · 员工全生命周期管理流程看板</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:#EEF2F8;color:#222;min-height:100vh;}
+
+/* ==== 头部 ==== */
+.hdr{background:linear-gradient(135deg,#0E2A52 0%,#1A3C6E 50%,#2E6EB4 100%);
+  padding:24px 48px 20px;display:flex;align-items:flex-end;gap:16px;
+  box-shadow:0 3px 14px rgba(14,42,82,.35);}
+.hdr-badge{font-size:10px;letter-spacing:.2em;color:#6AAEE8;font-weight:700;margin-bottom:5px;text-transform:uppercase;}
+.hdr-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:.05em;}
+.hdr-sub{font-size:12px;color:#8EC4F0;padding-bottom:2px;margin-left:8px;}
+.hdr-meta{margin-left:auto;text-align:right;font-size:11px;color:#8EC4F0;line-height:2;}
+.hdr-version{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:4px;padding:1px 8px;font-size:10px;color:#fff;margin-left:6px;}
+
+/* ==== 外包装 ==== */
+.wrap{padding:28px 28px 40px;overflow-x:auto;}
+
+/* ==== 主看板 ==== */
+.board{min-width:1480px;background:#fff;border-radius:12px;
+  box-shadow:0 4px 24px rgba(0,0,0,.10);overflow:hidden;}
+
+/* ==== 泳道表头 ==== */
+.thead{display:grid;grid-template-columns:64px repeat(5,1fr);border-bottom:2px solid #D8E4F4;}
+.th-side{background:#1A3C6E;display:flex;align-items:center;justify-content:center;}
+.th-side-text{writing-mode:vertical-rl;text-orientation:mixed;font-size:13px;font-weight:700;
+  color:#fff;letter-spacing:.18em;padding:16px 0;}
+.th{padding:13px 10px 11px;text-align:center;border-left:1px solid #D8E4F4;}
+.th .main{font-size:13px;font-weight:700;}
+.th .sub{font-size:10px;opacity:.6;margin-top:2px;}
+.th.c1{background:#EBF3FD;color:#0E2A52;}
+.th.c2{background:#E6F5EE;color:#0A3D20;}
+.th.c3{background:#FFF8EC;color:#5C3200;}
+.th.c4{background:#FDECEA;color:#5C0000;}
+.th.c5{background:#F2EFFE;color:#2D0E7A;}
+
+/* ==== 泳道主体 ==== */
+.tbody{display:grid;grid-template-columns:64px repeat(5,1fr);}
+.td-side{background:#1A3C6E;min-height:100%;}
+.td{border-left:1px solid #EAF0F8;padding:20px 14px 30px;display:flex;flex-direction:column;align-items:center;gap:0;}
+.td.c1{background:#F5FAFF;}
+.td.c2{background:#F2FAF5;}
+.td.c3{background:#FFFCF3;}
+.td.c4{background:#FFF6F6;}
+.td.c5{background:#FAF7FF;}
+
+/* ==== 子区域虚线框 ==== */
+.zone{width:100%;border-radius:8px;padding:11px 10px 14px;margin-bottom:16px;
+  display:flex;flex-direction:column;align-items:center;gap:0;border-width:1.5px;border-style:dashed;}
+.zone.b{border-color:#4281C9;background:rgba(66,129,201,.04);}
+.zone.g{border-color:#3DAB72;background:rgba(61,171,114,.04);}
+.zone.o{border-color:#D4922A;background:rgba(212,146,42,.04);}
+.zone.r{border-color:#CC3333;background:rgba(204,51,51,.04);}
+.zone.p{border-color:#7C3AED;background:rgba(124,58,237,.04);}
+.zone-label{align-self:flex-start;font-size:9.5px;font-weight:800;letter-spacing:.07em;
+  padding:2px 8px;border-radius:3px;margin-bottom:9px;color:#fff;}
+.zone.b .zone-label{background:#4281C9;}
+.zone.g .zone-label{background:#3DAB72;}
+.zone.o .zone-label{background:#D4922A;}
+.zone.r .zone-label{background:#CC3333;}
+.zone.p .zone-label{background:#7C3AED;}
+
+/* ==== 节点 ==== */
+/* 椭圆-开始/结束 */
+.nd-oval{width:152px;min-height:34px;border-radius:50px;border-width:2px;border-style:solid;
+  background:#EBF3FD;border-color:#4281C9;color:#0E2A52;
+  font-size:11.5px;font-weight:700;text-align:center;padding:7px 10px;
+  display:flex;align-items:center;justify-content:center;line-height:1.3;}
+.nd-oval.g{background:#E4F7ED;border-color:#3DAB72;color:#0A3D20;}
+.nd-oval.o{background:#FFF5DE;border-color:#D4922A;color:#5C3200;}
+.nd-oval.r{background:#FDECEA;border-color:#CC3333;color:#5C0000;}
+.nd-oval.p{background:#F3EFFE;border-color:#7C3AED;color:#2D0E7A;}
+
+/* 矩形-动作 */
+.nd-rect{width:152px;min-height:34px;border-radius:5px;border-width:1.5px;border-style:solid;
+  background:#fff;border-color:#4281C9;color:#0E2A52;
+  font-size:11px;font-weight:500;text-align:center;padding:7px 8px;
+  display:flex;align-items:center;justify-content:center;line-height:1.4;}
+.nd-rect.g{border-color:#3DAB72;color:#0A3D20;}
+.nd-rect.o{border-color:#D4922A;color:#5C3200;}
+.nd-rect.r{border-color:#CC3333;color:#5C0000;}
+.nd-rect.p{border-color:#7C3AED;color:#2D0E7A;}
+.nd-rect.sm{font-size:10px;}
+
+/* 终态绿/红 */
+.nd-end{width:152px;min-height:36px;border-radius:5px;border-width:2px;border-style:solid;
+  border-color:#3DAB72;background:linear-gradient(135deg,#3DAB72,#1E7A45);
+  color:#fff;font-size:12px;font-weight:700;text-align:center;padding:8px 8px;
+  display:flex;align-items:center;justify-content:center;line-height:1.3;}
+.nd-end.r{border-color:#CC3333;background:linear-gradient(135deg,#E05555,#A31515);}
+.nd-end.o{border-color:#D4922A;background:linear-gradient(135deg,#D4922A,#9A6200);}
+.nd-end.p{border-color:#7C3AED;background:linear-gradient(135deg,#7C3AED,#4C1D95);}
+
+/* 菱形-审批 */
+.dia-wrap{width:152px;display:flex;flex-direction:column;align-items:center;}
+.dia{width:88px;height:88px;transform:rotate(45deg);border-radius:4px;
+  border-width:2px;border-style:solid;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dia.b{border-color:#4281C9;background:#EBF3FD;}
+.dia.g{border-color:#3DAB72;background:#E4F7ED;}
+.dia.o{border-color:#D4922A;background:#FFF5DE;}
+.dia.r{border-color:#CC3333;background:#FDECEA;}
+.dia.p{border-color:#7C3AED;background:#F3EFFE;}
+.dia.sm{width:72px;height:72px;}
+.dia-inner{transform:rotate(-45deg);text-align:center;line-height:1.25;}
+.dia-inner .dt{font-size:10px;font-weight:700;}
+.dia.b .dia-inner .dt{color:#0E2A52;}
+.dia.g .dia-inner .dt{color:#0A3D20;}
+.dia.o .dia-inner .dt{color:#5C3200;}
+.dia.r .dia-inner .dt{color:#5C0000;}
+.dia.p .dia-inner .dt{color:#2D0E7A;}
+
+/* 审批人标签 */
+.apv{font-size:9px;color:#fff;border-radius:3px;padding:2px 7px;margin-top:3px;
+  white-space:nowrap;font-weight:600;}
+.apv.b{background:#2058A8;}
+.apv.g{background:#1A6B3A;}
+.apv.o{background:#8C5200;}
+.apv.r{background:#8C1010;}
+.apv.p{background:#4C1D95;}
+
+/* 箭头 */
+.arr{width:2px;margin:0 auto;flex-shrink:0;position:relative;}
+.arr::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);
+  border-left:5px solid transparent;border-right:5px solid transparent;}
+.arr.b{background:#9BB5D8;} .arr.b::after{border-top:8px solid #9BB5D8;}
+.arr.g{background:#5DC993;} .arr.g::after{border-top:8px solid #5DC993;}
+.arr.o{background:#E8B460;} .arr.o::after{border-top:8px solid #E8B460;}
+.arr.r{background:#E87070;} .arr.r::after{border-top:8px solid #E87070;}
+.arr.p{background:#A07BF0;} .arr.p::after{border-top:8px solid #A07BF0;}
+.h8{height:8px;}.h10{height:10px;}.h12{height:12px;}.h14{height:14px;}.h6{height:6px;}
+
+/* 标注标签 */
+.lbl{font-size:9px;text-align:center;margin:0 0 2px;font-weight:600;}
+.lbl.pass{color:#1A6B3A;} .lbl.rej{color:#8C1010;} .lbl.info{color:#555;}
+
+/* 驳回注 */
+.rej-note{font-size:9px;color:#CC3333;background:#FFF0F0;border:1px dashed #CC3333;
+  border-radius:3px;padding:2px 8px;margin:2px 0 4px;text-align:center;}
+
+/* 审批链容器 */
+.approval-chain{border-width:1.5px;border-style:dashed;border-radius:6px;
+  padding:10px 10px 12px;width:100%;display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:0;}
+.approval-chain.o{border-color:#D4922A;background:rgba(255,245,224,.6);}
+.approval-chain.r{border-color:#CC3333;background:rgba(255,240,240,.6);}
+.chain-title{align-self:flex-start;font-size:9.5px;font-weight:800;letter-spacing:.06em;margin-bottom:6px;}
+.chain-title.o{color:#8C5200;} .chain-title.r{color:#8C1010;}
+
+/* 多部门协同框 */
+.multi-box{border:1px solid #B0CCE8;border-radius:6px;padding:8px 10px;width:100%;
+  background:#F5F9FF;margin:0 0 2px;}
+.multi-box-title{font-size:9.5px;font-weight:700;color:#1A3C6E;margin-bottom:4px;}
+.multi-box ul{padding-left:14px;}
+.multi-box li{font-size:9px;color:#444;line-height:1.8;}
+
+/* 信息盒 */
+.info-box{border:1px solid;border-radius:6px;padding:9px 10px;width:100%;margin-top:10px;}
+.info-box.p{border-color:#C4AEF0;background:#F7F3FF;}
+.info-box-title{font-size:9.5px;font-weight:800;margin-bottom:5px;}
+.info-box.p .info-box-title{color:#4C1D95;}
+.info-box p,.info-box li{font-size:9px;line-height:1.85;color:#444;}
+
+/* ==== 图例 ==== */
+.legend{margin:0 28px 0;background:#F9FAFB;border:1px solid #D8E4F4;
+  border-radius:8px;padding:14px 22px;}
+.legend-title{font-size:11.5px;font-weight:700;color:#1A3C6E;margin-bottom:10px;letter-spacing:.04em;}
+.legend-grid{display:flex;flex-wrap:wrap;gap:10px 28px;}
+.li{display:flex;align-items:center;gap:7px;font-size:10.5px;color:#444;}
+.li-oval{width:32px;height:15px;border-radius:10px;border:2px solid #4281C9;background:#EBF3FD;}
+.li-rect{width:28px;height:15px;border-radius:3px;border:1.5px solid #4281C9;background:#fff;}
+.li-dia{width:13px;height:13px;border:2px solid #4281C9;background:#EBF3FD;transform:rotate(45deg);border-radius:2px;}
+.li-end{width:28px;height:15px;border-radius:3px;border:2px solid #3DAB72;background:linear-gradient(135deg,#3DAB72,#1E7A45);}
+.li-dsh{width:32px;height:15px;border:1.5px dashed #4281C9;border-radius:4px;}
+
+/* ==== 页脚 ==== */
+.footer{text-align:center;font-size:10.5px;color:#aaa;padding:24px 0 14px;}
+</style>
+</head>
+<body>
+
+<!-- 头部 -->
+<div class="hdr">
+  <div>
+    <div class="hdr-badge">HRO Human Resources Management System</div>
+    <div style="display:flex;align-items:baseline;gap:10px;">
+      <div class="hdr-title">员工全生命周期管理 &nbsp;·&nbsp; 流程看板</div>
+      <div class="hdr-sub">Employee Lifecycle Process Board</div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    上海弈工分信息科技有限公司
+    <span class="hdr-version">V3.2</span>
+    <span class="hdr-version">2026-07</span>
+    <br>密级：内部资料 &nbsp;|&nbsp; 编制人：黄燕婷
+  </div>
+</div>
+
+<div class="wrap">
+<div class="board">
+
+  <!-- 表头 -->
+  <div class="thead">
+    <div class="th-side"><div class="th-side-text">人&nbsp;事&nbsp;管&nbsp;理&nbsp;系&nbsp;统</div></div>
+    <div class="th c1">
+      <div class="main">入（招聘入职）</div>
+      <div class="sub">Recruit & Onboard</div>
+    </div>
+    <div class="th c2">
+      <div class="main">转（评估转正 / 续签）</div>
+      <div class="sub">Probation & Renewal</div>
+    </div>
+    <div class="th c3">
+      <div class="main">调（员工流动）</div>
+      <div class="sub">Internal Mobility</div>
+    </div>
+    <div class="th c4">
+      <div class="main">离（离职退档）</div>
+      <div class="sub">Offboarding</div>
+    </div>
+    <div class="th c5">
+      <div class="main">员工合同管理（档案）</div>
+      <div class="sub">Contract & Archive</div>
+    </div>
+  </div>
+
+  <!-- 主体 -->
+  <div class="tbody">
+  <div class="td-side"></div>
+
+  <!-- ==================== 列1：招聘入职 ==================== -->
+  <div class="td c1">
+
+    <!-- ①招聘需求 -->
+    <div class="zone b">
+      <div class="zone-label">① 招聘需求</div>
+      <div class="nd-oval">发起招聘需求申请</div>
+      <div class="arr b h10"></div>
+      <div class="nd-rect sm">BU负责人填写《聘用员工申请表》</div>
+      <div class="arr b h10"></div>
+      <!-- 审批1 -->
+      <div class="dia-wrap">
+        <div class="dia b">
+          <div class="dia-inner"><div class="dt">人事负责人<br>审批</div></div>
+        </div>
+        <div class="apv b">Shaun · 人事负责人</div>
+      </div>
+      <div class="lbl pass">通过</div>
+      <div class="arr b h8"></div>
+      <!-- 审批2 -->
+      <div class="dia-wrap">
+        <div class="dia b">
+          <div class="dia-inner"><div class="dt">最高负责人<br>最终审批</div></div>
+        </div>
+        <div class="apv b">Jenny · 最高负责人</div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:4px;">
+        <div style="text-align:center;"><div class="lbl pass">通过</div><div class="arr b h6" style="width:2px;"></div></div>
+        <div style="text-align:center;"><div class="lbl rej">驳回</div><div class="rej-note">↩ 退回申请人修改</div></div>
+      </div>
+      <div class="nd-rect" style="margin-top:4px;">需求生效 · 发布岗位</div>
+    </div>
+
+    <!-- ②简历面试 -->
+    <div class="zone b">
+      <div class="zone-label">② 简历筛选 & 三轮面试</div>
+      <div class="nd-rect sm">HR 收取简历 · 初筛入库</div>
+      <div class="arr b h10"></div>
+      <div class="nd-rect sm">【一面】人事专员 / HR 面试</div>
+      <div class="arr b h8"></div>
+      <div class="dia-wrap">
+        <div class="dia b sm">
+          <div class="dia-inner"><div class="dt" style="font-size:9px;">一面结果<br>推荐？</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px;">
+        <div style="text-align:center;"><div class="lbl pass">推荐</div><div class="arr b h6" style="width:2px;"></div></div>
+        <div style="text-align:center;"><div class="lbl rej">放弃</div><div class="nd-oval r" style="width:100px;font-size:9.5px;padding:4px 6px;border-radius:50px;margin-top:2px;">淘汰</div></div>
+      </div>
+      <div class="arr b h8"></div>
+      <div class="nd-rect sm">【二面】BU部门负责人 面试</div>
+      <div class="arr b h8"></div>
+      <div class="dia-wrap">
+        <div class="dia b sm">
+          <div class="dia-inner"><div class="dt" style="font-size:9px;">二面结果<br>推荐？</div></div>
+        </div>
+        <div class="apv b">BU负责人 · 二面评定</div>
+      </div>
+      <div class="lbl pass">推荐</div>
+      <div class="arr b h8"></div>
+      <div class="nd-rect sm">【终面】Jenny（最高负责人）</div>
+      <div class="arr b h8"></div>
+      <div class="dia-wrap">
+        <div class="dia b sm">
+          <div class="dia-inner"><div class="dt" style="font-size:9px;">终面结果<br>推荐？</div></div>
+        </div>
+        <div class="apv b">Jenny · 终面最终决策</div>
+      </div>
+      <div class="lbl pass">推荐 → 进入录用</div>
+      <div class="arr b h6"></div>
+    </div>
+
+    <!-- ③录用Offer -->
+    <div class="zone b">
+      <div class="zone-label">③ 录用审批 & Offer 发放</div>
+      <div class="nd-rect sm">BU负责人填写拟录用信息单</div>
+      <div class="arr b h8"></div>
+      <div class="dia-wrap">
+        <div class="dia b sm">
+          <div class="dia-inner"><div class="dt" style="font-size:9px;">人事负责人<br>审批</div></div>
+        </div>
+        <div class="apv b">Shaun · 人事负责人</div>
+      </div>
+      <div class="lbl pass">通过</div>
+      <div class="arr b h6"></div>
+      <div class="dia-wrap">
+        <div class="dia b sm">
+          <div class="dia-inner"><div class="dt" style="font-size:9px;">Jenny<br>最终审批</div></div>
+        </div>
+        <div class="apv b">Jenny · 可修改薪资/公司</div>
+      </div>
+      <div class="lbl pass">通过</div>
+      <div class="arr b h8"></div>
+      <div class="nd-rect sm">入职前沟通（HR · Tina）</div>
+      <div class="arr b h8"></div>
+      <div class="nd-rect sm">生成 & 发送《录用通知书》Offer</div>
+      <div class="arr b h8"></div>
+      <div class="dia-wrap">
+        <div class="dia b sm">
+          <div class="dia-inner"><div class="dt" style="font-size:9px;">候选人<br>接受？</div></div>
+        </div>
+      </div>
+      <div class="lbl pass">接受 → 进入入职</div>
+      <div class="arr b h6"></div>
+    </div>
+
+    <!-- ④入职 -->
+    <div class="zone g">
+      <div class="zone-label">④ 入职办理（多部门协同）</div>
+      <div class="nd-rect g sm">HR生成分部门入职任务清单</div>
+      <div class="arr g h8"></div>
+      <div class="multi-box">
+        <div class="multi-box-title">各部门并行执行</div>
+        <ul>
+          <li>🏢 <b>人事 Tina</b>：材料收取、建档、合同签订</li>
+          <li>🏠 <b>物业 Winson</b>：工位、设备、门禁卡</li>
+          <li>💻 <b>IT Jason</b>：企业邮箱/HRO/HKMS账号</li>
+          <li>🔐 <b>社保 Louis</b>：社保公积金增员</li>
+          <li>🏥 <b>商保 Carrie/Shenmingming</b>：商保增员</li>
+        </ul>
+      </div>
+      <div class="arr g h8"></div>
+      <div class="dia-wrap">
+        <div class="dia g sm">
+          <div class="dia-inner"><div class="dt g" style="color:#0A3D20;font-size:9px;">全部任务<br>完成？</div></div>
+        </div>
+      </div>
+      <div class="lbl pass">全部完成</div>
+      <div class="arr g h8"></div>
+      <div class="nd-rect g sm">员工确认入职 · 完成入职培训</div>
+      <div class="arr g h8"></div>
+      <div class="nd-rect g sm">BU负责人确认员工到岗（闭环）</div>
+      <div class="arr g h8"></div>
+      <div class="nd-end" style="font-size:11.5px;">✓ 入职完成 · 赋予系统权限</div>
+    </div>
+
+  </div><!-- /列1 -->
+
+
+  <!-- ==================== 列2：评估转正/续签 ==================== -->
+  <div class="td c2">
+
+    <!-- 试用期评估 -->
+    <div class="zone g">
+      <div class="zone-label">① 试用期 / 实习期评估</div>
+      <div class="nd-oval g">⏰ 到期提醒（提前14天）</div>
+      <div class="arr g h10"></div>
+      <div class="nd-rect g sm">人事专员 Tina 发起评估任务</div>
+      <div class="arr g h10"></div>
+      <div class="nd-rect g sm">直属部门负责人填写评估表</div>
+      <div class="arr g h8"></div>
+      <div style="border:1px solid #C0E0CC;border-radius:5px;padding:6px 8px;width:100%;background:#EDF9F2;margin-bottom:6px;">
+        <div style="font-size:9px;color:#1A6B3A;font-weight:700;margin-bottom:3px;">评估维度（10项各四级评分）</div>
+        <div style="font-size:8.5px;color:#444;line-height:1.7;">适应能力 · 沟通功能 · 主动性 · 责任心<br>与他人合作 · 工作知识 · 判断力<br>工作质量 · 出勤 · 综合评价</div>
+      </div>
+      <div class="dia-wrap">
+        <div class="dia g sm">
+          <div class="dia-inner"><div class="dt" style="color:#0A3D20;font-size:9px;">人事负责人<br>复核</div></div>
+        </div>
+        <div class="apv g">Shaun · 人事负责人</div>
+      </div>
+      <div class="lbl pass">通过</div>
+      <div class="arr g h6"></div>
+      <div class="dia-wrap">
+        <div class="dia g">
+          <div class="dia-inner"><div class="dt" style="color:#0A3D20;">Jenny<br>最终确认</div></div>
+        </div>
+        <div class="apv g">Jenny · 最高负责人</div>
+      </div>
+      <div class="arr g h10"></div>
+      <!-- 三种结果 -->
+      <div style="display:flex;gap:5px;width:100%;justify-content:center;flex-wrap:nowrap;margin-top:4px;">
+        <div class="nd-end" style="width:78px;font-size:9.5px;padding:6px 4px;text-align:center;">✓ 同意<br>转正</div>
+        <div class="nd-rect g" style="width:78px;font-size:9.5px;padding:6px 4px;text-align:center;">延长<br>试用期</div>
+        <div class="nd-end r" style="width:78px;font-size:9.5px;padding:6px 4px;text-align:center;">✗ 终止<br>合同</div>
+      </div>
+    </div>
+
+    <!-- 续签管理 -->
+    <div class="zone g" style="margin-top:4px;">
+      <div class="zone-label">② 合同续签管理</div>
+      <div class="nd-oval g">⏰ 到期提醒（提前30天）</div>
+      <div class="arr g h10"></div>
+      <div class="nd-rect g sm">人事专员确认续签意向</div>
+      <div class="arr g h10"></div>
+      <div class="nd-rect g sm">填写续签申请表（期限/薪资等）</div>
+      <div class="arr g h10"></div>
+      <div class="dia-wrap">
+        <div class="dia g sm">
+          <div class="dia-inner"><div class="dt" style="color:#0A3D20;font-size:9px;">部门负责人<br>审批</div></div>
+        </div>
+        <div class="apv g">BU负责人</div>
+      </div>
+      <div class="lbl pass">通过</div>
+      <div class="arr g h6"></div>
+      <div class="dia-wrap">
+        <div class="dia g">
+          <div class="dia-inner"><div class="dt" style="color:#0A3D20;">Jenny<br>最终审批</div></div>
+        </div>
+        <div class="apv g">Jenny · 最高负责人</div>
+      </div>
+      <div class="lbl pass">批准</div>
+      <div class="arr g h10"></div>
+      <div class="nd-rect g sm">打印合同 · 用印 · 双方签字</div>
+      <div class="arr g h10"></div>
+      <div class="nd-rect g sm">上传续签合同扫描件至档案</div>
+      <div class="arr g h10"></div>
+      <div class="nd-end" style="font-size:11px;">✓ 续签完成 · 更新合同到期日</div>
+    </div>
+
+  </div><!-- /列2 -->
+
+
+  <!-- ==================== 列3：员工流动 ==================== -->
+  <div class="td c3">
+
+    <div class="zone o">
+      <div class="zone-label">员工流动（调岗 / 调薪 / 晋升 / 重新定级）</div>
+      <div class="nd-oval o">发起员工流动申请</div>
+      <div class="arr o h10"></div>
+      <div class="nd-rect o sm">人事专员填写员工流动表单</div>
+      <div class="arr o h10"></div>
+      <!-- 字段说明 -->
+      <div style="border:1px solid #E0BC78;border-radius:5px;padding:7px 9px;width:100%;background:#FFFAED;margin-bottom:8px;">
+        <div style="font-size:9px;font-weight:700;color:#8C5200;margin-bottom:3px;">表单字段</div>
+        <div style="font-size:8.5px;color:#444;line-height:1.8;">员工姓名 / 主管经理<br>原职位&原部门 → 新职位&新部门<br>流动原因（调岗/调薪/晋升等）<br>原薪酬 → 新薪酬 · 生效日期</div>
+      </div>
+
+      <!-- 四级审批链 -->
+      <div class="approval-chain o">
+        <div class="chain-title o">四级审批链</div>
+        <div class="dia-wrap">
+          <div class="dia o sm">
+            <div class="dia-inner"><div class="dt" style="color:#5C3200;font-size:9px;">流出部门<br>负责人</div></div>
+          </div>
+          <div class="apv o">BU负责人（流出方）</div>
+        </div>
+        <div class="lbl pass">通过</div>
+        <div class="arr o h6" style="width:2px;height:6px;margin:0 auto;"></div>
+        <div class="dia-wrap">
+          <div class="dia o sm">
+            <div class="dia-inner"><div class="dt" style="color:#5C3200;font-size:9px;">流入部门<br>负责人</div></div>
+          </div>
+          <div class="apv o">BU负责人（流入方）</div>
+        </div>
+        <div class="lbl pass">通过</div>
+        <div class="arr o h6" style="width:2px;height:6px;margin:0 auto;"></div>
+        <div class="dia-wrap">
+          <div class="dia o sm">
+            <div class="dia-inner"><div class="dt" style="color:#5C3200;font-size:9px;">人事<br>负责人</div></div>
+          </div>
+          <div class="apv o">Shaun · 人事负责人</div>
+        </div>
+        <div class="lbl pass">通过</div>
+        <div class="arr o h6" style="width:2px;height:6px;margin:0 auto;"></div>
+        <div class="dia-wrap">
+          <div class="dia o">
+            <div class="dia-inner"><div class="dt" style="color:#5C3200;">Jenny<br>最终审批</div></div>
+          </div>
+          <div class="apv o">Jenny · 最高负责人</div>
+        </div>
+      </div>
+
+      <div class="lbl pass">全部通过</div>
+      <div class="arr o h10"></div>
+      <div class="nd-rect o sm">变动生效 · 更新薪酬/职位/部门</div>
+      <div class="arr o h10"></div>
+      <div class="nd-rect o sm">员工档案同步更新</div>
+      <div class="arr o h10"></div>
+      <div class="nd-rect o sm">系统权限随角色同步调整</div>
+      <div class="arr o h10"></div>
+      <div class="nd-end o" style="font-size:11px;">✓ 完成 · 权限/档案同步</div>
+    </div>
+
+  </div><!-- /列3 -->
+
+
+  <!-- ==================== 列4：离职退档 ==================== -->
+  <div class="td c4">
+
+    <div class="zone r">
+      <div class="zone-label">离职管理</div>
+      <div class="nd-oval r">员工（主动）或部门（辞退）发起</div>
+      <div class="arr r h8"></div>
+      <div class="nd-rect r sm">填写离职类型、原因、预计离职日</div>
+      <div class="arr r h8"></div>
+      <!-- 类型说明 -->
+      <div style="border:1px solid #E0A0A0;border-radius:5px;padding:6px 9px;width:100%;background:#FFF5F5;margin-bottom:8px;">
+        <div style="font-size:9px;font-weight:700;color:#8C1010;margin-bottom:2px;">离职类型</div>
+        <div style="font-size:8.5px;color:#444;line-height:1.8;">主动离职 / 辞退 / 解雇 / 退休<br>最后工作日：劳动合同提前30天<br>劳务/实习提前7天 · 试用期提前3天</div>
+      </div>
+
+      <!-- 三级审批 -->
+      <div class="approval-chain r">
+        <div class="chain-title r">三级审批链</div>
+        <div class="dia-wrap">
+          <div class="dia r sm">
+            <div class="dia-inner"><div class="dt" style="color:#5C0000;font-size:9px;">部门<br>负责人</div></div>
+          </div>
+          <div class="apv r">BU负责人</div>
+        </div>
+        <div class="lbl pass">通过</div>
+        <div style="width:2px;height:6px;background:#E87070;margin:0 auto;"></div>
+        <div class="dia-wrap">
+          <div class="dia r sm">
+            <div class="dia-inner"><div class="dt" style="color:#5C0000;font-size:9px;">人事<br>负责人</div></div>
+          </div>
+          <div class="apv r">Shaun · 人事负责人</div>
+        </div>
+        <div class="lbl pass">通过</div>
+        <div style="width:2px;height:6px;background:#E87070;margin:0 auto;"></div>
+        <div class="dia-wrap">
+          <div class="dia r">
+            <div class="dia-inner"><div class="dt" style="color:#5C0000;">Jenny<br>最终审批</div></div>
+          </div>
+          <div class="apv r">Jenny · 最高负责人</div>
+        </div>
+      </div>
+
+      <div class="lbl pass">全部通过</div>
+      <div class="arr r h10"></div>
+      <div class="nd-rect r sm">系统生成工作交接清单（任务卡）</div>
+      <div class="arr r h10"></div>
+
+      <!-- 交接清单 -->
+      <div style="border:1.5px dashed #CC3333;border-radius:6px;padding:8px 10px;width:100%;background:#FFF8F8;margin-bottom:8px;">
+        <div style="font-size:9.5px;font-weight:700;color:#8C1010;margin-bottom:5px;">交接清单（各部门确认）</div>
+        <div style="font-size:9px;color:#444;line-height:1.9;">
+          📁 <b>部门负责人</b>：书面文件+电子文档+工作交接<br>
+          💻 <b>IT · Jason</b>：E-mail备份切断账号<br>
+          🔑 <b>Admin · Winson</b>：门禁卡归还<br>
+          💰 <b>Finance</b>：应收款+预借款结算<br>
+          📋 <b>HR · Tina</b>：公司档案归还+联系信息<br>
+          🔐 <b>社保 Louis</b>：社保公积金减员<br>
+          🏥 <b>商保 Carrie</b>：商业保险减员
+        </div>
+      </div>
+
+      <div class="dia-wrap">
+        <div class="dia r sm">
+          <div class="dia-inner"><div class="dt" style="color:#5C0000;font-size:9px;">全部交接<br>完成？</div></div>
+        </div>
+      </div>
+      <div class="lbl pass">完成</div>
+      <div class="arr r h10"></div>
+      <div class="nd-rect r sm">合同终止 · 员工状态变更为"离职"</div>
+      <div class="arr r h10"></div>
+      <div class="nd-rect r sm">档案归存（含交接清单扫描件）</div>
+      <div class="arr r h10"></div>
+      <div class="nd-end r" style="font-size:11px;">✓ 完成 · 回收全部系统权限</div>
+    </div>
+
+  </div><!-- /列4 -->
+
+
+  <!-- ==================== 列5：合同档案 ==================== -->
+  <div class="td c5">
+
+    <div class="zone p">
+      <div class="zone-label">员工档案管理</div>
+      <div class="nd-oval p">入职合同用印完成（触发建档）</div>
+      <div class="arr p h8" style="background:#A07BF0;"></div>
+      <div class="arr p h8" style="background:#A07BF0;"></div>
+      <div class="nd-rect p sm">系统自动建立员工档案</div>
+      <div class="arr p h8" style="background:#A07BF0;"></div>
+      <!-- 档案材料清单 -->
+      <div style="border:1px solid #C4AEF0;border-radius:5px;padding:7px 9px;width:100%;background:#F7F3FF;margin-bottom:7px;">
+        <div style="font-size:9px;font-weight:700;color:#4C1D95;margin-bottom:3px;">档案材料清单（11项）</div>
+        <div style="font-size:8.5px;color:#444;line-height:1.8;">
+          ① 劳动合同/实习协议扫描件<br>
+          ② 《求职申请表》完整扫描件<br>
+          ③ 身份证复印件<br>
+          ④ 学信网学籍验证报告<br>
+          ⑤ 退工单（如有）<br>
+          ⑥ 银行卡复印件<br>
+          ⑦ 户口本复印件<br>
+          ⑧ 毕业证书复印件<br>
+          ⑨ 1个月内体检报告<br>
+          ⑩ 钉钉入职登记表<br>
+          ⑪ 员工手册签署页
+        </div>
+      </div>
+      <div class="nd-rect p sm">扫描件上传 · 归档入库</div>
+      <div class="arr p h8" style="background:#A07BF0;"></div>
+      <div class="nd-end p" style="font-size:11px;">✓ 档案建立完成</div>
+    </div>
+
+    <!-- 档案查阅权限 -->
+    <div class="info-box p">
+      <div class="info-box-title">📂 档案查阅权限</div>
+      <div style="font-size:9px;color:#444;line-height:1.9;">
+        🔓 <b>Jenny</b> · 全部档案 + 薪酬字段<br>
+        🔓 <b>人事专员 Tina</b> · 全部 + 薪酬<br>
+        🔓 <b>人事负责人 Shaun</b> · 全部 + 薪酬<br>
+        🔒 <b>员工本人</b> · 本人档案（不含薪酬）<br>
+        ✕ 其他角色 · 无查看权限
+      </div>
+    </div>
+
+    <!-- 审批角色一览 -->
+    <div class="info-box p" style="margin-top:10px;">
+      <div class="info-box-title">👤 系统审批角色一览</div>
+      <div style="font-size:9px;color:#444;line-height:2;">
+        <span style="display:inline-block;background:#0E2A52;color:#fff;border-radius:3px;padding:1px 5px;margin-right:3px;">Jenny</span>最高负责人 · 所有流程终审<br>
+        <span style="display:inline-block;background:#2058A8;color:#fff;border-radius:3px;padding:1px 5px;margin-right:3px;">Shaun</span>人事负责人 · 中层审批节点<br>
+        <span style="display:inline-block;background:#3DAB72;color:#fff;border-radius:3px;padding:1px 5px;margin-right:3px;">BU负责人</span>部门级审批（Hanzhe等）<br>
+        <span style="display:inline-block;background:#888;color:#fff;border-radius:3px;padding:1px 5px;margin-right:3px;">Tina</span>人事专员 · 流程执行<br>
+        <span style="display:inline-block;background:#4281C9;color:#fff;border-radius:3px;padding:1px 5px;margin-right:3px;">Jason</span>IT负责人 · 账号/系统<br>
+        <span style="display:inline-block;background:#8B5CF6;color:#fff;border-radius:3px;padding:1px 5px;margin-right:3px;">Louis</span>社保专员 · 增减员<br>
+        <span style="display:inline-block;background:#E06830;color:#fff;border-radius:3px;padding:1px 5px;margin-right:3px;">Carrie</span>商保专员 · 增减员
+      </div>
+    </div>
+
+    <!-- 跨流程联动 -->
+    <div style="border:1.5px dashed #7C3AED;border-radius:6px;padding:10px;width:100%;background:#F5F0FF;margin-top:10px;">
+      <div style="font-size:9.5px;font-weight:800;color:#4C1D95;margin-bottom:5px;">🔁 全生命周期 · 系统联动</div>
+      <div style="font-size:9px;color:#555;line-height:1.9;">
+        <b>入职完成</b> → IT开通账号 · 建立档案<br>
+        <b>员工流动</b> → 档案更新 · 权限角色调整<br>
+        <b>续签完成</b> → 合同到期日更新<br>
+        <b>转正通过</b> → 员工状态变更为正式<br>
+        <b>离职完成</b> → 回收权限 · 档案归存<br>
+        <b>全程可追溯</b> → 所有操作记录操作人+时间
+      </div>
+    </div>
+
+  </div><!-- /列5 -->
+
+  </div><!-- /tbody -->
+</div><!-- /board -->
+</div><!-- /wrap -->
+
+<!-- 图例 -->
+<div class="legend">
+  <div class="legend-title">📋 图例说明 Legend</div>
+  <div class="legend-grid">
+    <div class="li"><div class="li-oval"></div>开始 / 结束节点（椭圆）</div>
+    <div class="li"><div class="li-rect"></div>操作 / 执行节点（矩形）</div>
+    <div class="li"><div class="li-dia"></div>审批 / 判断节点（菱形）</div>
+    <div class="li"><div class="li-end"></div>流程终态（绿色填充）</div>
+    <div class="li"><div class="li-dsh"></div>子流程区域（虚线框）</div>
+    <div class="li">
+      <div style="width:28px;height:2px;background:#9BB5D8;position:relative;">
+        <div style="position:absolute;right:-6px;top:-4px;border-left:6px solid #9BB5D8;border-top:5px solid transparent;border-bottom:5px solid transparent;"></div>
+      </div>
+      流程方向箭头
+    </div>
+    <div class="li"><div style="width:28px;height:15px;border:1.5px dashed #CC3333;border-radius:3px;"></div>红色 = 离职流程</div>
+    <div class="li"><div style="width:28px;height:15px;border:1.5px dashed #D4922A;border-radius:3px;"></div>橙色 = 员工流动</div>
+    <div class="li"><div style="width:28px;height:15px;border:1.5px dashed #3DAB72;border-radius:3px;"></div>绿色 = 入职/续签</div>
+    <div class="li"><div style="width:28px;height:15px;border:1.5px dashed #7C3AED;border-radius:3px;"></div>紫色 = 档案管理</div>
+    <div class="li"><div style="display:inline-block;background:#0E2A52;color:#fff;border-radius:3px;padding:1px 6px;font-size:9px;">Jenny</div>&nbsp;最高负责人（全流程终审）</div>
+    <div class="li"><div style="display:inline-block;background:#2058A8;color:#fff;border-radius:3px;padding:1px 6px;font-size:9px;">Shaun</div>&nbsp;人事负责人（中层审批）</div>
+    <div class="li"><div style="display:inline-block;background:#3DAB72;color:#fff;border-radius:3px;padding:1px 6px;font-size:9px;">BU负责人</div>&nbsp;部门负责人（部门审批）</div>
+  </div>
+</div>
+
+<div class="footer">
+  HRO 人事管理系统 &nbsp;·&nbsp; 员工全生命周期管理流程看板 &nbsp;|&nbsp; 产品说明书 V3.2 &nbsp;|&nbsp; 上海弈工分信息科技有限公司 &nbsp;|&nbsp; 2026年7月 &nbsp;|&nbsp; 机密级：内部资料
+</div>
+
+</body>
+</html>
