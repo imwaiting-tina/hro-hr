@@ -8,35 +8,35 @@
 body {
   background: #f0f2f5;
   font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif;
-  padding: 24px;
+  padding: 20px;
 }
 .page {
   background: #fff;
-  max-width: 1380px;
+  max-width: 1420px;
   margin: 0 auto;
-  padding: 28px 32px 40px;
+  padding: 24px 28px 32px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.10);
   border-radius: 4px;
 }
 .header {
   text-align: center;
-  padding-bottom: 14px;
+  padding-bottom: 12px;
   border-bottom: 2.5px solid #1a2e5a;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
-.header h1 { font-size: 22px; color: #1a2e5a; font-weight: 700; letter-spacing: 2px; }
-.header p { font-size: 11.5px; color: #888; margin-top: 5px; }
+.header h1 { font-size: 21px; color: #1a2e5a; font-weight: 700; letter-spacing: 2px; }
+.header p { font-size: 11px; color: #888; margin-top: 4px; }
 .legend-bar {
-  display: flex; align-items: center; gap: 22px;
+  display: flex; align-items: center; gap: 18px;
   justify-content: flex-end;
-  margin-bottom: 12px;
-  font-size: 11px; color: #555;
+  margin-bottom: 10px;
+  font-size: 10.5px; color: #555;
   flex-wrap: wrap;
 }
-.legend-bar .li { display:flex; align-items:center; gap:5px; }
+.legend-bar .li { display:flex; align-items:center; gap:4px; }
 .footer {
-  text-align: center; font-size: 11px; color: #aaa;
-  margin-top: 20px; padding-top: 10px;
+  text-align: center; font-size: 10.5px; color: #aaa;
+  margin-top: 16px; padding-top: 8px;
   border-top: 1px solid #e5e8ef;
 }
 </style>
@@ -46,34 +46,34 @@ body {
 
 <div class="header">
   <h1>HRO 人事管理系统 &nbsp;—&nbsp; 员工全生命周期审批流程图</h1>
-  <p>Employee Full Lifecycle Approval Flow &nbsp;·&nbsp; V3.2 &nbsp;·&nbsp; 基于产品说明书</p>
+  <p>Employee Full Lifecycle Approval Flow &nbsp;·&nbsp; V3.3 &nbsp;·&nbsp; 基于产品说明书 V3.2</p>
 </div>
 
 <!-- 图例 -->
 <div class="legend-bar">
   <div class="li">
-    <svg width="26" height="16"><rect x="1" y="1" width="24" height="14" rx="3" fill="#fff" stroke="#555" stroke-width="1.2"/></svg>
-    执行步骤
+    <svg width="24" height="14"><rect x="1" y="1" width="22" height="12" rx="3" fill="#fff" stroke="#555" stroke-width="1.2"/></svg>
+    执行/填写步骤
   </div>
   <div class="li">
-    <svg width="20" height="20"><polygon points="10,1 19,10 10,19 1,10" fill="#fff" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2"/></svg>
-    审批节点
+    <svg width="18" height="18"><polygon points="9,1 17,9 9,17 1,9" fill="#fff" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2"/></svg>
+    审批节点（菱形）
   </div>
   <div class="li">
-    <svg width="36" height="12"><line x1="0" y1="6" x2="28" y2="6" stroke="#444" stroke-width="1.5" marker-end="url(#a1)"/>
-    <defs><marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0L0,6L6,3z" fill="#444"/></marker></defs></svg>
+    <svg width="32" height="11"><line x1="0" y1="5.5" x2="26" y2="5.5" stroke="#444" stroke-width="1.4"/>
+    <defs><marker id="la1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0L0,6L6,3z" fill="#444"/></marker></defs></svg>
     正向流转
   </div>
   <div class="li">
-    <svg width="36" height="12"><defs><marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0L0,6L6,3z" fill="#e74c3c"/></marker></defs>
-    <line x1="0" y1="6" x2="28" y2="6" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a2)"/></svg>
+    <svg width="32" height="11"><defs><marker id="la2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0L0,6L6,3z" fill="#e74c3c"/></marker></defs>
+    <line x1="0" y1="5.5" x2="26" y2="5.5" stroke="#e74c3c" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#la2)"/></svg>
     驳回退回
   </div>
 </div>
 
 <!-- SVG 主体 -->
 <svg id="flow" xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 1300 980" width="100%"
+     viewBox="0 0 1400 1280" width="100%"
      style="display:block;">
 <defs>
   <marker id="arr" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
@@ -88,368 +88,539 @@ body {
 </defs>
 
 <!-- ======= 列宽定义 =======
-  泳道标签: x=0, w=56
-  列1 员工发起: x=56, w=188  中心x=150
-  列2 BU负责人: x=244, w=200 中心x=344
-  列3 人事专员: x=444, w=188 中心x=538
-  列4 人事负责人:x=632, w=210 中心x=737
-  列5 最高负责人:x=842, w=210 中心x=947
-  列6 完成结果:  x=1052, w=248 中心x=1176
-  总宽: 1300
+  泳道标签: x=0, w=58
+  列1 发起/员工: x=58, w=170  中心x=143
+  列2 BU负责人: x=228, w=190  中心x=323
+  列3 人事专员: x=418, w=180  中心x=508
+  列4 人事负责人:x=598, w=200  中心x=698
+  列5 最高负责人:x=798, w=200  中心x=898
+  列6 完成/结果:  x=998, w=200  中心x=1098
+  列7 备注说明:  x=1198, w=202 中心x=1299
+  总宽: 1400
 -->
 
-<!-- 列标题行 -->
-<rect x="0"    y="0" width="56"  height="36" fill="#1a2e5a"/>
-<rect x="56"   y="0" width="188" height="36" fill="#dce6f5"/>
-<rect x="244"  y="0" width="200" height="36" fill="#c8d8ee"/>
-<rect x="444"  y="0" width="188" height="36" fill="#b8cce8"/>
-<rect x="632"  y="0" width="210" height="36" fill="#a4bde0"/>
-<rect x="842"  y="0" width="210" height="36" fill="#8faed7"/>
-<rect x="1052" y="0" width="248" height="36" fill="#7499ca"/>
+<!-- ==================== 列标题行 ==================== -->
+<rect x="0"   y="0" width="58"  height="38" fill="#1a2e5a"/>
+<rect x="58"  y="0" width="170" height="38" fill="#dce6f5"/>
+<rect x="228" y="0" width="190" height="38" fill="#c8d8ee"/>
+<rect x="418" y="0" width="180" height="38" fill="#b8cce8"/>
+<rect x="598" y="0" width="200" height="38" fill="#a4bde0"/>
+<rect x="798" y="0" width="200" height="38" fill="#8faed7"/>
+<rect x="998" y="0" width="200" height="38" fill="#7499ca"/>
+<rect x="1198"y="0" width="202" height="38" fill="#5a7eb5"/>
 
-<text x="28"   y="22" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">泳道</text>
-<text x="150"  y="22" text-anchor="middle" fill="#1a2e5a" font-size="11" font-weight="bold">员工 / 申请发起</text>
-<text x="344"  y="22" text-anchor="middle" fill="#1a2e5a" font-size="11" font-weight="bold">BU 负责人</text>
-<text x="538"  y="22" text-anchor="middle" fill="#1a2e5a" font-size="11" font-weight="bold">人事专员</text>
-<text x="737"  y="22" text-anchor="middle" fill="#1a2e5a" font-size="11" font-weight="bold">人事负责人</text>
-<text x="947"  y="22" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">最高负责人</text>
-<text x="1176" y="22" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">完成 / 结果</text>
+<text x="29"  y="23" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">泳道</text>
+<text x="143" y="23" text-anchor="middle" fill="#1a2e5a" font-size="10.5" font-weight="bold">发起 / 填写</text>
+<text x="323" y="23" text-anchor="middle" fill="#1a2e5a" font-size="10.5" font-weight="bold">BU 负责人</text>
+<text x="508" y="23" text-anchor="middle" fill="#1a2e5a" font-size="10.5" font-weight="bold">人事专员</text>
+<text x="698" y="23" text-anchor="middle" fill="#1a2e5a" font-size="10.5" font-weight="bold">人事负责人</text>
+<text x="898" y="23" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="bold">最高负责人</text>
+<text x="1098"y="23" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="bold">完成 / 结果</text>
+<text x="1299"y="23" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="bold">备注</text>
 
 <!-- 垂直列分隔线 -->
-<line x1="56"   y1="36" x2="56"   y2="940" stroke="#b0bcd4" stroke-width="1"/>
-<line x1="244"  y1="36" x2="244"  y2="940" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
-<line x1="444"  y1="36" x2="444"  y2="940" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
-<line x1="632"  y1="36" x2="632"  y2="940" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
-<line x1="842"  y1="36" x2="842"  y2="940" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
-<line x1="1052" y1="36" x2="1052" y2="940" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
+<line x1="58"   y1="38" x2="58"   y2="1240" stroke="#b0bcd4" stroke-width="1"/>
+<line x1="228"  y1="38" x2="228"  y2="1240" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
+<line x1="418"  y1="38" x2="418"  y2="1240" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
+<line x1="598"  y1="38" x2="598"  y2="1240" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
+<line x1="798"  y1="38" x2="798"  y2="1240" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
+<line x1="998"  y1="38" x2="998"  y2="1240" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
+<line x1="1198" y1="38" x2="1198" y2="1240" stroke="#b0bcd4" stroke-width="0.8" stroke-dasharray="5,3"/>
+
 
 <!-- ===========================================================
-     入（招聘入职）  泳道  Y: 36~230
-     核心节点Y=128  文字行高考虑
+     （1）招聘流程  泳道  Y: 38~300
+     每个审批节点都能驳回到第一步
 =========================================================== -->
-<rect x="0" y="36" width="56" height="194" fill="#1d4e8f"/>
-<text x="28" y="133" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold"
-      transform="rotate(-90,28,133)">入（招聘入职）</text>
-<rect x="56" y="36" width="1244" height="194" fill="#edf2fb"/>
+<rect x="0" y="38" width="58" height="262" fill="#1d4e8f"/>
+<text x="28" y="169" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="bold"
+      transform="rotate(-90,28,169)">招聘流程</text>
+<rect x="58" y="38" width="1342" height="262" fill="#edf2fb"/>
 
-<!-- 发起: 提交招聘申请 -->
-<rect x="90" y="111" width="114" height="34" rx="4" fill="#fff" stroke="#1d4e8f" stroke-width="1.5"/>
-<text x="147" y="132" text-anchor="middle" fill="#1a2e5a" font-size="11">提交招聘申请</text>
+<!-- 子标题 -->
+<text x="70" y="56" fill="#1d4e8f" font-size="11" font-weight="bold">（1）招聘流程 — 每个审批节点都能驳回到第一步</text>
 
-<!-- →BU -->
-<line x1="204" y1="128" x2="300" y2="128" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+<!-- 步骤1: 聘用员工申请表 - BU负责人发起 -->
+<rect x="78"  y="70" width="122" height="36" rx="4" fill="#fff" stroke="#1d4e8f" stroke-width="1.4"/>
+<text x="139" y="86" text-anchor="middle" fill="#1a2e5a" font-size="9.5">《聘用员工申请表》</text>
+<text x="139" y="99" text-anchor="middle" fill="#666" font-size="8.5">BU负责人发起</text>
 
-<!-- BU菱形 -->
-<polygon points="344,108 384,128 344,148 304,128" fill="#fff" stroke="#1d4e8f" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="344" y="132" text-anchor="middle" fill="#1a2e5a" font-size="10">BU负责人</text>
+<!-- 备注 -->
+<text x="1210" y="88" fill="#888" font-size="9">发起环节</text>
 
-<!-- 驳回 -->
-<path d="M 304,128 Q 250,148 200,148 L 147,148" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
-<text x="250" y="162" text-anchor="middle" fill="#e74c3c" font-size="9">驳回</text>
+<!-- → BU负责人（此处是发起人同时也是第一级审批）-->
+<line x1="200" y1="88" x2="280" y2="88" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
 
-<!-- 通过→人事专员 -->
-<line x1="384" y1="128" x2="482" y2="128" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="433" y="122" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
+<!-- BU负责人菱形 - 确认 -->
+<polygon points="323,72 358,88 323,104 288,88" fill="#fff" stroke="#1d4e8f" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="323" y="85" text-anchor="middle" fill="#1a2e5a" font-size="9">BU负责人</text>
+<text x="323" y="96" text-anchor="middle" fill="#1a2e5a" font-size="9">确认</text>
 
-<!-- 人事专员: 发布职位/筛简历 -->
-<rect x="482" y="111" width="114" height="34" rx="4" fill="#fff" stroke="#2a7d9c" stroke-width="1.5"/>
-<text x="539" y="125" text-anchor="middle" fill="#1a4060" font-size="10">发布职位</text>
-<text x="539" y="138" text-anchor="middle" fill="#1a4060" font-size="10">筛选简历</text>
+<!-- 驳回到第一步 -->
+<path d="M 288,88 Q 230,110 175,110 L 139,110" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+<text x="225" y="123" text-anchor="middle" fill="#e74c3c" font-size="8.5">驳回</text>
 
-<!-- → BU面试 -->
-<line x1="596" y1="128" x2="690" y2="128" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-
-<!-- BU菱形2 面试通过 -->
-<polygon points="737,108 777,128 737,148 697,128" fill="#fff" stroke="#1d4e8f" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="737" y="132" text-anchor="middle" fill="#1a2e5a" font-size="10">面试通过</text>
-
-<!-- 通过→人事负责人 -->
-<line x1="777" y1="128" x2="890" y2="128" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="834" y="122" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
+<!-- 通过→人事负责人确认 -->
+<line x1="358" y1="88" x2="650" y2="88" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="505" y="82" text-anchor="middle" fill="#27ae60" font-size="8.5">通过</text>
 
 <!-- 人事负责人菱形 -->
-<polygon points="947,108 987,128 947,148 907,128" fill="#fff" stroke="#1d4e8f" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="947" y="126" text-anchor="middle" fill="#1a2e5a" font-size="9">人事负责人</text>
-<text x="947" y="137" text-anchor="middle" fill="#1a2e5a" font-size="9">审批</text>
+<polygon points="698,72 733,88 698,104 663,88" fill="#fff" stroke="#1d4e8f" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="698" y="85" text-anchor="middle" fill="#1a2e5a" font-size="9">人事负责人</text>
+<text x="698" y="96" text-anchor="middle" fill="#1a2e5a" font-size="9">确认</text>
+
+<!-- 驳回→第一步 -->
+<path d="M 663,88 Q 400,125 160,125 L 139,125" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
 <!-- 通过→最高负责人 -->
-<line x1="987" y1="128" x2="1100" y2="128" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="1044" y="122" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
+<line x1="733" y1="88" x2="850" y2="88" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="792" y="82" text-anchor="middle" fill="#27ae60" font-size="8.5">通过</text>
 
 <!-- 最高负责人菱形 -->
-<polygon points="1176,108 1216,128 1176,148 1136,128" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
-<text x="1176" y="126" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
-<text x="1176" y="137" text-anchor="middle" fill="#8a0000" font-size="9">审批</text>
+<polygon points="898,72 933,88 898,104 863,88" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="898" y="85" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
+<text x="898" y="96" text-anchor="middle" fill="#8a0000" font-size="9">终审</text>
+
+<!-- 驳回→第一步 -->
+<path d="M 863,88 Q 500,140 145,140 L 139,140" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
 <!-- 通过→完成 -->
-<line x1="1176" y1="148" x2="1176" y2="175" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<rect x="1120" y="175" width="112" height="34" rx="4" fill="#d4eaff" stroke="#1d4e8f" stroke-width="1.5"/>
-<text x="1176" y="193" text-anchor="middle" fill="#1a2e5a" font-size="10">录用Offer发放</text>
+<line x1="933" y1="88" x2="1050" y2="88" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1050" y="73" width="96" height="30" rx="4" fill="#d4eaff" stroke="#1d4e8f" stroke-width="1.3"/>
+<text x="1098" y="92" text-anchor="middle" fill="#1a2e5a" font-size="9.5">聘用审批通过</text>
 
-<!-- 人事专员 入职办理 -->
-<rect x="482" y="175" width="114" height="34" rx="4" fill="#fff" stroke="#2a7d9c" stroke-width="1.5"/>
-<text x="539" y="189" text-anchor="middle" fill="#1a4060" font-size="10">入职手续</text>
-<text x="539" y="202" text-anchor="middle" fill="#1a4060" font-size="10">系统建档</text>
-<line x1="1120" y1="192" x2="596" y2="192" stroke="#444" stroke-width="1.3" marker-end="url(#arr)"/>
+
+<!-- ========== 第二行：面试评估 P2 ========== -->
+<!-- P1 求职信息 - 候选人填写 -->
+<rect x="78"  y="155" width="122" height="34" rx="4" fill="#fff" stroke="#555" stroke-width="1.2"/>
+<text x="139" y="171" text-anchor="middle" fill="#333" font-size="9.5">P1《求职申请表》</text>
+<text x="139" y="183" text-anchor="middle" fill="#666" font-size="8">候选人填写</text>
+<text x="1210" y="172" fill="#888" font-size="9">P1 求职信息</text>
+
+<!-- → 人事专员一面 -->
+<line x1="200" y1="172" x2="450" y2="172" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="325" y="166" text-anchor="middle" fill="#555" font-size="8.5">一面</text>
+
+<!-- 人事专员填写第一部分 -->
+<rect x="450" y="156" width="116" height="32" rx="4" fill="#fff" stroke="#2a7d9c" stroke-width="1.3"/>
+<text x="508" y="172" text-anchor="middle" fill="#1a4060" font-size="9">人事专员</text>
+<text x="508" y="183" text-anchor="middle" fill="#1a4060" font-size="8.5">填写第一部分</text>
+
+<!-- → BU负责人二面 -->
+<line x1="566" y1="172" x2="648" y2="172" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="607" y="166" text-anchor="middle" fill="#555" font-size="8.5">二面</text>
+
+<!-- BU负责人填写第二部分 -->
+<rect x="648" y="156" width="100" height="32" rx="4" fill="#fff" stroke="#1d4e8f" stroke-width="1.3"/>
+<text x="698" y="171" text-anchor="middle" fill="#1a2e5a" font-size="9">BU负责人</text>
+<text x="698" y="182" text-anchor="middle" fill="#1a2e5a" font-size="8.5">填写第二部分</text>
+
+<!-- → 董事会终面 -->
+<line x1="748" y1="172" x2="850" y2="172" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="800" y="166" text-anchor="middle" fill="#555" font-size="8.5">终面</text>
+
+<!-- 董事会/最高负责人 终面结果 -->
+<rect x="850" y="156" width="96" height="32" rx="4" fill="#fff" stroke="#8a0000" stroke-width="1.3"/>
+<text x="898" y="171" text-anchor="middle" fill="#8a0000" font-size="9">董事会终面</text>
+<text x="898" y="182" text-anchor="middle" fill="#8a0000" font-size="8.5">结果(推荐or放弃)</text>
+<text x="1210" y="172" fill="#888" font-size="9">P2 面试评估</text>
+
+<!-- 结果→完成 -->
+<line x1="946" y1="172" x2="1050" y2="172" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1050" y="157" width="96" height="30" rx="4" fill="#d4eaff" stroke="#1d4e8f" stroke-width="1.3"/>
+<text x="1098" y="176" text-anchor="middle" fill="#1a2e5a" font-size="9.5">面试评估完成</text>
+
+
+<!-- ========== 第三行：P3 录用审批单 ========== -->
+<!-- P3 - BU负责人填写 -->
+<rect x="78"  y="218" width="122" height="34" rx="4" fill="#fff" stroke="#1d4e8f" stroke-width="1.4"/>
+<text x="139" y="234" text-anchor="middle" fill="#1a2e5a" font-size="9.5">P3《录用审批单》</text>
+<text x="139" y="246" text-anchor="middle" fill="#666" font-size="8">BU负责人填写</text>
+
+<!-- → 人事负责人确认 -->
+<line x1="200" y1="235" x2="650" y2="235" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- 人事负责人菱形 -->
+<polygon points="698,219 733,235 698,251 663,235" fill="#fff" stroke="#1d4e8f" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="698" y="232" text-anchor="middle" fill="#1a2e5a" font-size="9">人事负责人</text>
+<text x="698" y="243" text-anchor="middle" fill="#1a2e5a" font-size="9">确认</text>
+
+<!-- 驳回→第一步 -->
+<path d="M 663,235 Q 350,270 150,270 L 139,270" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+<text x="400" y="283" text-anchor="middle" fill="#e74c3c" font-size="8.5">驳回</text>
+
+<!-- 通过→最高负责人 -->
+<line x1="733" y1="235" x2="850" y2="235" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- 最高负责人菱形 -->
+<polygon points="898,219 933,235 898,251 863,235" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="898" y="232" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
+<text x="898" y="243" text-anchor="middle" fill="#8a0000" font-size="9">终审</text>
+
+<!-- 驳回→第一步 -->
+<path d="M 863,235 Q 450,288 145,288 L 139,288" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+
+<!-- 通过→完成 -->
+<line x1="933" y1="235" x2="1050" y2="235" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1050" y="220" width="96" height="30" rx="4" fill="#d4eaff" stroke="#1d4e8f" stroke-width="1.3"/>
+<text x="1098" y="239" text-anchor="middle" fill="#1a2e5a" font-size="9.5">录用审批通过</text>
+
+<text x="1210" y="239" fill="#888" font-size="9">P3 录用审批</text>
+
 
 <!-- ===========================================================
-     转（试用期/续签）  泳道  Y: 230~420
+     （2）入职流程  泳道  Y: 300~420
 =========================================================== -->
-<rect x="0" y="230" width="56" height="190" fill="#1a6e3e"/>
-<text x="28" y="325" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold"
-      transform="rotate(-90,28,325)">转（试用 / 续签）</text>
-<rect x="56" y="230" width="1244" height="190" fill="#edf7f1"/>
+<rect x="0" y="300" width="58" height="120" fill="#2a7d9c"/>
+<text x="28" y="360" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="bold"
+      transform="rotate(-90,28,360)">入职流程</text>
+<rect x="58" y="300" width="1342" height="120" fill="#eaf6fa"/>
 
-<!-- 系统触发 -->
-<ellipse cx="147" cy="325" rx="54" ry="21" fill="#fff" stroke="#1a6e3e" stroke-width="1.5"/>
-<text x="147" y="329" text-anchor="middle" fill="#1a5a30" font-size="10">系统到期提醒</text>
+<text x="70" y="318" fill="#2a7d9c" font-size="11" font-weight="bold">（2）入职流程</text>
+
+<!-- 录用通知书 - 人事专员发送 -->
+<rect x="430" y="330" width="156" height="34" rx="4" fill="#fff" stroke="#2a7d9c" stroke-width="1.4"/>
+<text x="508" y="346" text-anchor="middle" fill="#1a4060" font-size="9.5">《录用通知书》</text>
+<text x="508" y="359" text-anchor="middle" fill="#666" font-size="8.5">人事专员沟通后发送→候选人接受offer</text>
+
+<!-- → 入职引导 -->
+<line x1="508" y1="364" x2="508" y2="380" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- 入职引导表 -->
+<rect x="420" y="382" width="176" height="30" rx="4" fill="#fff" stroke="#2a7d9c" stroke-width="1.3"/>
+<text x="508" y="398" text-anchor="middle" fill="#1a4060" font-size="9.5">《新员工入职引导表》&nbsp; 各部门领取任务完成引导</text>
+<text x="1210" y="397" fill="#888" font-size="9">各部门领取任务</text>
+
+<!-- → 员工登记 -->
+<line x1="508" y1="412" x2="508" y2="425" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- 从offer到入职的连接 -->
+<line x1="1146" y1="250" x2="1180" y2="250" stroke="#444" stroke-width="1.3" marker-end="url(#arr)"/>
+<line x1="1180" y1="250" x2="1180" y2="340" stroke="#444" stroke-width="1.3"/>
+<line x1="1180" y1="340" x2="586" y2="340" stroke="#444" stroke-width="1.3" marker-end="url(#arr)"/>
+
+
+<!-- ===========================================================
+     （3）在职管理  泳道  Y: 420~750
+     每个审批节点都能驳回
+=========================================================== -->
+<rect x="0" y="420" width="58" height="330" fill="#1a6e3e"/>
+<text x="28" y="585" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="bold"
+      transform="rotate(-90,28,585)">在职管理</text>
+<rect x="58" y="420" width="1342" height="330" fill="#edf7f1"/>
+
+<text x="70" y="438" fill="#1a6e3e" font-size="11" font-weight="bold">（3）在职管理 — 每个审批节点都能驳回</text>
+
+
+<!-- === 试用期评估表 === -->
+<rect x="75"  y="452" width="130" height="36" rx="4" fill="#fff" stroke="#1a6e3e" stroke-width="1.4"/>
+<text x="140" y="468" text-anchor="middle" fill="#1a5a30" font-size="9.5">《新员工试用</text>
+<text x="140" y="480" text-anchor="middle" fill="#1a5a30" font-size="9.5">期评估表》</text>
+<text x="1210" y="472" fill="#888" font-size="9">转正流程</text>
+
+<!-- 人事专员发起 -->
+<line x1="205" y1="470" x2="455" y2="470" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="330" y="464" text-anchor="middle" fill="#555" font-size="8.5">发起</text>
+
+<!-- 人事专员 -->
+<rect x="455" y="454" width="106" height="32" rx="4" fill="#fff" stroke="#1a6e3e" stroke-width="1.3"/>
+<text x="508" y="470" text-anchor="middle" fill="#1a5a30" font-size="9">人事专员发起</text>
+
+<!-- → BU负责人填写评估 -->
+<line x1="561" y1="470" x2="648" y2="470" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- BU负责人评估框 -->
+<rect x="648" y="454" width="100" height="32" rx="4" fill="#fff" stroke="#1a6e3e" stroke-width="1.3"/>
+<text x="698" y="469" text-anchor="middle" fill="#1a5a30" font-size="9">BU负责人</text>
+<text x="698" y="480" text-anchor="middle" fill="#1a5a30" font-size="8.5">填写评估</text>
+
+<!-- → 人事负责人确认 -->
+<line x1="748" y1="470" x2="850" y2="470" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- 人事负责人菱形 -->
+<polygon points="898,454 933,470 898,486 863,470" fill="#fff" stroke="#1a6e3e" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="898" y="467" text-anchor="middle" fill="#1a5a30" font-size="9">人事负责人</text>
+<text x="898" y="478" text-anchor="middle" fill="#1a5a30" font-size="9">确认</text>
+
+<!-- 驳回 -->
+<path d="M 863,470 Q 400,500 148,500 L 140,500" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+
+<!-- → 最高负责人 -->
+<line x1="933" y1="470" x2="1050" y2="470" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- 最高负责人菱形 -->
+<polygon points="1098,454 1133,470 1098,486 1063,470" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="1098" y="467" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
+<text x="1098" y="478" text-anchor="middle" fill="#8a0000" font-size="9">终审</text>
+
+<!-- 驳回 -->
+<path d="M 1063,470 Q 500,512 145,512 L 140,512" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+
+<!-- 完成 -->
+<line x1="1098" y1="486" x2="1098" y2="505" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1050" y="507" width="96" height="26" rx="4" fill="#d4f0e2" stroke="#1a6e3e" stroke-width="1.3"/>
+<text x="1098" y="524" text-anchor="middle" fill="#1a5a30" font-size="9.5">转正生效</text>
+
+
+<!-- === 实习生评估表 === -->
+<rect x="75"  y="550" width="130" height="36" rx="4" fill="#fff" stroke="#1a6e3e" stroke-width="1.4"/>
+<text x="140" y="566" text-anchor="middle" fill="#1a5a30" font-size="9.5">《实习生</text>
+<text x="140" y="578" text-anchor="middle" fill="#1a5a30" font-size="9.5">评估表》</text>
+<text x="1210" y="570" fill="#888" font-size="9">实习转合同</text>
+
+<!-- 人事专员发起 -->
+<line x1="205" y1="568" x2="455" y2="568" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<rect x="455" y="552" width="106" height="32" rx="4" fill="#fff" stroke="#1a6e3e" stroke-width="1.3"/>
+<text x="508" y="568" text-anchor="middle" fill="#1a5a30" font-size="9">人事专员发起</text>
 
 <!-- → BU负责人 -->
-<line x1="201" y1="325" x2="300" y2="325" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="561" y1="568" x2="648" y2="568" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
 
-<!-- BU菱形 -->
-<polygon points="344,305 384,325 344,345 304,325" fill="#fff" stroke="#1a6e3e" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="344" y="329" text-anchor="middle" fill="#1a5a30" font-size="10">BU负责人评估</text>
+<rect x="648" y="552" width="100" height="32" rx="4" fill="#fff" stroke="#1a6e3e" stroke-width="1.3"/>
+<text x="698" y="567" text-anchor="middle" fill="#1a5a30" font-size="9">BU负责人</text>
+<text x="698" y="578" text-anchor="middle" fill="#1a5a30" font-size="8.5">填写评估</text>
+
+<!-- → 人事负责人 -->
+<line x1="748" y1="568" x2="850" y2="568" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<polygon points="898,552 933,568 898,584 863,568" fill="#fff" stroke="#1a6e3e" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="898" y="565" text-anchor="middle" fill="#1a5a30" font-size="9">人事负责人</text>
+<text x="898" y="576" text-anchor="middle" fill="#1a5a30" font-size="9">确认</text>
 
 <!-- 驳回 -->
-<path d="M 304,325 Q 250,345 200,345 L 147,345" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
-<text x="235" y="358" text-anchor="middle" fill="#e74c3c" font-size="9">不通过 → 启动离职</text>
+<path d="M 863,568 Q 400,598 148,598 L 140,598" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
-<!-- 通过→人事专员 -->
-<line x1="384" y1="325" x2="482" y2="325" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="433" y="319" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
+<!-- → 最高负责人 -->
+<line x1="933" y1="568" x2="1050" y2="568" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
 
-<!-- 人事专员 办理手续 -->
-<rect x="482" y="308" width="114" height="34" rx="4" fill="#fff" stroke="#1a6e3e" stroke-width="1.5"/>
-<text x="539" y="322" text-anchor="middle" fill="#1a5a30" font-size="10">准备转正/续签</text>
-<text x="539" y="335" text-anchor="middle" fill="#1a5a30" font-size="10">材料</text>
+<polygon points="1098,552 1133,568 1098,584 1063,568" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="1098" y="565" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
+<text x="1098" y="576" text-anchor="middle" fill="#8a0000" font-size="9">终审</text>
 
-<!-- →人事负责人 -->
-<line x1="596" y1="325" x2="900" y2="325" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-
-<!-- 人事负责人菱形 -->
-<polygon points="947,305 987,325 947,345 907,325" fill="#fff" stroke="#1a6e3e" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="947" y="323" text-anchor="middle" fill="#1a5a30" font-size="9">人事负责人</text>
-<text x="947" y="334" text-anchor="middle" fill="#1a5a30" font-size="9">审批</text>
-
-<!-- 通过→最高负责人 -->
-<line x1="987" y1="325" x2="1100" y2="325" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="1044" y="319" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
-
-<!-- 最高负责人菱形 -->
-<polygon points="1176,305 1216,325 1176,345 1136,325" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
-<text x="1176" y="323" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
-<text x="1176" y="334" text-anchor="middle" fill="#8a0000" font-size="9">审批</text>
+<!-- 驳回 -->
+<path d="M 1063,568 Q 500,610 145,610 L 140,610" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
 <!-- 完成 -->
-<line x1="1176" y1="345" x2="1176" y2="375" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<rect x="1120" y="375" width="112" height="34" rx="4" fill="#d4f0e2" stroke="#1a6e3e" stroke-width="1.5"/>
-<text x="1176" y="393" text-anchor="middle" fill="#1a5a30" font-size="10">转正/续签生效</text>
+<line x1="1098" y1="584" x2="1098" y2="603" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1050" y="605" width="96" height="26" rx="4" fill="#d4f0e2" stroke="#1a6e3e" stroke-width="1.3"/>
+<text x="1098" y="622" text-anchor="middle" fill="#1a5a30" font-size="9.5">转合同生效</text>
 
-<!-- 驳回连线 人事负责人→ -->
-<path d="M 907,325 Q 740,390 600,390 L 539,390" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
-<!-- ===========================================================
-     调（员工流动）  泳道  Y: 420~620
-=========================================================== -->
-<rect x="0" y="420" width="56" height="200" fill="#b05a00"/>
-<text x="28" y="520" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold"
-      transform="rotate(-90,28,520)">调（员工流动）</text>
-<rect x="56" y="420" width="1244" height="200" fill="#fdf4eb"/>
+<!-- === 员工流动表（调薪/晋升/调动）=== -->
+<rect x="70"  y="650" width="138" height="40" rx="4" fill="#fff" stroke="#b05a00" stroke-width="1.4"/>
+<text x="139" y="666" text-anchor="middle" fill="#7a3800" font-size="9.5">《员工流动表》</text>
+<text x="139" y="680" text-anchor="middle" fill="#666" font-size="8">调薪 / 晋升 / 调动等</text>
+<text x="1210" y="673" fill="#888" font-size="9">人事专员发起</text>
 
-<!-- 提交流动申请 -->
-<rect x="88" y="503" width="116" height="34" rx="4" fill="#fff" stroke="#b05a00" stroke-width="1.5"/>
-<text x="146" y="517" text-anchor="middle" fill="#7a3800" font-size="10">提交流动申请</text>
-<text x="146" y="530" text-anchor="middle" fill="#7a3800" font-size="9">（调岗/调薪/晋升）</text>
+<!-- 人事专员发起 -->
+<line x1="208" y1="670" x2="455" y2="670" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
 
-<!-- →流出BU -->
-<line x1="204" y1="520" x2="300" y2="520" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="455" y="654" width="106" height="32" rx="4" fill="#fff" stroke="#b05a00" stroke-width="1.3"/>
+<text x="508" y="670" text-anchor="middle" fill="#7a3800" font-size="9">人事专员发起</text>
 
-<!-- 流出BU菱形 -->
-<polygon points="344,500 384,520 344,540 304,520" fill="#fff" stroke="#b05a00" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="344" y="518" text-anchor="middle" fill="#7a3800" font-size="9">流出BU</text>
-<text x="344" y="529" text-anchor="middle" fill="#7a3800" font-size="9">负责人审批</text>
+<!-- → 原 BU负责人确认 -->
+<line x1="561" y1="670" x2="648" y2="670" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="605" y="664" text-anchor="middle" fill="#555" font-size="8">原BU</text>
+
+<!-- 原BU菱形 -->
+<polygon points="698,655 730,670 698,685 666,670" fill="#fff" stroke="#b05a00" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="698" y="668" text-anchor="middle" fill="#7a3800" font-size="8.5">原BU</text>
+<text x="698" y="679" text-anchor="middle" fill="#7a3800" font-size="8.5">负责人确认</text>
 
 <!-- 驳回 -->
-<path d="M 304,520 Q 250,540 196,540 L 146,540" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
-<text x="225" y="553" text-anchor="middle" fill="#e74c3c" font-size="9">驳回</text>
+<path d="M 666,670 Q 370,700 148,700 L 139,700" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
-<!-- 通过→人事专员 -->
-<line x1="384" y1="520" x2="480" y2="520" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="432" y="514" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
+<!-- → 现 BU负责人确认（若有） -->
+<line x1="730" y1="670" x2="850" y2="670" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="790" y="664" text-anchor="middle" fill="#27ae60" font-size="8">通过</text>
 
-<!-- 人事专员 初审 -->
-<rect x="480" y="503" width="116" height="34" rx="4" fill="#fff" stroke="#b05a00" stroke-width="1.5"/>
-<text x="538" y="517" text-anchor="middle" fill="#7a3800" font-size="10">初审材料</text>
-<text x="538" y="530" text-anchor="middle" fill="#7a3800" font-size="10">拟定方案</text>
+<!-- 现BU菱形 -->
+<polygon points="898,655 930,670 898,685 866,670" fill="#fff" stroke="#b05a00" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="898" y="668" text-anchor="middle" fill="#7a3800" font-size="8.5">现BU负责人</text>
+<text x="898" y="679" text-anchor="middle" fill="#7a3800" font-size="8.5">确认（若有）</text>
 
-<!-- →流入BU菱形 -->
-<line x1="596" y1="520" x2="690" y2="520" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+<!-- 驳回 -->
+<path d="M 866,670 Q 700,715 560,715 L 508,715" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
-<!-- 流入BU菱形 -->
-<polygon points="737,500 777,520 737,540 697,520" fill="#fff" stroke="#b05a00" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="737" y="518" text-anchor="middle" fill="#7a3800" font-size="9">流入BU</text>
-<text x="737" y="529" text-anchor="middle" fill="#7a3800" font-size="9">负责人审批</text>
+<!-- → 人事负责人 -->
+<line x1="930" y1="670" x2="1050" y2="670" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="990" y="664" text-anchor="middle" fill="#27ae60" font-size="8">通过</text>
 
-<!-- 驳回→人事专员 -->
-<path d="M 697,520 Q 650,555 596,555 L 538,555" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+<!-- 注意：人事负责人和最高负责人在列6、列7方向放不下，需要调整位置 -->
+<!-- 人事负责人菱形 - 放在下方一行 -->
+
+<!-- 人事负责人 -->
+<polygon points="698,720 730,735 698,750 666,735" fill="#fff" stroke="#b05a00" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="698" y="733" text-anchor="middle" fill="#7a3800" font-size="8.5">人事负责人</text>
+<text x="698" y="744" text-anchor="middle" fill="#7a3800" font-size="8.5">确认</text>
+
+<!-- 连接线：从现BU通过到这里 -->
+<line x1="898" y1="685" x2="898" y2="710" stroke="#444" stroke-width="1.2"/>
+<line x1="898" y1="710" x2="730" y2="710" stroke="#444" stroke-width="1.2"/>
+<line x1="730" y1="710" x2="730" y2="725" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+
+<!-- 驳回 -->
+<path d="M 666,735 Q 400,742 148,742 L 139,742" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+
+<!-- → 最高负责人 -->
+<line x1="730" y1="735" x2="1050" y2="735" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- 最高负责人菱形 -->
+<polygon points="1098,720 1130,735 1098,750 1066,735" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="1098" y="733" text-anchor="middle" fill="#8a0000" font-size="8.5">最高负责人</text>
+<text x="1098" y="744" text-anchor="middle" fill="#8a0000" font-size="8.5">终审</text>
+
+<!-- 驳回 -->
+<path d="M 1066,735 Q 520,758 148,758 L 139,758" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+
+<!-- 完成 -->
+<line x1="1130" y1="735" x2="1178" y2="735" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1180" y="722" width="84" height="26" rx="4" fill="#fde8d0" stroke="#b05a00" stroke-width="1.3"/>
+<text x="1222" y="739" text-anchor="middle" fill="#7a3800" font-size="9.5">流动生效</text>
+
+
+<!-- ===========================================================
+     （4）离职流程  泳道  Y: 750~920
+     每个审批节点都能驳回
+=========================================================== -->
+<rect x="0" y="750" width="58" height="170" fill="#a51c1c"/>
+<text x="28" y="835" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="bold"
+      transform="rotate(-90,28,835)">离职流程</text>
+<rect x="58" y="750" width="1342" height="170" fill="#fdf0f0"/>
+
+<text x="70" y="768" fill="#a51c1c" font-size="11" font-weight="bold">（4）离职流程 — 每个审批节点都能驳回到第一步</text>
+
+
+<!-- === 离职申请表 === -->
+<rect x="75"  y="782" width="132" height="36" rx="4" fill="#fff" stroke="#a51c1c" stroke-width="1.4"/>
+<text x="141" y="798" text-anchor="middle" fill="#7a1010" font-size="9.5">《离职申请表》</text>
+<text x="141" y="810" text-anchor="middle" fill="#666" font-size="8">个人发起主动辞职</text>
+<text x="1210" y="802" fill="#888" font-size="9">个人发起</text>
+
+<!-- → BU负责人确认 -->
+<line x1="207" y1="800" x2="290" y2="800" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<!-- BU负责人菱形 -->
+<polygon points="323,784 356,800 323,816 290,800" fill="#fff" stroke="#a51c1c" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="323" y="795" text-anchor="middle" fill="#7a1010" font-size="9">BU负责人</text>
+<text x="323" y="806" text-anchor="middle" fill="#7a1010" font-size="9">确认</text>
+
+<!-- 驳回 -->
+<path d="M 290,800 Q 210,825 158,825 L 141,825" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
+<text x="220" y="837" text-anchor="middle" fill="#e74c3c" font-size="8.5">驳回</text>
 
 <!-- 通过→人事负责人 -->
-<line x1="777" y1="520" x2="900" y2="520" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="838" y="514" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
+<line x1="356" y1="800" x2="650" y2="800" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="503" y="794" text-anchor="middle" fill="#27ae60" font-size="8.5">通过</text>
 
 <!-- 人事负责人菱形 -->
-<polygon points="947,500 987,520 947,540 907,520" fill="#fff" stroke="#b05a00" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="947" y="518" text-anchor="middle" fill="#7a3800" font-size="9">人事负责人</text>
-<text x="947" y="529" text-anchor="middle" fill="#7a3800" font-size="9">审批</text>
+<polygon points="698,784 731,800 698,816 665,800" fill="#fff" stroke="#a51c1c" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="698" y="795" text-anchor="middle" fill="#7a1010" font-size="9">人事负责人</text>
+<text x="698" y="806" text-anchor="middle" fill="#7a1010" font-size="9">确认</text>
+
+<!-- 驳回→第一步 -->
+<path d="M 665,800 Q 350,835 155,835 L 141,835" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
 <!-- 通过→最高负责人 -->
-<line x1="987" y1="520" x2="1100" y2="520" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="1044" y="514" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
+<line x1="731" y1="800" x2="850" y2="800" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="790" y="794" text-anchor="middle" fill="#27ae60" font-size="8.5">通过</text>
 
 <!-- 最高负责人菱形 -->
-<polygon points="1176,500 1216,520 1176,540 1136,520" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
-<text x="1176" y="518" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
-<text x="1176" y="529" text-anchor="middle" fill="#8a0000" font-size="9">审批</text>
+<polygon points="898,784 931,800 898,816 865,800" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="898" y="795" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
+<text x="898" y="806" text-anchor="middle" fill="#8a0000" font-size="9">终审</text>
 
-<!-- 完成 -->
-<line x1="1176" y1="540" x2="1176" y2="570" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<rect x="1120" y="570" width="112" height="34" rx="4" fill="#fde8d0" stroke="#b05a00" stroke-width="1.5"/>
-<text x="1176" y="588" text-anchor="middle" fill="#7a3800" font-size="10">调动生效</text>
-<text x="1176" y="601" text-anchor="middle" fill="#7a3800" font-size="10">系统记录更新</text>
-
-<!-- ===========================================================
-     离（离职退档）  泳道  Y: 620~800
-=========================================================== -->
-<rect x="0" y="620" width="56" height="180" fill="#a51c1c"/>
-<text x="28" y="710" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold"
-      transform="rotate(-90,28,710)">离（离职退档）</text>
-<rect x="56" y="620" width="1244" height="180" fill="#fdf0f0"/>
-
-<!-- 提交离职申请 -->
-<rect x="90" y="693" width="114" height="34" rx="4" fill="#fff" stroke="#a51c1c" stroke-width="1.5"/>
-<text x="147" y="714" text-anchor="middle" fill="#7a1010" font-size="11">提交离职申请</text>
-
-<!-- →BU -->
-<line x1="204" y1="710" x2="300" y2="710" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-
-<!-- BU菱形 -->
-<polygon points="344,690 384,710 344,730 304,710" fill="#fff" stroke="#a51c1c" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="344" y="714" text-anchor="middle" fill="#7a1010" font-size="10">BU负责人审批</text>
-
-<!-- 驳回 -->
-<path d="M 304,710 Q 250,730 196,730 L 147,730" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
-<text x="235" y="743" text-anchor="middle" fill="#e74c3c" font-size="9">驳回</text>
-
-<!-- 通过→人事专员 -->
-<line x1="384" y1="710" x2="480" y2="710" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="432" y="704" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
-
-<!-- 人事专员 -->
-<rect x="480" y="693" width="114" height="34" rx="4" fill="#fff" stroke="#a51c1c" stroke-width="1.5"/>
-<text x="537" y="707" text-anchor="middle" fill="#7a1010" font-size="10">核实信息</text>
-<text x="537" y="720" text-anchor="middle" fill="#7a1010" font-size="10">发起交接流程</text>
-
-<!-- →人事负责人 -->
-<line x1="594" y1="710" x2="900" y2="710" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-
-<!-- 人事负责人菱形 -->
-<polygon points="947,690 987,710 947,730 907,710" fill="#fff" stroke="#a51c1c" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="947" y="708" text-anchor="middle" fill="#7a1010" font-size="9">人事负责人</text>
-<text x="947" y="719" text-anchor="middle" fill="#7a1010" font-size="9">审批</text>
-
-<!-- 驳回→人事专员 -->
-<path d="M 907,710 Q 740,760 600,760 L 537,760" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
-
-<!-- 通过→最高负责人 -->
-<line x1="987" y1="710" x2="1100" y2="710" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="1044" y="704" text-anchor="middle" fill="#27ae60" font-size="9">通过</text>
-
-<!-- 最高负责人菱形 -->
-<polygon points="1176,690 1216,710 1176,730 1136,710" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="5,3"/>
-<text x="1176" y="708" text-anchor="middle" fill="#8a0000" font-size="9">最高负责人</text>
-<text x="1176" y="719" text-anchor="middle" fill="#8a0000" font-size="9">审批</text>
-
-<!-- 完成 -->
-<line x1="1176" y1="730" x2="1176" y2="762" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<rect x="1120" y="762" width="112" height="34" rx="4" fill="#fad4d4" stroke="#a51c1c" stroke-width="1.5"/>
-<text x="1176" y="780" text-anchor="middle" fill="#7a1010" font-size="10">离职生效</text>
-<text x="1176" y="793" text-anchor="middle" fill="#7a1010" font-size="10">档案归档</text>
-
-<!-- ===========================================================
-     档案管理  泳道  Y: 800~940
-=========================================================== -->
-<rect x="0" y="800" width="56" height="140" fill="#5a3a8a"/>
-<text x="28" y="870" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold"
-      transform="rotate(-90,28,870)">档案管理</text>
-<rect x="56" y="800" width="1244" height="140" fill="#f5f0fc"/>
-
-<!-- 系统自动建档 -->
-<rect x="88" y="853" width="116" height="34" rx="4" fill="#fff" stroke="#5a3a8a" stroke-width="1.5"/>
-<text x="146" y="867" text-anchor="middle" fill="#3a2060" font-size="10">系统自动</text>
-<text x="146" y="880" text-anchor="middle" fill="#3a2060" font-size="10">员工建档</text>
-
-<!-- →人事专员 -->
-<line x1="204" y1="870" x2="480" y2="870" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-<text x="342" y="864" text-anchor="middle" fill="#555" font-size="9">各生命周期节点同步更新</text>
-
-<!-- 人事专员 -->
-<rect x="480" y="853" width="116" height="34" rx="4" fill="#fff" stroke="#5a3a8a" stroke-width="1.5"/>
-<text x="538" y="867" text-anchor="middle" fill="#3a2060" font-size="10">人事专员</text>
-<text x="538" y="880" text-anchor="middle" fill="#3a2060" font-size="10">维护档案</text>
-
-<!-- →人事负责人审阅 -->
-<line x1="596" y1="870" x2="900" y2="870" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
-
-<!-- 人事负责人菱形 -->
-<polygon points="947,850 987,870 947,890 907,870" fill="#fff" stroke="#5a3a8a" stroke-width="1.5" stroke-dasharray="5,3"/>
-<text x="947" y="868" text-anchor="middle" fill="#3a2060" font-size="9">人事负责人</text>
-<text x="947" y="879" text-anchor="middle" fill="#3a2060" font-size="9">定期审阅</text>
+<!-- 驳回→第一步 -->
+<path d="M 865,800 Q 450,850 152,850 L 141,850" stroke="#e74c3c" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-r)"/>
 
 <!-- 通过→完成 -->
-<line x1="987" y1="870" x2="1120" y2="870" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="931" y1="800" x2="1050" y2="800" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1050" y="785" width="96" height="30" rx="4" fill="#fad4d4" stroke="#a51c1c" stroke-width="1.3"/>
+<text x="1098" y="804" text-anchor="middle" fill="#7a1010" font-size="9.5">离职审批通过</text>
 
-<!-- 完成 -->
-<rect x="1120" y="853" width="116" height="34" rx="4" fill="#e8d8f8" stroke="#5a3a8a" stroke-width="1.5"/>
-<text x="1178" y="867" text-anchor="middle" fill="#3a2060" font-size="10">档案归档完成</text>
-<text x="1178" y="880" text-anchor="middle" fill="#3a2060" font-size="10">权限管控生效</text>
+
+<!-- === 离职交接清单 === -->
+<rect x="75"  y="868" width="132" height="36" rx="4" fill="#fff" stroke="#a51c1c" stroke-width="1.4"/>
+<text x="141" y="884" text-anchor="middle" fill="#7a1010" font-size="9.5">《离职交接清单》</text>
+<text x="141" y="896" text-anchor="middle" fill="#666" font-size="8">交接任务</text>
+<text x="1210" y="888" fill="#888" font-size="9">人事专员发起交接</text>
+
+<!-- 人事专员发起 -->
+<line x1="207" y1="886" x2="455" y2="886" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="330" y="880" text-anchor="middle" fill="#555" font-size="8.5">发起交接任务</text>
+
+<rect x="455" y="870" width="106" height="32" rx="4" fill="#fff" stroke="#a51c1c" stroke-width="1.3"/>
+<text x="508" y="886" text-anchor="middle" fill="#7a1010" font-size="9">人事专员发起</text>
+
+<!-- → 各相关人/部门 交接确认 -->
+<line x1="561" y1="886" x2="648" y2="886" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+
+<rect x="648" y="870" width="260" height="32" rx="4" fill="#fff" stroke="#a51c1c" stroke-width="1.3"/>
+<text x="778" y="886" text-anchor="middle" fill="#7a1010" font-size="9">各相关人 / 部门 进行交接确认</text>
+
+<!-- → 完成 -->
+<line x1="908" y1="886" x2="1050" y2="886" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<rect x="1050" y="871" width="96" height="30" rx="4" fill="#fad4d4" stroke="#a51c1c" stroke-width="1.3"/>
+<text x="1098" y="890" text-anchor="middle" fill="#7a1010" font-size="9.5">交接完成</text>
+
 
 <!-- ===========================================================
-     底边框
+     底边框 + 审批层级说明
 =========================================================== -->
-<rect x="0" y="940" width="1300" height="40" fill="#f0f2f8"/>
-<line x1="0" y1="940" x2="1300" y2="940" stroke="#1a2e5a" stroke-width="2"/>
+<rect x="0" y="920" width="1400" height="108" fill="#f0f2f8"/>
+<line x1="0" y1="920" x2="1400" y2="920" stroke="#1a2e5a" stroke-width="2"/>
 
 <!-- 底部图例文字 -->
-<text x="20" y="958" fill="#1a2e5a" font-size="10.5" font-weight="bold">审批层级：</text>
-<!-- BU -->
-<polygon points="108,948 118,958 108,968 98,958" fill="#fff" stroke="#1d4e8f" stroke-width="1.5" stroke-dasharray="4,2"/>
-<text x="132" y="962" fill="#1a2e5a" font-size="10">BU 负责人（部门/业务线）</text>
-<!-- 人事专员 -->
-<polygon points="292,948 302,958 292,968 282,958" fill="#fff" stroke="#2a7d9c" stroke-width="1.5" stroke-dasharray="4,2"/>
-<text x="316" y="962" fill="#1a4060" font-size="10">人事专员 — 经办人，不做审批决策</text>
-<!-- 人事负责人 -->
-<polygon points="556,948 566,958 556,968 546,958" fill="#fff" stroke="#1a6e3e" stroke-width="1.5" stroke-dasharray="4,2"/>
-<text x="580" y="962" fill="#1a5a30" font-size="10">人事负责人 — 二级审批</text>
-<!-- 最高负责人 -->
-<polygon points="756,948 766,958 756,968 746,958" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="4,2"/>
-<text x="780" y="962" fill="#8a0000" font-size="10">最高负责人 — 终级审批</text>
+<text x="20" y="942" fill="#1a2e5a" font-size="10.5" font-weight="bold">审批层级说明：</text>
 
-<!-- 驳回说明 -->
-<defs><marker id="arr-r2" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.5L0,6.5L7,3.5z" fill="#e74c3c"/></marker></defs>
-<line x1="960" y1="958" x2="988" y2="958" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-r2)"/>
-<text x="1000" y="962" fill="#e74c3c" font-size="10">驳回退回</text>
-<defs><marker id="arr2" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.5L0,6.5L7,3.5z" fill="#444"/></marker></defs>
-<line x1="1075" y1="958" x2="1103" y2="958" stroke="#444" stroke-width="1.5" marker-end="url(#arr2)"/>
-<text x="1115" y="962" fill="#444" font-size="10">正向流转</text>
-<text x="1175" y="962" fill="#888" font-size="9">V3.2</text>
+<!-- BU -->
+<polygon points="126,934 136,944 126,954 116,944" fill="#fff" stroke="#1d4e8f" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="150" y="948" fill="#1a2e5a" font-size="10">BU 负责人（部门/业务线审批）</text>
+
+<!-- 人事专员 -->
+<rect x="340" y="936" width="16" height="16" rx="2" fill="#fff" stroke="#2a7d9c" stroke-width="1.3"/>
+<text x="365" y="948" fill="#1a4060" font-size="10">人事专员 — 经办/发起人（不做最终审批决策）</text>
+
+<!-- 人事负责人 -->
+<polygon points="618,934 628,944 618,954 608,944" fill="#fff" stroke="#1a6e3e" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="642" y="948" fill="#1a5a30" font-size="10">人事负责人 — 二级确认/审批</text>
+
+<!-- 最高负责人 -->
+<polygon points="830,934 840,944 830,954 820,944" fill="#fff" stroke="#8a0000" stroke-width="2" stroke-dasharray="4,2"/>
+<text x="854" y="948" fill="#8a0000" font-size="10">最高负责人 — 终级审批</text>
+
+<!-- 流程类型说明 -->
+<text x="20" y="974" fill="#1a2e5a" font-size="10" font-weight="bold">流程类型：</text>
+<rect x="95" y="964" width="12" height="12" rx="2" fill="#edf2fb" stroke="#1d4e8f" stroke-width="1"/>
+<text x="115" y="974" fill="#1d4e8f" font-size="10">招聘</text>
+<rect x="152" y="964" width="12" height="12" rx="2" fill="#eaf6fa" stroke="#2a7d9c" stroke-width="1"/>
+<text x="172" y="974" fill="#2a7d9c" font-size="10">入职</text>
+<rect x="208" y="964" width="12" height="12" rx="2" fill="#edf7f1" stroke="#1a6e3e" stroke-width="1"/>
+<text x="228" y="974" fill="#1a6e3e" font-size="10">在职管理</text>
+<rect x="288" y="964" width="12" height="12" rx="2" fill="#fdf0f0" stroke="#a51c1c" stroke-width="1"/>
+<text x="308" y="974" fill="#a51c1c" font-size="10">离职</text>
+<rect x="348" y="964" width="12" height="12" rx="2" fill="#fdf4eb" stroke="#b05a00" stroke-width="1"/>
+<text x="368" y="974" fill="#b05a00" font-size="10">员工流动</text>
+
+<!-- 驳回/流转说明 -->
+<line x1="450" y1="970" x2="478" y2="970" stroke="#e74c3c" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#arr-r)"/>
+<text x="488" y="974" fill="#e74c3c" font-size="10">驳回退回（可退回第一步重新修改）</text>
+<line x1="680" y1="970" x2="708" y2="970" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
+<text x="718" y="974" fill="#444" font-size="10">正向流转</text>
+
+<text x="880" y="974" fill="#888" font-size="9">V3.3</text>
 
 <!-- 底部版权行 -->
-<text x="650" y="976" text-anchor="middle" fill="#aaa" font-size="9">审批链通用规则：BU负责人 → 人事负责人 → 最高负责人（逐级审批，任一环节驳回可退回上一节点修改）</text>
+<text x="700" y="998" text-anchor="middle" fill="#aaa" font-size="9">通用规则：招聘/在职/离职流程中每个审批节点均可驳回至第一步；员工流动需原BU+现BU（若有）双重确认后再逐级审批</text>
+
+<!-- 最底边框 -->
+<line x1="0" y1="1020" x2="1400" y2="1020" stroke="#1a2e5a" stroke-width="2"/>
+<rect x="0" y="1020" width="1400" height="18" fill="#f0f2f8"/>
 
 </svg>
 
-<div class="footer">HRO 人事管理系统 &nbsp;|&nbsp; 员工全生命周期审批流程图 &nbsp;|&nbsp; 2026-07-02</div>
+<div class="footer">2026-07-02</div>
 </div>
 </body>
 </html>
