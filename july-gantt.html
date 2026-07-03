@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7月任务甘特图 · 黄燕婷（Tina）</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f5f6fa;
+    color: #2c3042;
+    padding: 24px 28px 48px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 24px; padding-bottom: 16px;
+    border-bottom: 1px solid #e0e3ec;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #6c63ff, #a78bfa);
+    border: 2px solid #6c63ff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 600; color: #fff; flex-shrink: 0;
+  }
+  .header-title h1 { font-size: 18px; font-weight: 700; color: #1a1e2e; }
+  .header-title p { font-size: 11.5px; color: #6b7294; margin-top: 3px; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 500;
+  }
+  .pill-red { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+  .pill-purple { background: #ede9fe; color: #6c63ff; border: 1px solid #c4b5fd; }
+  .pill-green { background: #d1fae5; color: #059669; border: 1px solid #6ee7b7; }
+  .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+  /* SECTION */
+  .sec {
+    font-size: 10.5px; font-weight: 600; color: #8b90a8;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 10px; margin-top: 24px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sec::after { content: ''; flex: 1; height: 1px; background: #e0e3ec; }
+  .sec:first-of-type { margin-top: 0; }
+
+  /* MONTH LABEL */
+  .month-row {
+    display: grid;
+    grid-template-columns: 220px repeat(4, 1fr);
+    margin-bottom: 2px;
+  }
+  .month-cell {
+    text-align: center; font-size: 13px; font-weight: 700; color: #6c63ff;
+    padding: 8px 0 4px;
+  }
+  .month-july { grid-column: 2 / 6; }
+
+  /* GANTT */
+  .gantt-wrap {
+    background: #ffffff; border: 1px solid #e5e7f0;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
+  }
+  .gantt-header {
+    display: grid;
+    grid-template-columns: 220px repeat(4, 1fr);
+    border-bottom: 2px solid #e5e7f0;
+    background: #fafbfe;
+  }
+  .gh-label {
+    padding: 10px 14px; font-size: 10px; font-weight: 600;
+    color: #8b90a8; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .gh-week {
+    padding: 8px 2px; text-align: center;
+    border-left: 1px solid #eef0f6;
+  }
+  .gh-week .wn { font-size: 12px; font-weight: 700; color: #1a1e2e; }
+  .gh-week .wd { font-size: 9px; color: #a0a6c0; margin-top: 2px; }
+
+  .gantt-row {
+    display: grid;
+    grid-template-columns: 220px repeat(4, 1fr);
+    border-bottom: 1px solid #f0f1f5;
+    min-height: 52px;
+    transition: background 0.15s;
+  }
+  .gantt-row:hover { background: #fafbff; }
+  .gantt-row:last-child { border-bottom: none; }
+
+  .gr-label {
+    padding: 10px 14px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .gr-name { font-size: 12px; font-weight: 600; color: #1a1e2e; line-height: 1.4; }
+  .gr-sub { font-size: 9px; color: #a0a6c0; margin-top: 2px; }
+
+  .gr-cell {
+    border-left: 1px solid #f0f1f5;
+    padding: 5px 4px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .bar {
+    width: 90%; height: 28px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 600; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .bar::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+    border-radius: 6px;
+  }
+  .b-purple { background: linear-gradient(90deg, #6c63ff, #a78bfa); }
+  .b-blue   { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .b-green  { background: linear-gradient(90deg, #10b981, #34d399); }
+  .b-amber  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .b-teal   { background: linear-gradient(90deg, #14b8a6, #5eead4); }
+  .b-pink   { background: linear-gradient(90deg, #ec4899, #f472b6); }
+  .b-indigo { background: linear-gradient(90deg, #6366f1, #818cf8); }
+  .b-orange { background: linear-gradient(90deg, #f97316, #fb923c); }
+  .b-red    { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  /* GROUP HEADER ROW */
+  .gantt-group {
+    display: grid;
+    grid-template-columns: 220px repeat(4, 1fr);
+    background: #f4f5fa;
+    border-bottom: 1px solid #e5e7f0;
+  }
+  .gg-label {
+    padding: 8px 14px;
+    font-size: 10px; font-weight: 700; color: #6c63ff;
+    letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .gg-label .gg-icon { font-size: 13px; }
+
+  /* PHASE BAR */
+  .phase-bar {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    background: #fafbfe;
+    border-bottom: 1px solid #e5e7f0;
+  }
+  .pb-label {
+    padding: 8px 14px; font-size: 10px; font-weight: 700; color: #8b90a8;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pb-track { display: flex; align-items: center; padding: 4px 6px; gap: 3px; }
+  .pb-seg {
+    height: 22px; border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; font-size: 9px; font-weight: 600; color: #fff;
+  }
+  .s1 { flex: 1; background: linear-gradient(90deg, #6c63ff, #8b83ff); }
+  .s2 { flex: 1; background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .s3 { flex: 1; background: linear-gradient(90deg, #10b981, #34d399); }
+  .s4 { flex: 1; background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+  /* WEEK DETAIL CARDS */
+  .week-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+  .wc {
+    background: #ffffff; border: 1px solid #e5e7f0;
+    border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .wc-full { grid-column: 1 / -1; }
+  .wc-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px; padding-bottom: 8px;
+    border-bottom: 1px solid #eef0f6;
+  }
+  .wc-title { font-size: 13px; font-weight: 700; color: #1a1e2e; }
+  .wc-date { font-size: 10px; color: #a0a6c0; }
+  .wc-items { list-style: none; }
+  .wc-items li {
+    font-size: 11px; color: #4b5072; line-height: 1.7;
+    padding-left: 14px; position: relative; margin-bottom: 4px;
+  }
+  .wc-items li::before {
+    content: ''; position: absolute; left: 0; top: 7px;
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .wc-items li.purple::before { background: #6c63ff; }
+  .wc-items li.blue::before   { background: #3b82f6; }
+  .wc-items li.green::before  { background: #10b981; }
+  .wc-items li.amber::before  { background: #f59e0b; }
+  .wc-items li.red::before    { background: #ef4444; }
+  .wc-items li.pink::before   { background: #ec4899; }
+  .wc-items li.teal::before   { background: #14b8a6; }
+  .wc-items li.indigo::before { background: #6366f1; }
+  .wc-items li.orange::before { background: #f97316; }
+
+  .wc-tag {
+    display: inline-block; padding: 1px 6px; border-radius: 5px;
+    font-size: 9px; font-weight: 600; margin-left: 5px;
+    vertical-align: middle;
+  }
+  .wt-flow  { background: #ede9fe; color: #6c63ff; }
+  .wt-data  { background: #dbeafe; color: #2563eb; }
+  .wt-doc   { background: #d1fae5; color: #059669; }
+  .wt-test  { background: #fef3c7; color: #b45309; }
+
+  /* LEGEND */
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-bottom: 20px; padding: 10px 0;
+  }
+  .leg-item {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 10px; color: #6b7294;
+  }
+  .leg-dot {
+    width: 10px; height: 10px; border-radius: 3px;
+  }
+  .ld-purple { background: linear-gradient(90deg, #6c63ff, #a78bfa); }
+  .ld-blue   { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .ld-green  { background: linear-gradient(90deg, #10b981, #34d399); }
+  .ld-amber  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+  /* FOOTER */
+  .footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-top: 14px; border-top: 1px solid #e0e3ec;
+    font-size: 10.5px; color: #a0a6c0;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    body { padding: 12px 10px 24px; }
+    .gantt-wrap { overflow-x: auto; }
+    .week-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; gap: 10px; }
+    .header-right { align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="avatar">T</div>
+    <div class="header-title">
+      <h1>7月任务甘特图 · 黄燕婷（Tina）</h1>
+      <p>7月6日 — 7月31日（4周）</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="pill pill-green"><span class="pill-dot"></span>V1 系统上线</div>
+    <div class="pill pill-purple">W1—W4 · 7/6 — 7/31</div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="leg-item"><span class="leg-dot ld-purple"></span>流程梳理</div>
+  <div class="leg-item"><span class="leg-dot ld-blue"></span>数据分析</div>
+  <div class="leg-item"><span class="leg-dot ld-green"></span>档案整理</div>
+  <div class="leg-item"><span class="leg-dot ld-amber"></span>测试上线</div>
+</div>
+
+<!-- ══════════ GANTT CHART ══════════ -->
+<div class="sec">甘特图 · 七月四周总览</div>
+
+<!-- Month label -->
+<div class="month-row">
+  <div style="padding:0 14px;"></div>
+  <div class="month-cell month-july">2026年 七月</div>
+</div>
+
+<div class="gantt-wrap">
+
+  <!-- HEADER ROW -->
+  <div class="gantt-header">
+    <div class="gh-label">任务</div>
+    <div class="gh-week"><div class="wn">W1</div><div class="wd">7/6-7/10</div></div>
+    <div class="gh-week"><div class="wn">W2</div><div class="wd">7/13-7/17</div></div>
+    <div class="gh-week"><div class="wn">W3</div><div class="wd">7/20-7/24</div></div>
+    <div class="gh-week"><div class="wn">W4</div><div class="wd">7/27-7/31</div></div>
+  </div>
+
+  <!-- ═══ GROUP: 第1周 ═══ -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">📋</span> 第1周 · 流程梳理</div>
+    <div></div><div></div><div></div><div></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">人事表单梳理成流程</div>
+      <div class="gr-sub">所有涉及表单 → 流程图</div>
+    </div>
+    <div class="gr-cell"><div class="bar b-purple">进行中</div></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">与子玥确认最终版本</div>
+      <div class="gr-sub">审核 + 修正</div>
+    </div>
+    <div class="gr-cell"><div class="bar b-purple">确认</div></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <!-- ═══ GROUP: 第2周 ═══ -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">📊</span> 第2周 · 考勤数据汇总</div>
+    <div></div><div></div><div></div><div></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">按年汇总钉钉原始数据</div>
+      <div class="gr-sub">2021年 — 2026.6 · 考勤分析</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-blue">汇总</div></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">按月汇总考勤数据</div>
+      <div class="gr-sub">2021年 — 2026.6 · 员工端查看</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-blue">汇总</div></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <!-- ═══ GROUP: 第3周 ═══ -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">📁</span> 第3周 · 人事档案整理</div>
+    <div></div><div></div><div></div><div></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">基本信息</div>
+      <div class="gr-sub">员工个人基础资料</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-green">整理</div></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">合同信息</div>
+      <div class="gr-sub">劳动合同 / 协议</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-green">整理</div></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">工资变动</div>
+      <div class="gr-sub">历史薪资调整记录</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-green">整理</div></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">社保公积金基数变动</div>
+      <div class="gr-sub">历年基数调整记录</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-green">整理</div></div>
+    <div class="gr-cell"></div>
+  </div>
+
+  <!-- ═══ GROUP: 第4周 ═══ -->
+  <div class="gantt-group">
+    <div class="gg-label"><span class="gg-icon">🚀</span> 第4周 · 系统测试上线</div>
+    <div></div><div></div><div></div><div></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">HRO系统 V1 测试</div>
+      <div class="gr-sub">功能验证 + Bug修复</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-amber">测试</div></div>
+  </div>
+
+  <div class="gantt-row">
+    <div class="gr-label">
+      <div class="gr-name">上线准备</div>
+      <div class="gr-sub">部署 + 文档 + 培训</div>
+    </div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"></div>
+    <div class="gr-cell"><div class="bar b-amber">准备</div></div>
+  </div>
+
+</div>
+
+<!-- PHASE BAR -->
+<div class="phase-bar">
+  <div class="pb-label">🎯 月度节奏</div>
+  <div class="pb-track">
+    <div class="pb-seg s1">流程</div>
+    <div class="pb-seg s2">数据</div>
+    <div class="pb-seg s3">档案</div>
+    <div class="pb-seg s4">上线</div>
+  </div>
+</div>
+
+<!-- ══════════ WEEKLY DETAIL CARDS ══════════ -->
+<div class="sec">每周任务详情</div>
+
+<div class="week-grid">
+
+  <!-- Week 1 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W1 · 流程梳理</div>
+      <div class="wc-date">7/6 — 7/10</div>
+    </div>
+    <ul class="wc-items">
+      <li class="purple">梳理人事涉及的所有表单 <span class="wc-tag wt-flow">流程</span></li>
+      <li class="purple">将表单转化为标准化流程图 <span class="wc-tag wt-flow">流程</span></li>
+      <li class="purple">与子玥逐项确认并修正 <span class="wc-tag wt-flow">确认</span></li>
+      <li class="purple">输出最终版本流程文档 <span class="wc-tag wt-doc">文档</span></li>
+    </ul>
+  </div>
+
+  <!-- Week 2 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W2 · 考勤数据汇总</div>
+      <div class="wc-date">7/13 — 7/17</div>
+    </div>
+    <ul class="wc-items">
+      <li class="blue">按年汇总 2021—2026.6 钉钉原始数据 <span class="wc-tag wt-data">数据</span></li>
+      <li class="blue">分析往年考勤情况与趋势 <span class="wc-tag wt-data">分析</span></li>
+      <li class="blue">按月汇总考勤数据 <span class="wc-tag wt-data">数据</span></li>
+      <li class="blue">数据对接系统员工端查看 <span class="wc-tag wt-flow">系统</span></li>
+    </ul>
+  </div>
+
+  <!-- Week 3 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W3 · 人事档案整理</div>
+      <div class="wc-date">7/20 — 7/24</div>
+    </div>
+    <ul class="wc-items">
+      <li class="green">员工基本信息整理 <span class="wc-tag wt-doc">档案</span></li>
+      <li class="green">合同信息归档 <span class="wc-tag wt-doc">档案</span></li>
+      <li class="green">工资变动记录整理 <span class="wc-tag wt-doc">档案</span></li>
+      <li class="green">社保公积金基数变动记录 <span class="wc-tag wt-doc">档案</span></li>
+    </ul>
+  </div>
+
+  <!-- Week 4 -->
+  <div class="wc">
+    <div class="wc-head">
+      <div class="wc-title">W4 · 系统测试上线</div>
+      <div class="wc-date">7/27 — 7/31</div>
+    </div>
+    <ul class="wc-items">
+      <li class="amber">HRO系统 V1 功能测试 <span class="wc-tag wt-test">测试</span></li>
+      <li class="amber">Bug 修复与回归验证 <span class="wc-tag wt-test">修复</span></li>
+      <li class="amber">部署到 GitHub Pages <span class="wc-tag wt-flow">部署</span></li>
+      <li class="amber">上线文档与培训准备 <span class="wc-tag wt-doc">文档</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>2026.07.03</span>
+</div>
+
+</body>
+</html>
