@@ -12,7 +12,7 @@ body {
 }
 .page {
   background: #fff;
-  max-width: 1832px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 24px 28px 32px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.10);
@@ -39,11 +39,43 @@ body {
   margin-top: 16px; padding-top: 8px;
   border-top: 1px solid #e5e8ef;
 }
+/* ===== 冻结布局 ===== */
+.flow-outer {
+  overflow: auto;
+  max-height: 82vh;
+  max-width: 100%;
+  border: 1px solid #ccc;
+}
+.flow-flex {
+  display: flex;
+  width: fit-content;
+  min-width: 100%;
+}
+/* 左侧 sticky 列 */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 20;
+  background: #fff;
+  flex: none;
+}
+/* 表头 sticky top */
+.hdr-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  background: #fff;
+}
+/* 滚动内容列 */
+.scroll-col {
+  flex: none;
+}
+svg { display:block; }
 </style>
 </head>
 <body>
-<div class="page">
 
+<div class="page">
 <div class="header">
   <h1>HRO 人事管理系统 — 员工全生命周期审批流程图</h1>
   <p>Employee Full Lifecycle Approval Flow · V5.0 · 基于招聘与入职流程表</p>
@@ -68,696 +100,519 @@ body {
   </div>
 </div>
 
-<svg id="flow" xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 1772 2200" width="100%"
-     style="display:block;">
-<defs>
-  <marker id="arr" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
-    <path d="M0,0.5 L0,6.5 L7,3.5 z" fill="#444"/>
-  </marker>
-  <marker id="arr-r" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
-    <path d="M0,0.5 L0,6.5 L7,3.5 z" fill="#e74c3c"/>
-  </marker>
-</defs>
-
-<!-- ============================================================
-  列定义（总宽1772）：
-  泳道标签区:  x=0,    w=52
-  表单:        x=52,   w=130  中心=117
-  求职者/员工:  x=182,  w=140  中心=252
-  人事专员1:   x=322,  w=150  中心=397
-  人事专员2:   x=472,  w=150  中心=547
-  BU负责人:    x=622,  w=150  中心=697
-  人事负责人:   x=772,  w=150  中心=847
-  最高负责人:   x=922,  w=150  中心=997
-  物业行政:    x=1072, w=140  中心=1142
-  IT:          x=1212, w=120  中心=1272
-  用印人:      x=1332, w=120  中心=1392
-  财务:        x=1452, w=120  中心=1512
-  使用场景:    x=1572, w=200  中心=1672
-============================================================ -->
-
-<!-- ==================== 列标题 ==================== -->
-<rect x="0"    y="0" width="52"  height="38" fill="#1a2e5a"/>
-<rect x="52"   y="0" width="130" height="38" fill="#dce6f5"/>
-<rect x="182"  y="0" width="140" height="38" fill="#e8eef7"/>
-<rect x="322"  y="0" width="150" height="38" fill="#b8cce8"/>
-<rect x="472"  y="0" width="150" height="38" fill="#c4d8ee"/>
-<rect x="622"  y="0" width="150" height="38" fill="#8faad8"/>
-<rect x="772"  y="0" width="150" height="38" fill="#a0b8dd"/>
-<rect x="922"  y="0" width="150" height="38" fill="#6b8fc5"/>
-<rect x="1072" y="0" width="140" height="38" fill="#8aaad0"/>
-<rect x="1212" y="0" width="120" height="38" fill="#9bb5d8"/>
-<rect x="1332" y="0" width="120" height="38" fill="#aac5e0"/>
-<rect x="1452" y="0" width="120" height="38" fill="#b8d0e5"/>
-<rect x="1572" y="0" width="200" height="38" fill="#c8d8ee"/>
-
-<!-- 列标题文字 -->
-<text x="26"  y="25" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">泳道</text>
-<text x="117" y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">表单</text>
-<text x="252" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">求职者/员工</text>
-<text x="397" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">人事专员1</text>
-<text x="547" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">人事专员2</text>
-<text x="697" y="25" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">BU负责人</text>
-<text x="847" y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">人事负责人</text>
-<text x="997" y="25" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">最高负责人</text>
-<text x="1142" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">物业行政</text>
-<text x="1272" y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">IT</text>
-<text x="1392" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">用印人</text>
-<text x="1512" y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">财务</text>
-<text x="1672" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">使用场景</text>
-
-<!-- 列分隔线 -->
-<line x1="52"   y1="0" x2="52"   y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="182"  y1="0" x2="182"  y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="322"  y1="0" x2="322"  y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="472"  y1="0" x2="472"  y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="622"  y1="0" x2="622"  y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="772"  y1="0" x2="772"  y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="922"  y1="0" x2="922"  y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="1072" y1="0" x2="1072" y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="1212" y1="0" x2="1212" y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="1332" y1="0" x2="1332" y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="1452" y1="0" x2="1452" y2="2200" stroke="#bbb" stroke-width="1"/>
-<line x1="1572" y1="0" x2="1572" y2="2200" stroke="#bbb" stroke-width="1.5"/>
-
-<!-- ==================== 泳道1：招聘审批 ==================== -->
-<!-- 背景 -->
-<rect x="0" y="38" width="1772" height="374" fill="#f8f9fc"/>
-<text x="26" y="225" fill="#1a2e5a" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90, 26, 225)">招聘审批</text>
-
-<!-- 表单1：HRT-2022-聘用员工申请表 -->
-<rect x="52" y="58" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="86" fill="#333" font-size="9.5" text-anchor="middle">HRT-2022-聘用员工申请表</text>
-
-<!-- 人事专员1：发起 -->
-<rect x="322" y="58" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="86" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<!-- BU负责人：确认 -->
-<rect x="622" y="58" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="86" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 人事负责人：确认 -->
-<rect x="772" y="58" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="86" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 最高负责人：终审 -->
-<rect x="922" y="58" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="86" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="58" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="86" fill="#666" font-size="9" text-anchor="middle">部门需要扩编、补员</text>
-
-<!-- 连线：发起 → 确认 → 确认 → 终审 -->
-<line x1="472" y1="80.5" x2="622" y2="80.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-<line x1="772" y1="80.5" x2="922" y2="80.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-<line x1="922" y1="80.5" x2="1072" y2="80.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-
-<!-- 表单2：HRP-2023-求职申请表（复杂流程） -->
-<rect x="52" y="118" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="146" fill="#333" font-size="9.5" text-anchor="middle">HRP-2023-求职申请表</text>
-
-<!-- 求职者/员工：填写P1 -->
-<rect x="182" y="118" width="140" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="252" y="146" fill="#333" font-size="10" text-anchor="middle">填写P1</text>
-
-<!-- 人事专员1：完成一面+P2 -->
-<rect x="322" y="118" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="397" y="146" fill="#333" font-size="9" text-anchor="middle">完成一面+P2</text>
-
-<!-- 人事专员2：完成二面+P2评估 -->
-<rect x="472" y="118" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="547" y="146" fill="#333" font-size="9" text-anchor="middle">完成二面+P2评估</text>
-
-<!-- BU负责人：完成终面 -->
-<rect x="622" y="118" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="146" fill="#333" font-size="10" text-anchor="middle">完成终面</text>
-
-<!-- 人事负责人：最终评价 -->
-<rect x="772" y="118" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="146" fill="#333" font-size="10" text-anchor="middle">最终评价</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="118" width="200" height="90" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="148" fill="#666" font-size="9" text-anchor="middle">p2是面试评估</text>
-<text x="1672" y="162" fill="#666" font-size="9" text-anchor="middle">根据聘用员工</text>
-<text x="1672" y="176" fill="#666" font-size="9" text-anchor="middle">申请表的职级</text>
-<text x="1672" y="190" fill="#666" font-size="9" text-anchor="middle">安排面试</text>
-
-<!-- 连线 -->
-<line x1="322" y1="140.5" x2="472" y2="140.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-<line x1="622" y1="140.5" x2="772" y2="140.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-<line x1="772" y1="140.5" x2="922" y2="140.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-
-<!-- 表单3：HRT-2020-劳动录用审批单 -->
-<rect x="52" y="228" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="256" fill="#333" font-size="9.5" text-anchor="middle">HRT-2020-劳动录用</text>
-
-<!-- 人事专员1：发起 -->
-<rect x="322" y="228" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="256" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<!-- BU负责人：确认 -->
-<rect x="622" y="228" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="256" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 人事负责人：确认 -->
-<rect x="772" y="228" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="256" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 最高负责人：终审 -->
-<rect x="922" y="228" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="256" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="228" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="256" fill="#666" font-size="9" text-anchor="middle">针对签署劳动合同</text>
-
-<!-- 连线 -->
-<line x1="472" y1="250.5" x2="622" y2="250.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-<line x1="772" y1="250.5" x2="922" y2="250.5" stroke="#444" stroke-width="1.4" marker-end="url(#arr)"/>
-
-<!-- 表单4：HRT-2020-劳务录用审批单 -->
-<rect x="52" y="288" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="316" fill="#333" font-size="9.5" text-anchor="middle">HRT-2020-劳务录用</text>
-
-<!-- 类似劳动录用的流程 -->
-<rect x="322" y="288" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="316" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<rect x="622" y="288" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="316" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="772" y="288" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="316" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="922" y="288" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="316" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<rect x="1572" y="288" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="316" fill="#666" font-size="9" text-anchor="middle">针对签署劳务协议</text>
-
-<!-- 表单5：HRT-2020-应届生实习录用表 -->
-<rect x="52" y="348" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="376" fill="#333" font-size="9.5" text-anchor="middle">HRT-2020-实习生录用</text>
-
-<rect x="322" y="348" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="376" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<rect x="622" y="348" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="376" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="772" y="348" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="376" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="922" y="348" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="376" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<rect x="1572" y="348" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="376" fill="#666" font-size="9" text-anchor="middle">针对按日薪结算实习生</text>
-
-<!-- ==================== 泳道2：入职协同 ==================== -->
-<!-- 背景 -->
-<rect x="0" y="412" width="1772" height="200" fill="#f0f8f0"/>
-<text x="26" y="512" fill="#1a2e5a" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90, 26, 512)">入职协同</text>
-
-<!-- 表单1：HRT-2026-录用通知书 -->
-<rect x="52" y="422" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="450" fill="#333" font-size="9.5" text-anchor="middle">HRT-2026-录用通知书</text>
-
-<!-- 人事专员1：发起/确认 -->
-<rect x="322" y="422" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="450" fill="#333" font-size="9" text-anchor="middle">发起/确认</text>
-
-<!-- 求职者/员工：确认 -->
-<rect x="182" y="422" width="140" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="252" y="450" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="422" width="200" height="90" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="452" fill="#666" font-size="9" text-anchor="middle">根据审批完成的</text>
-<text x="1672" y="466" fill="#666" font-size="9" text-anchor="middle">录用信息发送给</text>
-<text x="1672" y="480" fill="#666" font-size="9" text-anchor="middle">求职者，若确认</text>
-<text x="1672" y="494" fill="#666" font-size="9" text-anchor="middle">接受则进入入职流程</text>
-
-<!-- 表单2：HRT-2026-新员工入职引导表 -->
-<rect x="52" y="482" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="510" fill="#333" font-size="9.5" text-anchor="middle">HRT-2026-入职引导</text>
-
-<!-- 人事专员1：发起任务 -->
-<rect x="322" y="482" width="150" height="120" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="520" fill="#333" font-size="9" text-anchor="middle">发起任务：</text>
-<text x="397" y="534" fill="#333" font-size="8.5" text-anchor="middle">①发送录用通知书</text>
-<text x="397" y="548" fill="#333" font-size="8.5" text-anchor="middle">②沟通跟踪动态</text>
-
-<!-- 物业行政：接收任务 -->
-<rect x="1072" y="482" width="140" height="90" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1142" y="520" fill="#333" font-size="9" text-anchor="middle">接收任务：</text>
-<text x="1142" y="534" fill="#333" font-size="8.5" text-anchor="middle">①安排电脑和座位</text>
-<text x="1142" y="548" fill="#333" font-size="8.5" text-anchor="middle">②发放办公用品</text>
-<text x="1142" y="562" fill="#333" font-size="8.5" text-anchor="middle">③开设门禁卡</text>
-
-<!-- IT：接收任务 -->
-<rect x="1212" y="482" width="120" height="90" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1272" y="520" fill="#333" font-size="9" text-anchor="middle">接收任务：</text>
-<text x="1272" y="534" fill="#333" font-size="8.5" text-anchor="middle">开设公司邮箱</text>
-<text x="1272" y="548" fill="#333" font-size="8.5" text-anchor="middle">和HKMS账户及</text>
-<text x="1272" y="562" fill="#333" font-size="8.5" text-anchor="middle">权限设置</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="482" width="200" height="120" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="520" fill="#666" font-size="9" text-anchor="middle">各部门需要完成</text>
-<text x="1672" y="534" fill="#666" font-size="9" text-anchor="middle">的入职引导</text>
-<text x="1672" y="548" fill="#666" font-size="9" text-anchor="middle">任务清单</text>
-
-<!-- 表单3：HRT-2020-员工信息登记表 -->
-<rect x="52" y="622" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="650" fill="#333" font-size="9.5" text-anchor="middle">HRT-2020-员工登记</text>
-
-<!-- 求职者/员工：填写 -->
-<rect x="182" y="622" width="140" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="252" y="650" fill="#333" font-size="10" text-anchor="middle">填写</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="622" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="650" fill="#666" font-size="9" text-anchor="middle">新员工入职时</text>
-
-<!-- 表单4：HRC-2024-保安人员劳动合同 -->
-<rect x="52" y="672" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="700" fill="#333" font-size="9" text-anchor="middle">HRC-2024-保安合同</text>
-
-<!-- 求职者/员工：作为乙方签署 -->
-<rect x="182" y="672" width="140" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="252" y="700" fill="#333" font-size="9" text-anchor="middle">乙方签署</text>
-
-<!-- 人事专员1：申请用印 -->
-<rect x="322" y="672" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="700" fill="#333" font-size="9" text-anchor="middle">申请用印+归档</text>
-
-<!-- 人事负责人：甲方签字 -->
-<rect x="772" y="672" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="700" fill="#333" font-size="9" text-anchor="middle">甲方签字确认</text>
-
-<!-- 用印人：完成用印 -->
-<rect x="1332" y="672" width="120" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1392" y="700" fill="#333" font-size="10" text-anchor="middle">完成用印</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="672" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="700" fill="#666" font-size="9" text-anchor="middle">针对保安人员</text>
-
-<!-- 表单5：HRC-2024-劳动合同 -->
-<rect x="52" y="722" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="750" fill="#333" font-size="9.5" text-anchor="middle">HRC-2024-劳动合同</text>
-
-<!-- 类似保安合同的流程 -->
-<rect x="182" y="722" width="140" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="252" y="750" fill="#333" font-size="10" text-anchor="middle">乙方签署</text>
-
-<rect x="322" y="722" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="750" fill="#333" font-size="9" text-anchor="middle">申请用印+归档</text>
-
-<rect x="772" y="722" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="750" fill="#333" font-size="9" text-anchor="middle">甲方签字确认</text>
-
-<rect x="1332" y="722" width="120" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1392" y="750" fill="#333" font-size="10" text-anchor="middle">完成用印</text>
-
-<!-- 表单6：HRC-2020-劳务协议 -->
-<rect x="52" y="772" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="800" fill="#333" font-size="9.5" text-anchor="middle">HRC-2020-劳务协议</text>
-
-<!-- 类似流程 -->
-<rect x="182" y="772" width="140" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="252" y="800" fill="#333" font-size="10" text-anchor="middle">乙方签署</text>
-
-<rect x="322" y="772" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="800" fill="#333" font-size="9" text-anchor="middle">申请用印+归档</text>
-
-<rect x="772" y="772" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="800" fill="#333" font-size="9" text-anchor="middle">甲方签字确认</text>
-
-<rect x="1332" y="772" width="120" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1392" y="800" fill="#333" font-size="10" text-anchor="middle">完成用印</text>
-
-<!-- 表单7：HRT-2020-实习协议 -->
-<rect x="52" y="822" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="850" fill="#333" font-size="9.5" text-anchor="middle">HRT-2020-实习协议</text>
-
-<rect x="182" y="822" width="140" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="252" y="850" fill="#333" font-size="10" text-anchor="middle">乙方签署</text>
-
-<rect x="322" y="822" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="850" fill="#333" font-size="9" text-anchor="middle">申请用印+归档</text>
-
-<rect x="772" y="822" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="850" fill="#333" font-size="9" text-anchor="middle">甲方签字确认</text>
-
-<rect x="1332" y="822" width="120" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1392" y="850" fill="#333" font-size="10" text-anchor="middle">完成用印</text>
-
-<rect x="1572" y="822" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="850" fill="#666" font-size="9" text-anchor="middle">针对在校大学生</text>
-
-<!-- 表单8：HRT-2020-培训签到表 -->
-<rect x="52" y="872" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="900" fill="#333" font-size="9.5" text-anchor="middle">HRT-2020-培训签到</text>
-
-<rect x="182" y="872" width="140" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="252" y="900" fill="#333" font-size="9" text-anchor="middle">受培训人签字</text>
-
-<rect x="322" y="872" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="900" fill="#333" font-size="9" text-anchor="middle">培训并签字</text>
-
-<rect x="772" y="872" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="900" fill="#333" font-size="9" text-anchor="middle">最终确认签字</text>
-
-<rect x="1572" y="872" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="900" fill="#666" font-size="9" text-anchor="middle">用于新员工培训</text>
-
-<!-- ==================== 泳道3：在职评估 ==================== -->
-<!-- 背景 -->
-<rect x="0" y="916" width="1772" height="900" fill="#f8f8f0"/>
-<text x="26" y="1366" fill="#1a2e5a" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90, 26, 1366)">在职评估</text>
-
-<!-- 表单1：HRP-2023-实习生评估表 -->
-<rect x="52" y="926" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="954" fill="#333" font-size="9" text-anchor="middle">HRP-2023-实习生评估</text>
-
-<!-- 人事专员1：发起 -->
-<rect x="322" y="926" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="954" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<!-- BU负责人：填写评估 -->
-<rect x="622" y="926" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="954" fill="#333" font-size="10" text-anchor="middle">填写评估</text>
-
-<!-- 人事负责人：确认 -->
-<rect x="772" y="926" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="954" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 最高负责人：终审 -->
-<rect x="922" y="926" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="954" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="926" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="954" fill="#666" font-size="9" text-anchor="middle">实习期结束月完成评估</text>
-
-<!-- 表单2：HRP-2020-新员工试用期评估表 -->
-<rect x="52" y="986" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1014" fill="#333" font-size="8.5" text-anchor="middle">HRP-2020-试用期评估</text>
-
-<!-- 类似实习生评估流程 -->
-<rect x="322" y="986" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1014" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<rect x="622" y="986" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="1014" fill="#333" font-size="10" text-anchor="middle">填写评估</text>
-
-<rect x="772" y="986" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1014" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="922" y="986" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="1014" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<rect x="1572" y="986" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1014" fill="#666" font-size="9" text-anchor="middle">试用期结束月完成评估</text>
-
-<!-- 表单3：HRP-2020-续签劳动合同申请表 -->
-<rect x="52" y="1046" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1074" fill="#333" font-size="8.5" text-anchor="middle">HRP-2020-续签劳动</text>
-
-<rect x="322" y="1046" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1074" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<rect x="622" y="1046" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="1074" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="772" y="1046" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1074" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="922" y="1046" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="1074" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<rect x="1572" y="1046" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1074" fill="#666" font-size="8.5" text-anchor="middle">劳动合同到期一个月前</text>
-
-<!-- 表单4：HRP-2026-续签劳务协议申请表 -->
-<rect x="52" y="1096" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1124" fill="#333" font-size="8.5" text-anchor="middle">HRP-2026-续签劳务</text>
-
-<!-- 类似续签劳动合同流程 -->
-<rect x="322" y="1096" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1124" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<rect x="622" y="1096" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="1124" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="772" y="1096" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1124" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<rect x="922" y="1096" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="1124" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<rect x="1572" y="1096" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1124" fill="#666" font-size="8.5" text-anchor="middle">劳务协议到期一个月前</text>
-
-<!-- 表单5：HRC-2020-劳动合同续签书 -->
-<rect x="52" y="1146" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1174" fill="#333" font-size="8.5" text-anchor="middle">HRC-2020-劳动续签</text>
-
-<!-- 人事专员1：申请用印 -->
-<rect x="322" y="1146" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1174" fill="#333" font-size="9" text-anchor="middle">申请用印+归档</text>
-
-<!-- 人事负责人：甲方签字 -->
-<rect x="772" y="1146" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1174" fill="#333" font-size="9" text-anchor="middle">甲方签字确认</text>
-
-<!-- 用印人：完成用印 -->
-<rect x="1332" y="1146" width="120" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1392" y="1174" fill="#333" font-size="10" text-anchor="middle">完成用印</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="1146" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1174" fill="#666" font-size="9" text-anchor="middle">续签申请通过后签署</text>
-
-<!-- 表单6：HRC-2025-劳务协议续签书 -->
-<rect x="52" y="1196" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1224" fill="#333" font-size="8.5" text-anchor="middle">HRC-2025-劳务续签</text>
-
-<!-- 类似劳动续签流程 -->
-<rect x="322" y="1196" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1224" fill="#333" font-size="9" text-anchor="middle">申请用印+归档</text>
-
-<rect x="772" y="1196" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1224" fill="#333" font-size="9" text-anchor="middle">甲方签字确认</text>
-
-<rect x="1332" y="1196" width="120" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1392" y="1224" fill="#333" font-size="10" text-anchor="middle">完成用印</text>
-
-<rect x="1572" y="1196" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1224" fill="#666" font-size="9" text-anchor="middle">续签申请通过后签署</text>
-
-<!-- 表单7：HRP-2020-员工流动表 -->
-<rect x="52" y="1246" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1274" fill="#333" font-size="9.5" text-anchor="middle">HRP-2020-员工流动</text>
-
-<!-- 人事专员1：发起 -->
-<rect x="322" y="1246" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1274" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<!-- BU负责人：原BU+现BU确认 -->
-<rect x="622" y="1246" width="150" height="60" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="1278" fill="#333" font-size="8.5" text-anchor="middle">原BU确认→</text>
-<text x="697" y="1292" fill="#333" font-size="8.5" text-anchor="middle">现BU确认</text>
-
-<!-- 人事负责人：确认 -->
-<rect x="772" y="1246" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1274" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 最高负责人：终审 -->
-<rect x="922" y="1246" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="1274" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="1246" width="200" height="60" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1278" fill="#666" font-size="8.5" text-anchor="middle">员工发生调岗、</text>
-<text x="1672" y="1292" fill="#666" font-size="8.5" text-anchor="middle">调薪、重新定级等</text>
-
-<!-- 表单8：HRP-2026-退休留用申请表 -->
-<rect x="52" y="1316" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1344" fill="#333" font-size="8.5" text-anchor="middle">HRP-2026-退休留用</text>
-
-<!-- 人事专员1：发起 -->
-<rect x="322" y="1316" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1344" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<!-- BU负责人：确认 -->
-<rect x="622" y="1316" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="1344" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 人事负责人：确认 -->
-<rect x="772" y="1316" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1344" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 最高负责人：终审 -->
-<rect x="922" y="1316" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="1344" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="1316" width="200" height="90" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1348" fill="#666" font-size="8.5" text-anchor="middle">达到退休年龄并</text>
-<text x="1672" y="1362" fill="#666" font-size="8.5" text-anchor="middle">成功办理退休的</text>
-<text x="1672" y="1376" fill="#666" font-size="8.5" text-anchor="middle">员工申请留用</text>
-
-<!-- 表单9：员工福利 -->
-<rect x="52" y="1376" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1404" fill="#333" font-size="10" text-anchor="middle">员工福利</text>
-
-<!-- 人事专员1：运动卡、公寓、体检 -->
-<rect x="322" y="1376" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1404" fill="#333" font-size="8.5" text-anchor="middle">hro运动卡、</text>
-<text x="397" y="1418" fill="#333" font-size="8.5" text-anchor="middle">人才公寓、体检</text>
-
-<!-- 人事负责人：节日福利、生日福利 -->
-<rect x="772" y="1376" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1404" fill="#333" font-size="8.5" text-anchor="middle">节日福利、</text>
-<text x="847" y="1418" fill="#333" font-size="8.5" text-anchor="middle">生日福利</text>
-
-<!-- 表单10：薪资发放 -->
-<rect x="52" y="1426" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1454" fill="#333" font-size="10" text-anchor="middle">薪资发放</text>
-
-<!-- 人事专员1：月度考勤汇总 -->
-<rect x="322" y="1426" width="150" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1454" fill="#333" font-size="9" text-anchor="middle">月度考勤汇总</text>
-
-<!-- 人事专员2：结算工资 -->
-<rect x="472" y="1426" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="547" y="1454" fill="#333" font-size="10" text-anchor="middle">结算工资</text>
-
-<!-- 人事负责人：终审 -->
-<rect x="772" y="1426" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1454" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<!-- 财务：同步+发放 -->
-<rect x="1452" y="1426" width="120" height="60" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1512" y="1458" fill="#333" font-size="8.5" text-anchor="middle">审批结果同步</text>
-<text x="1512" y="1472" fill="#333" font-size="8.5" text-anchor="middle">财务按时发放</text>
-
-<!-- ==================== 泳道4：离职交接 ==================== -->
-<!-- 背景 -->
-<rect x="0" y="1480" width="1772" height="620" fill="#f8f0f0"/>
-<text x="26" y="1790" fill="#1a2e5a" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90, 26, 1790)">离职交接</text>
-
-<!-- 表单1：HRT-2023-离职申请表 -->
-<rect x="52" y="1490" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1518" fill="#333" font-size="9.5" text-anchor="middle">HRT-2023-离职申请</text>
-
-<!-- 求职者/员工：发起 -->
-<rect x="182" y="1490" width="140" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="252" y="1518" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<!-- BU负责人：确认 -->
-<rect x="622" y="1490" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="1518" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 人事负责人：确认 -->
-<rect x="772" y="1490" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="847" y="1518" fill="#333" font-size="10" text-anchor="middle">确认</text>
-
-<!-- 最高负责人：终审 -->
-<rect x="922" y="1490" width="150" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="997" y="1518" fill="#333" font-size="10" text-anchor="middle">终审</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="1490" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1518" fill="#666" font-size="9" text-anchor="middle">提前申请离职</text>
-
-<!-- 表单2：HRT-2026-辞职信范本 -->
-<rect x="52" y="1540" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1568" fill="#333" font-size="9.5" text-anchor="middle">HRT-2026-辞职信</text>
-
-<!-- 求职者/员工：发起 -->
-<rect x="182" y="1540" width="140" height="45" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="252" y="1568" fill="#333" font-size="10" text-anchor="middle">发起</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="1540" width="200" height="45" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1568" fill="#666" font-size="9" text-anchor="middle">辞职报告</text>
-
-<!-- 表单3：HRT-2020-职工离职交接清单（复杂流程） -->
-<rect x="52" y="1590" width="130" height="45" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="117" y="1618" fill="#333" font-size="8.5" text-anchor="middle">HRT-2020-离职交接</text>
-
-<!-- 求职者/员工：根据清单进行交接 -->
-<rect x="182" y="1590" width="140" height="60" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="252" y="1622" fill="#333" font-size="8.5" text-anchor="middle">根据清单</text>
-<text x="252" y="1636" fill="#333" font-size="8.5" text-anchor="middle">进行交接</text>
-
-<!-- 人事专员1：发起交接清单任务 -->
-<rect x="322" y="1590" width="150" height="90" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
-<text x="397" y="1620" fill="#333" font-size="8.5" text-anchor="middle">发起交接清单</text>
-<text x="397" y="1634" fill="#333" font-size="8" text-anchor="middle">任务，并完成：</text>
-<text x="397" y="1648" fill="#333" font-size="7.5" text-anchor="middle">①公司档案归还</text>
-<text x="397" y="1660" fill="#333" font-size="7.5" text-anchor="middle">②个人联系信息</text>
-
-<!-- 人事专员2：结算薪资 -->
-<rect x="472" y="1590" width="150" height="60" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="547" y="1622" fill="#333" font-size="8.5" text-anchor="middle">结算薪资</text>
-
-<!-- BU负责人：完成交接任务 -->
-<rect x="622" y="1590" width="150" height="75" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="697" y="1620" fill="#333" font-size="8.5" text-anchor="middle">完成交接任务：</text>
-<text x="697" y="1634" fill="#333" font-size="7.5" text-anchor="middle">①书面文件交接</text>
-<text x="697" y="1648" fill="#333" font-size="7.5" text-anchor="middle">②电子文档交接</text>
-
-<!-- 物业行政：完成交接任务 -->
-<rect x="1072" y="1590" width="140" height="105" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1142" y="1620" fill="#333" font-size="8.5" text-anchor="middle">完成交接任务：</text>
-<text x="1142" y="1634" fill="#333" font-size="7.5" text-anchor="middle">①取消门禁权限</text>
-<text x="1142" y="1648" fill="#333" font-size="7.5" text-anchor="middle">②电脑设备归还</text>
-<text x="1142" y="1662" fill="#333" font-size="7.5" text-anchor="middle">③门禁卡归还</text>
-
-<!-- IT：完成交接任务 -->
-<rect x="1212" y="1590" width="120" height="90" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1272" y="1620" fill="#333" font-size="8.5" text-anchor="middle">完成交接任务：</text>
-<text x="1272" y="1634" fill="#333" font-size="7.5" text-anchor="middle">①取消邮箱</text>
-<text x="1272" y="1648" fill="#333" font-size="7.5" text-anchor="middle">②取消HKMS权限</text>
-
-<!-- 用印人：完成交接任务 -->
-<rect x="1332" y="1590" width="120" height="60" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1392" y="1620" fill="#333" font-size="8" text-anchor="middle">完成交接任务：</text>
-<text x="1392" y="1634" fill="#333" font-size="7.5" text-anchor="middle">印章交接</text>
-
-<!-- 财务：完成交接任务 -->
-<rect x="1452" y="1590" width="120" height="75" rx="5" fill="#fff" stroke="#555" stroke-width="1.2"/>
-<text x="1512" y="1620" fill="#333" font-size="8.5" text-anchor="middle">完成交接任务：</text>
-<text x="1512" y="1634" fill="#333" font-size="7.5" text-anchor="middle">①应收应付结算</text>
-<text x="1512" y="1648" fill="#333" font-size="7.5" text-anchor="middle">②预借款结算</text>
-
-<!-- 使用场景 -->
-<rect x="1572" y="1590" width="200" height="120" rx="5" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
-<text x="1672" y="1620" fill="#666" font-size="8.5" text-anchor="middle">预计离职日期前</text>
-<text x="1672" y="1634" fill="#666" font-size="8.5" text-anchor="middle">需要完成的</text>
-<text x="1672" y="1648" fill="#666" font-size="8.5" text-anchor="middle">任务交接</text>
-
-<!-- 结束标签 -->
-<rect x="0" y="2120" width="1772" height="80" fill="#1a2e5a"/>
-<text x="886" y="2165" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">HRO 员工全生命周期审批流程 V5.0</text>
-
-</svg>
-</div>
+<!-- 流程图容器 -->
+<div class="flow-outer">
+<div class="flow-flex">
+
+  <!-- 左侧 sticky 列（泳道标签区 52px + 表单 130px = 182px）-->
+  <div class="sticky-col">
+    <!-- 左上角表头 -->
+    <div class="hdr-sticky">
+      <svg xmlns="http://www.w3.org/2000/svg" width="182" height="38" viewBox="0 0 182 38">
+        <rect x="0" y="0" width="52" height="38" fill="#1a2e5a"/>
+        <rect x="52" y="0" width="130" height="38" fill="#dce6f5"/>
+        <text x="26" y="25" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">泳道</text>
+        <text x="117" y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">表单</text>
+      </svg>
+    </div>
+    <!-- 左侧列主体（泳道标签 + 表单名称）-->
+    <svg xmlns="http://www.w3.org/2000/svg" width="182" height="1778" viewBox="0 0 182 1778">
+      <!-- 招聘审批泳道（5个表单，y=38..327）-->
+      <rect x="0" y="38"  width="52" height="290" fill="#1a2e5a"/>
+      <text x="26" y="183" fill="#fff" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90,26,183)">招聘审批</text>
+      <!-- 表单名称（斑马纹）-->
+      <rect x="52" y="38"  width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="72" fill="#333" font-size="7.5" text-anchor="middle">HRT-2022-聘用员工申请表</text>
+      <rect x="52" y="96"  width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="130" fill="#333" font-size="7.5" text-anchor="middle">HRP-2023-求职申请表</text>
+      <rect x="52" y="154" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="188" fill="#333" font-size="7.5" text-anchor="middle">HRT-2020-劳动录用审批单</text>
+      <rect x="52" y="212" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="246" fill="#333" font-size="7.5" text-anchor="middle">HRT-2020-劳务录用审批单</text>
+      <rect x="52" y="270" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="304" fill="#333" font-size="7.5" text-anchor="middle">HRT-2020-应届生实习录用表</text>
+
+      <!-- 入职协同泳道（8个表单，y=328..791）-->
+      <rect x="0" y="328" width="52" height="464" fill="#1a2e5a"/>
+      <text x="26" y="560" fill="#fff" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90,26,560)">入职协同</text>
+      <rect x="52" y="328" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="362" fill="#333" font-size="7.5" text-anchor="middle">HRT-2026-录用通知书</text>
+      <rect x="52" y="386" width="130" height="116" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="444" fill="#333" font-size="7.5" text-anchor="middle">HRT-2026-新员工入职引导表</text>
+      <rect x="52" y="502" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="536" fill="#333" font-size="7.5" text-anchor="middle">HRT-2020-员工信息登记表</text>
+      <rect x="52" y="560" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="594" fill="#333" font-size="7.5" text-anchor="middle">HRC-2024-保安人员劳动合同</text>
+      <rect x="52" y="618" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="652" fill="#333" font-size="7.5" text-anchor="middle">HRC-2024-劳动合同</text>
+      <rect x="52" y="676" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="710" fill="#333" font-size="7.5" text-anchor="middle">HRC-2020-劳务协议</text>
+      <rect x="52" y="734" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="768" fill="#333" font-size="7.5" text-anchor="middle">HRT-2020-实习协议</text>
+      <rect x="52" y="792" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="826" fill="#333" font-size="7.5" text-anchor="middle">HRT-2020-培训签到表</text>
+
+      <!-- 在职评估泳道（10个表单，y=850..1427）-->
+      <rect x="0" y="850" width="52" height="580" fill="#1a2e5a"/>
+      <text x="26" y="1140" fill="#fff" font-size="12" font-weight="700" text-anchor="middle" transform="rotate(-90,26,1140)">在职评估</text>
+      <rect x="52" y="850"  width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="884" fill="#333" font-size="7.5" text-anchor="middle">HRP-2023-实习生评估表</text>
+      <rect x="52" y="908"  width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="942" fill="#333" font-size="7.5" text-anchor="middle">HRP-2020-新员工试用期评估表</text>
+      <rect x="52" y="966"  width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1000" fill="#333" font-size="7.5" text-anchor="middle">HRP-2020-续签劳动合同申请表</text>
+      <rect x="52" y="1024" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1058" fill="#333" font-size="7.5" text-anchor="middle">HRP-2026-续签劳务协议申请表</text>
+      <rect x="52" y="1082" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1116" fill="#333" font-size="7.5" text-anchor="middle">HRC-2020-劳动合同续签书</text>
+      <rect x="52" y="1140" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1174" fill="#333" font-size="7.5" text-anchor="middle">HRC-2025-劳务协议续签书</text>
+      <rect x="52" y="1198" width="130" height="116" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1256" fill="#333" font-size="7.5" text-anchor="middle">HRP-2020-员工流动表</text>
+      <rect x="52" y="1314" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1348" fill="#333" font-size="7.5" text-anchor="middle">HRP-2026-退休留用申请表</text>
+      <rect x="52" y="1372" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1406" fill="#333" font-size="7.5" text-anchor="middle">员工福利</text>
+      <rect x="52" y="1430" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1464" fill="#333" font-size="7.5" text-anchor="middle">薪资发放</text>
+
+      <!-- 离职交接泳道（3个表单，y=1488..1603）-->
+      <rect x="0" y="1488" width="52" height="174" fill="#1a2e5a"/>
+      <text x="26" y="1575" fill="#fff" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90,26,1575)">离职交接</text>
+      <rect x="52" y="1488" width="130" height="58" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1522" fill="#333" font-size="7.5" text-anchor="middle">HRT-2023-离职申请表</text>
+      <rect x="52" y="1546" width="130" height="58" fill="#f0f4ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1580" fill="#333" font-size="7.5" text-anchor="middle">HRT-2026-辞职信范本</text>
+      <rect x="52" y="1604" width="130" height="174" fill="#f5f7ff" stroke="#e8e8e8" stroke-width="0.3"/>
+      <text x="117" y="1691" fill="#333" font-size="7.5" text-anchor="middle">HRT-2020-职工离职交接清单</text>
+
+      <!-- 底部标签 -->
+      <rect x="0" y="1718" width="182" height="60" fill="#1a2e5a"/>
+      <text x="91" y="1743" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">HRO 员工全生命周期</text>
+      <text x="91" y="1760" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">审批流程 V5.0</text>
+    </svg>
+  </div>
+
+  <!-- 右侧滚动列（12列，width=1590）-->
+  <div class="scroll-col">
+    <!-- 顶部表头（sticky）-->
+    <div class="hdr-sticky">
+      <svg xmlns="http://www.w3.org/2000/svg" width="1590" height="38" viewBox="0 0 1590 38">
+        <rect x="0"    width="140" height="38" fill="#e8eef7"/>
+        <rect x="140"  width="150" height="38" fill="#b8cce8"/>
+        <rect x="290"  width="150" height="38" fill="#c4d8ee"/>
+        <rect x="440"  width="150" height="38" fill="#8faad8"/>
+        <rect x="590"  width="150" height="38" fill="#a0b8dd"/>
+        <rect x="740"  width="150" height="38" fill="#6b8fc5"/>
+        <rect x="890"  width="140" height="38" fill="#8aaad0"/>
+        <rect x="1030" width="120" height="38" fill="#9bb5d8"/>
+        <rect x="1150" width="120" height="38" fill="#aac5e0"/>
+        <rect x="1270" width="120" height="38" fill="#b8d0e5"/>
+        <rect x="1390" width="140" height="38" fill="#c0d4e8"/>
+        <rect x="1530" width="200" height="38" fill="#c8d8ee"/>
+        <text x="70"   y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">求职者/员工</text>
+        <text x="215"  y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">人事专员1</text>
+        <text x="365"  y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">人事专员2</text>
+        <text x="515"  y="25" fill="#fff"      font-size="11" font-weight="700" text-anchor="middle">BU负责人</text>
+        <text x="665"  y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">人事负责人</text>
+        <text x="815"  y="25" fill="#fff"      font-size="11" font-weight="700" text-anchor="middle">最高负责人</text>
+        <text x="960"  y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">物业行政</text>
+        <text x="1090" y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">IT</text>
+        <text x="1210" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">用印人</text>
+        <text x="1330" y="25" fill="#1a2e5a" font-size="11" font-weight="700" text-anchor="middle">财务</text>
+        <text x="1460" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">完成/结果</text>
+        <text x="1630" y="25" fill="#1a2e5a" font-size="10" font-weight="700" text-anchor="middle">使用场景</text>
+      </svg>
+    </div>
+    <!-- 主内容 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="1590" height="1778" viewBox="0 0 1590 1778">
+      <defs>
+        <marker id="arr" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+          <path d="M0,0.5 L0,6.5 L7,3.5 z" fill="#444"/>
+        </marker>
+        <marker id="arrR" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+          <path d="M0,0.5 L0,6.5 L7,3.5 z" fill="#e74c3c"/>
+        </marker>
+      </defs>
+
+      <!-- ===== 泳道背景 ===== -->
+      <rect x="0" y="38"  width="1590" height="290" fill="#f8f9fc"/>
+      <rect x="0" y="328" width="1590" height="464" fill="#f0f8f0"/>
+      <rect x="0" y="850" width="1590" height="580" fill="#f8f8f0"/>
+      <rect x="0" y="1488" width="1590" height="178" fill="#f8f0f0"/>
+
+      <!-- ===== 列分隔线 ===== -->
+      <line x1="0"    y1="38" x2="0"    y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="140"  y1="38" x2="140"  y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="290"  y1="38" x2="290"  y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="440"  y1="38" x2="440"  y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="590"  y1="38" x2="590"  y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="740"  y1="38" x2="740"  y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="890"  y1="38" x2="890"  y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="1030" y1="38" x2="1030" y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="1150" y1="38" x2="1150" y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="1270" y1="38" x2="1270" y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="1390" y1="38" x2="1390" y2="1778" stroke="#ccc" stroke-width="0.5"/>
+      <line x1="1530" y1="38" x2="1530" y2="1778" stroke="#bbb" stroke-width="1"/>
+
+      <!-- ===== 行内容（按正确坐标）====== -->
+
+      <!-- 1. HRT-2022-聘用员工申请表  y=38 -->
+      <rect x="0"    y="40" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="70" fill="#333" font-size="8" text-anchor="middle">求职者</text>
+      <rect x="140"  y="40" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="70" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="40" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="70" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="40" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="70" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="40" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="70" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="40" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="60" fill="#666" font-size="8" text-anchor="middle">部门需要扩编、补员</text>
+      <line x1="140" y1="67" x2="290" y2="67" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+      <line x1="440" y1="67" x2="590" y2="67" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+
+      <!-- 2. HRP-2023-求职申请表  y=96 -->
+      <rect x="0"    y="98" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="128" fill="#333" font-size="8" text-anchor="middle">填写P1</text>
+      <rect x="140"  y="98" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="116" fill="#333" font-size="8" text-anchor="middle">完成一面+P2</text>
+      <text x="215"  y="129" fill="#333" font-size="8" text-anchor="middle">评估</text>
+      <rect x="290"  y="98" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="365"  y="116" fill="#333" font-size="8" text-anchor="middle">完成二面+P2</text>
+      <text x="365"  y="129" fill="#333" font-size="8" text-anchor="middle">评估</text>
+      <rect x="440"  y="98" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="515"  y="128" fill="#333" font-size="9" text-anchor="middle">完成终面</text>
+      <rect x="590"  y="98" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="128" fill="#333" font-size="9" text-anchor="middle">最终评价</text>
+      <rect x="1530" y="98" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="112" fill="#666" font-size="7.5" text-anchor="middle">p2是面试评估</text>
+      <text x="1630" y="124" fill="#666" font-size="7.5" text-anchor="middle">根据申请表的职级安排面试</text>
+      <line x1="290" y1="125" x2="440" y2="125" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+      <line x1="440" y1="125" x2="590" y2="125" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+
+      <!-- 3. HRT-2020-劳动录用审批单  y=154 -->
+      <rect x="0"    y="156" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="186" fill="#333" font-size="8" text-anchor="middle">求职者</text>
+      <rect x="140"  y="156" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="186" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="156" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="186" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="156" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="186" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="156" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="186" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="156" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="176" fill="#666" font-size="8" text-anchor="middle">针对签署劳动合同</text>
+      <line x1="140" y1="183" x2="290" y2="183" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+      <line x1="440" y1="183" x2="590" y2="183" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+
+      <!-- 4. HRT-2020-劳务录用审批单  y=212 -->
+      <rect x="0"    y="214" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="244" fill="#333" font-size="8" text-anchor="middle">求职者</text>
+      <rect x="140"  y="214" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="244" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="214" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="244" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="214" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="244" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="214" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="244" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="214" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="234" fill="#666" font-size="8" text-anchor="middle">针对签署劳务协议</text>
+      <line x1="140" y1="241" x2="290" y2="241" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+      <line x1="440" y1="241" x2="590" y2="241" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+
+      <!-- 5. HRT-2020-应届生实习录用表  y=270 -->
+      <rect x="0"    y="272" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="302" fill="#333" font-size="8" text-anchor="middle">求职者</text>
+      <rect x="140"  y="272" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="302" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="272" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="302" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="272" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="302" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="272" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="302" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="272" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="292" fill="#666" font-size="8" text-anchor="middle">针对按日薪结算实习生</text>
+      <line x1="140" y1="299" x2="290" y2="299" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+      <line x1="440" y1="299" x2="590" y2="299" stroke="#444" stroke-width="1.2" marker-end="url(#arr)"/>
+
+      <!-- 入职泳道：y=328..791 -->
+      <!-- 6. HRT-2026-录用通知书  y=328 -->
+      <rect x="0"    y="330" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="360" fill="#333" font-size="9" text-anchor="middle">确认</text>
+      <rect x="140"  y="330" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="360" fill="#333" font-size="9" text-anchor="middle">发起/确认</text>
+      <rect x="1530" y="330" width="200" height="108" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="350" fill="#666" font-size="7.5" text-anchor="middle">根据审批完成的</text>
+      <text x="1630" y="362" fill="#666" font-size="7.5" text-anchor="middle">录用信息发送给</text>
+      <text x="1630" y="374" fill="#666" font-size="7.5" text-anchor="middle">求职者，若确认</text>
+      <text x="1630" y="386" fill="#666" font-size="7.5" text-anchor="middle">接受则进入入职流程</text>
+
+      <!-- 7. HRT-2026-新员工入职引导表  y=386 (rowspan=2) -->
+      <rect x="140"  y="388" width="150" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="406" fill="#333" font-size="8" text-anchor="middle">发起任务：</text>
+      <text x="215"  y="420" fill="#333" font-size="7.5" text-anchor="middle">①发送录用通知书</text>
+      <text x="215"  y="434" fill="#333" font-size="7.5" text-anchor="middle">②沟通跟踪动态</text>
+      <rect x="890"  y="388" width="140" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="960"  y="406" fill="#333" font-size="8" text-anchor="middle">接收任务：</text>
+      <text x="960"  y="420" fill="#333" font-size="7.5" text-anchor="middle">①安排电脑和座位</text>
+      <text x="960"  y="434" fill="#333" font-size="7.5" text-anchor="middle">②发放办公用品</text>
+      <text x="960"  y="448" fill="#333" font-size="7.5" text-anchor="middle">③开设门禁卡</text>
+      <rect x="1030" y="388" width="120" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1090" y="406" fill="#333" font-size="8" text-anchor="middle">接收任务：</text>
+      <text x="1090" y="420" fill="#333" font-size="7.5" text-anchor="middle">开设公司邮箱</text>
+      <text x="1090" y="434" fill="#333" font-size="7.5" text-anchor="middle">和HKMS账户及</text>
+      <text x="1090" y="448" fill="#333" font-size="7.5" text-anchor="middle">权限设置</text>
+      <rect x="1530" y="388" width="200" height="108" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="408" fill="#666" font-size="7.5" text-anchor="middle">各部门需要完成</text>
+      <text x="1630" y="422" fill="#666" font-size="7.5" text-anchor="middle">的入职引导</text>
+      <text x="1630" y="436" fill="#666" font-size="7.5" text-anchor="middle">任务清单</text>
+
+      <!-- 8. HRT-2020-员工信息登记表  y=502 -->
+      <rect x="0"    y="504" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="534" fill="#333" font-size="9" text-anchor="middle">填写</text>
+      <rect x="1530" y="504" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="524" fill="#666" font-size="8" text-anchor="middle">新员工入职时</text>
+
+      <!-- 9. HRC-2024-保安人员劳动合同  y=560 -->
+      <rect x="0"    y="562" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="592" fill="#333" font-size="8" text-anchor="middle">乙方签署</text>
+      <rect x="140"  y="562" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="590" fill="#333" font-size="8" text-anchor="middle">申请用印+归档</text>
+      <rect x="440"  y="562" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="590" fill="#333" font-size="8" text-anchor="middle">甲方签字确认</text>
+      <rect x="1150" y="562" width="120" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1210" y="590" fill="#333" font-size="9" text-anchor="middle">完成用印</text>
+      <rect x="1530" y="562" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="582" fill="#666" font-size="8" text-anchor="middle">针对保安人员</text>
+
+      <!-- 10. HRC-2024-劳动合同  y=618 -->
+      <rect x="0"    y="620" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="650" fill="#333" font-size="8" text-anchor="middle">乙方签署</text>
+      <rect x="140"  y="620" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="648" fill="#333" font-size="8" text-anchor="middle">申请用印+归档</text>
+      <rect x="440"  y="620" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="648" fill="#333" font-size="8" text-anchor="middle">甲方签字确认</text>
+      <rect x="1150" y="620" width="120" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1210" y="648" fill="#333" font-size="9" text-anchor="middle">完成用印</text>
+
+      <!-- 11. HRC-2020-劳务协议  y=676 -->
+      <rect x="0"    y="678" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="708" fill="#333" font-size="8" text-anchor="middle">乙方签署</text>
+      <rect x="140"  y="678" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="706" fill="#333" font-size="8" text-anchor="middle">申请用印+归档</text>
+      <rect x="440"  y="678" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="706" fill="#333" font-size="8" text-anchor="middle">甲方签字确认</text>
+      <rect x="1150" y="678" width="120" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1210" y="706" fill="#333" font-size="9" text-anchor="middle">完成用印</text>
+
+      <!-- 12. HRT-2020-实习协议  y=734 -->
+      <rect x="0"    y="736" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="766" fill="#333" font-size="8" text-anchor="middle">乙方签署</text>
+      <rect x="140"  y="736" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="764" fill="#333" font-size="8" text-anchor="middle">申请用印+归档</text>
+      <rect x="440"  y="736" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="764" fill="#333" font-size="8" text-anchor="middle">甲方签字确认</text>
+      <rect x="1150" y="736" width="120" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1210" y="764" fill="#333" font-size="9" text-anchor="middle">完成用印</text>
+      <rect x="1530" y="736" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="756" fill="#666" font-size="8" text-anchor="middle">针对在校大学生</text>
+
+      <!-- 13. HRT-2020-培训签到表  y=792 -->
+      <rect x="0"    y="794" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="824" fill="#333" font-size="8" text-anchor="middle">受培训人签字</text>
+      <rect x="140"  y="794" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="822" fill="#333" font-size="8" text-anchor="middle">培训并签字</text>
+      <rect x="440"  y="794" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="822" fill="#333" font-size="8" text-anchor="middle">最终确认签字</text>
+      <rect x="1530" y="794" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="814" fill="#666" font-size="8" text-anchor="middle">用于新员工培训</text>
+
+      <!-- 在职泳道：y=850..1429 -->
+      <!-- 14. HRP-2023-实习生评估表  y=850 -->
+      <rect x="140"  y="852" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="882" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="852" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="365"  y="882" fill="#333" font-size="9" text-anchor="middle">填写评估</text>
+      <rect x="440"  y="852" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="882" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="852" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="882" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="852" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="872" fill="#666" font-size="8" text-anchor="middle">实习期结束月完成评估</text>
+
+      <!-- 15. HRP-2020-新员工试用期评估表  y=908 -->
+      <rect x="140"  y="910" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="940" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="910" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="365"  y="940" fill="#333" font-size="9" text-anchor="middle">填写评估</text>
+      <rect x="440"  y="910" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="940" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="910" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="940" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="910" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="930" fill="#666" font-size="8" text-anchor="middle">试用期结束月完成评估</text>
+
+      <!-- 16. HRP-2020-续签劳动合同申请表  y=966 -->
+      <rect x="140"  y="968" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="998" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="968" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="998" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="968" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="998" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="968" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="998" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="968" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="988" fill="#666" font-size="8" text-anchor="middle">劳动合同到期一个月前</text>
+
+      <!-- 17. HRP-2026-续签劳务协议申请表  y=1024 -->
+      <rect x="140"  y="1026" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1056" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="1026" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="1056" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="1026" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1056" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="1026" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="1056" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="1026" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1046" fill="#666" font-size="8" text-anchor="middle">劳务协议到期一个月前</text>
+
+      <!-- 18. HRC-2020-劳动合同续签书  y=1082 -->
+      <rect x="140"  y="1084" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1112" fill="#333" font-size="8" text-anchor="middle">申请用印+归档</text>
+      <rect x="440"  y="1084" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1112" fill="#333" font-size="8" text-anchor="middle">甲方签字确认</text>
+      <rect x="1150" y="1084" width="120" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1210" y="1112" fill="#333" font-size="9" text-anchor="middle">完成用印</text>
+      <rect x="1530" y="1084" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1104" fill="#666" font-size="8" text-anchor="middle">续签申请通过后签署</text>
+
+      <!-- 19. HRC-2025-劳务协议续签书  y=1140 -->
+      <rect x="140"  y="1142" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1170" fill="#333" font-size="8" text-anchor="middle">申请用印+归档</text>
+      <rect x="440"  y="1142" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1170" fill="#333" font-size="8" text-anchor="middle">甲方签字确认</text>
+      <rect x="1150" y="1142" width="120" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1210" y="1170" fill="#333" font-size="9" text-anchor="middle">完成用印</text>
+      <rect x="1530" y="1142" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1162" fill="#666" font-size="8" text-anchor="middle">续签申请通过后签署</text>
+
+      <!-- 20. HRP-2020-员工流动表  y=1198 (rowspan=2) -->
+      <rect x="140"  y="1200" width="150" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1218" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="1200" width="150" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="365"  y="1220" fill="#333" font-size="8" text-anchor="middle">原BU确认→</text>
+      <text x="365"  y="1234" fill="#333" font-size="8" text-anchor="middle">现BU确认</text>
+      <rect x="440"  y="1200" width="150" height="108" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1250" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="1200" width="150" height="108" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="1250" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="1200" width="200" height="108" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1220" fill="#666" font-size="8" text-anchor="middle">员工发生调岗、</text>
+      <text x="1630" y="1234" fill="#666" font-size="8" text-anchor="middle">调薪、重新定级等</text>
+
+      <!-- 21. HRP-2026-退休留用申请表  y=1314 -->
+      <rect x="140"  y="1316" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1346" fill="#333" font-size="10" text-anchor="middle">发起</text>
+      <rect x="290"  y="1316" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="1346" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="1316" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1346" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="1316" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="1346" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="1316" width="200" height="108" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1336" fill="#666" font-size="7.5" text-anchor="middle">达到退休年龄并</text>
+      <text x="1630" y="1350" fill="#666" font-size="7.5" text-anchor="middle">成功办理退休的</text>
+      <text x="1630" y="1364" fill="#666" font-size="7.5" text-anchor="middle">员工申请留用</text>
+
+      <!-- 22. 员工福利  y=1372 -->
+      <rect x="140"  y="1374" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1388" fill="#333" font-size="8" text-anchor="middle">hro运动卡、</text>
+      <text x="215"  y="1402" fill="#333" font-size="8" text-anchor="middle">人才公寓、体检</text>
+      <rect x="440"  y="1374" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="515"  y="1388" fill="#333" font-size="8" text-anchor="middle">节日福利、</text>
+      <text x="515"  y="1402" fill="#333" font-size="8" text-anchor="middle">生日福利</text>
+
+      <!-- 23. 薪资发放  y=1430 -->
+      <rect x="140"  y="1432" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1460" fill="#333" font-size="9" text-anchor="middle">月度考勤汇总</text>
+      <rect x="290"  y="1432" width="150" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="365"  y="1460" fill="#333" font-size="10" text-anchor="middle">结算工资</text>
+      <rect x="440"  y="1432" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1460" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1270" y="1432" width="120" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1330" y="1446" fill="#333" font-size="7.5" text-anchor="middle">审批结果同步</text>
+      <text x="1330" y="1460" fill="#333" font-size="7.5" text-anchor="middle">财务按时发放</text>
+
+      <!-- 离职泳道：y=1488..1665 -->
+      <!-- 24. HRT-2023-离职申请表  y=1488 -->
+      <rect x="0"    y="1490" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="1520" fill="#333" font-size="9" text-anchor="middle">发起</text>
+      <rect x="290"  y="1490" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="365"  y="1520" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="440"  y="1490" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1520" fill="#333" font-size="10" text-anchor="middle">确认</text>
+      <rect x="590"  y="1490" width="150" height="54" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="665"  y="1520" fill="#333" font-size="10" text-anchor="middle">终审</text>
+      <rect x="1530" y="1490" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1510" fill="#666" font-size="8" text-anchor="middle">提前申请离职</text>
+
+      <!-- 25. HRT-2026-辞职信范本  y=1546 -->
+      <rect x="0"    y="1548" width="140" height="54" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="1578" fill="#333" font-size="9" text-anchor="middle">发起</text>
+      <rect x="1530" y="1548" width="200" height="54" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1568" fill="#666" font-size="8" text-anchor="middle">辞职报告</text>
+
+      <!-- 26. HRT-2020-职工离职交接清单  y=1604 (rowspan=3) -->
+      <rect x="0"    y="1606" width="140" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="70"   y="1624" fill="#333" font-size="8" text-anchor="middle">根据清单</text>
+      <text x="70"   y="1638" fill="#333" font-size="8" text-anchor="middle">进行交接</text>
+      <rect x="140"  y="1606" width="150" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="215"  y="1620" fill="#333" font-size="7.5" text-anchor="middle">发起交接清单</text>
+      <text x="215"  y="1634" fill="#333" font-size="7"   text-anchor="middle">任务，并完成：</text>
+      <text x="215"  y="1648" fill="#333" font-size="7" text-anchor="middle">①公司档案归还</text>
+      <text x="215"  y="1662" fill="#333" font-size="7" text-anchor="middle">②个人联系信息</text>
+      <rect x="290"  y="1606" width="150" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="365"  y="1638" fill="#333" font-size="9" text-anchor="middle">结算薪资</text>
+      <rect x="440"  y="1606" width="150" height="108" rx="5" fill="#fff" stroke="#555" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="515"  y="1624" fill="#333" font-size="7.5" text-anchor="middle">完成交接任务：</text>
+      <text x="515"  y="1638" fill="#333" font-size="7" text-anchor="middle">①书面文件交接</text>
+      <text x="515"  y="1652" fill="#333" font-size="7" text-anchor="middle">②电子文档交接</text>
+      <rect x="890"  y="1606" width="140" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="960"  y="1624" fill="#333" font-size="7.5" text-anchor="middle">完成交接任务：</text>
+      <text x="960"  y="1638" fill="#333" font-size="7" text-anchor="middle">①取消门禁权限</text>
+      <text x="960"  y="1652" fill="#333" font-size="7" text-anchor="middle">②电脑设备归还</text>
+      <text x="960"  y="1666" fill="#333" font-size="7" text-anchor="middle">③门禁卡归还</text>
+      <rect x="1030" y="1606" width="120" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1090" y="1624" fill="#333" font-size="7.5" text-anchor="middle">完成交接任务：</text>
+      <text x="1090" y="1638" fill="#333" font-size="7" text-anchor="middle">①取消邮箱</text>
+      <text x="1090" y="1652" fill="#333" font-size="7" text-anchor="middle">②取消HKMS权限</text>
+      <rect x="1150" y="1606" width="120" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1210" y="1624" fill="#333" font-size="7.5" text-anchor="middle">完成交接任务：</text>
+      <text x="1210" y="1638" fill="#333" font-size="7" text-anchor="middle">印章交接</text>
+      <rect x="1270" y="1606" width="120" height="108" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1.2"/>
+      <text x="1330" y="1624" fill="#333" font-size="7.5" text-anchor="middle">完成交接任务：</text>
+      <text x="1330" y="1638" fill="#333" font-size="7" text-anchor="middle">①应收应付结算</text>
+      <text x="1330" y="1652" fill="#333" font-size="7" text-anchor="middle">②预借款结算</text>
+      <rect x="1530" y="1606" width="200" height="108" rx="3" fill="#f5f5f5" stroke="#aaa" stroke-width="0.8"/>
+      <text x="1630" y="1626" fill="#666" font-size="7.5" text-anchor="middle">预计离职日期前</text>
+      <text x="1630" y="1640" fill="#666" font-size="7.5" text-anchor="middle">需要完成的</text>
+      <text x="1630" y="1654" fill="#666" font-size="7.5" text-anchor="middle">任务交接</text>
+
+    </svg>
+  </div>
+
+</div><!-- /flow-flex -->
+</div><!-- /flow-outer -->
 
 <div class="footer">
   HRO 人事管理系统 · 员工全生命周期审批流程图 · V5.0 · 基于招聘与入职流程表
 </div>
 
-</div>
+</div><!-- /page -->
 </body>
 </html>
-
